@@ -1,0 +1,23 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "g++ build active file",
+            "command": "/usr/sbin/g++",
+            "args": [
+                "-g",
+                 "${file}",
+                "${fileDirname}/utils.cc",
+                "${fileDirname}/parse.tab.c",
+                "${fileDirname}/lex.yy.c",
+                "-o",
+                // "prgram.out"
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "/usr/sbin"
+            }
+        }
+    ],
+    "version": "2.0.0"
+}
