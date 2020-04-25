@@ -1,0 +1,9 @@
+﻿  TinySyntaxAnalyserDlg.cpp
+D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(228,55): warning C4244:  “=”: 从“wchar_t”转换到“char”，可能丢失数据
+D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(230,31): warning C4267:  “参数”: 从“size_t”转换到“UINT”，可能丢失数据
+D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(268,26): warning C4244:  “参数”: 从“wchar_t”转换到“_Elem”，可能丢失数据
+D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(268,26): warning C4244:         with
+D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(268,26): warning C4244:         [
+D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(268,26): warning C4244:             _Elem=char
+D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(268,26): warning C4244:         ]
+  TinySyntaxAnalyser.vcxproj -> D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\x64\Debug\TinySyntaxAnalyser.exe
