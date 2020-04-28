@@ -81,7 +81,6 @@ BEGIN_MESSAGE_MAP(CTinySyntaxAnalyserDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_COMMAND(ID_32771, &CTinySyntaxAnalyserDlg::Open)
-	ON_COMMAND(ID_32772, &CTinySyntaxAnalyserDlg::Save)
 	ON_COMMAND(ID_32773, &CTinySyntaxAnalyserDlg::CreateTree)
 	ON_COMMAND(ID_32774, &CTinySyntaxAnalyserDlg::ShowTree)
 	ON_COMMAND(ID_32775, &CTinySyntaxAnalyserDlg::Exit)
@@ -210,31 +209,6 @@ void CTinySyntaxAnalyserDlg::Open()
 }
 
 
-/*
-	保存文件函数
-	可以在第一个输入框里写代码，然后进行保存
-	可以自由选择存放的文件位置及文件名， 但是要以.txt结尾
-*/
-void CTinySyntaxAnalyserDlg::Save()
-{
-	UpdateData(TRUE);
-	CFileDialog savedlg(false, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, (LPCTSTR)_TEXT("TXT Files (*.txt)|*.txt|All Files (*.*)|*.*||"), NULL);
-	if (savedlg.DoModal() == IDOK) { //显示对话框并允许用户进行选择。
-		CFile fsave(savedlg.GetPathName(), CFile::modeCreate | CFile::modeReadWrite);
-		//CString转char[]
-		static char str[] = ""; 
-		
-		int len = fileContent.GetLength();
-		for (int i = 0; i < len; i++) str[i] = fileContent[i];
-		
-		fsave.Write(str, strlen(str)); //写入文件
-		fsave.Flush(); //立即写入，不缓冲
-		fsave.Close(); //文件操作结束关闭
-		
-	}
-	else return;
-
-}
 
 /*
 	生成语法树函数
