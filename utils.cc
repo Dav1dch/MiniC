@@ -1,13 +1,17 @@
 /*
  * @Copyright: minic
- * @Author: David.Huangjunlang 
- * @File: utils.cc
- * @Descriptions: undefined 
- * @Last Modified by: David.Huangjunlang
- * @Last Modified time: 2020-04-24 00:42:27
+ * @Author: David.Huangjunlang
+ * @Description: 工具集的函数实现，包括新节点生成，以及打印语法树
+ * @LastEditors: David.Huangjunlang
+ * @LastEditTime: 2020-04-29 02:27:41
  */
 #include "utils.h"
 
+/**
+ * @description: 新建一个 statement 类型的 node 并返回 
+ * @param {StmtKind} 
+ * @return: node*
+ */
 node *newStmtNode(StmtKind kind)
 {
     node *t = (node *)malloc(sizeof(node));
@@ -23,6 +27,12 @@ node *newStmtNode(StmtKind kind)
     return t;
 }
 
+/**
+ * @description: 新建一个 expression 类型的 node 并返回
+ * @param {ExpKind} 
+ * @return: node*
+ * @author: David.Huangjunlang
+ */
 node *newExpNode(ExpKind kind)
 {
     node *t = (node *)malloc(sizeof(node));
@@ -37,6 +47,12 @@ node *newExpNode(ExpKind kind)
     return t;
 }
 
+/**
+ * @description: 在 nodeList 链表的末尾添加一个 statement 类型的 node 
+ * @param {node*, node*} 
+ * @return: void
+ * @author: David.Huangjunlang
+ */
 void addNode(node *list, node *stmt)
 {
     node *temp = list;
@@ -47,38 +63,28 @@ void addNode(node *list, node *stmt)
     temp->next = stmt;
 }
 
+/**
+ * @description: 从程序根节点遍历语法树，并打印到文件中
+ * @param {void} 
+ * @return: void
+ * @author: David.Huangjunlang
+ */
 void printTree()
 {
     node *temp = programNode->listChild[0];
-    printList(temp);
-}
-
-void printList(node *t)
-{
-    node *temp = t;
     while (temp->next != nullptr)
     {
         temp = temp->next;
         printNode(temp, 0);
     }
 }
-// typedef enum
-// {
-//     ProgramK,
-//     DeclK,
-//     ParamlK,
-//     LocdeclK,
-//     StmtlK,
-//     ArgsK,
-//     VardecK,
-//     FundecK,
-//     ParamK,
-//     CompK,
-//     SelectK,
-//     IteraK,
-//     ExpressionK,
-//     ReturnK
-// } StmtKind;
+
+/**
+ * @description: 打印节点信息到文件中， level 参数用于设定输出缩进格式
+ * @param {node*, int} 
+ * @return: void
+ * @author: David.Huangjunlang
+ */
 void printNode(node *t, int level)
 {
     std::string preWhiteSpace = "";

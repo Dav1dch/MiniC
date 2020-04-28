@@ -2,6 +2,7 @@
     #include "main.h"
     #include "utils.h"
     extern node* programNode;
+    extern FILE* result;
     extern "C"{
         int yywrap(void);
         int yylex(void);
@@ -145,7 +146,15 @@ args : args COMMA expression {addNode($1, $3); $$ = $1;}
     ;
 %%
 
+/**
+ * @description: 处理解析错误并打印到文件
+ * @param {void} 
+ * @return: void
+ * @author: David.Huangjunlang
+ */
 void yyerror(const char *s){
-    printf("error: %s\n in line : %d\n text: %s\n", s, yylineno, yytext);
+    printf("error: %s\n in line : %d\n unexpected token: %s\n", s, yylineno, yytext);
+    fprintf(result ,"error: %s\n in line : %d\n unexpected token: %s\n", s, yylineno, yytext);
+    fclose(result);
 }
 

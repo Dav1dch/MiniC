@@ -3,7 +3,7 @@ void hello(void){return;}
 
 
 int gcd(int u, int v){
-    if (v == 0) return u;
+    if (v == 0return u;
     else return gcd(v, u-u/v*v);
     /* test */
 }

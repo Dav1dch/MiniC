@@ -1,4 +1,4 @@
-/* A Bison parser, made by GNU Bison 3.5.4.  */
+/* A Bison parser, made by GNU Bison 3.5.1.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
@@ -48,7 +48,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.5.4"
+#define YYBISON_VERSION "3.5.1"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -71,6 +71,7 @@
     #include "main.h"
     #include "utils.h"
     extern node* programNode;
+    extern FILE* result;
     extern "C"{
         int yywrap(void);
         int yylex(void);
@@ -79,7 +80,7 @@
         extern char* yytext;
 }
 
-#line 83 "parse.tab.c"
+#line 84 "parse.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -122,10 +123,10 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 13 "parse.y"
+#line 14 "parse.y"
 
 
-#line 129 "parse.tab.c"
+#line 130 "parse.tab.c"
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -534,13 +535,13 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    31,    31,    34,    35,    38,    39,    42,    43,    46,
-      49,    55,    56,    59,    60,    63,    64,    67,    70,    71,
-      74,    75,    78,    79,    82,    83,    84,    85,    86,    89,
-      90,    93,    94,    97,   100,   101,   104,   105,   109,   110,
-     113,   114,   115,   116,   117,   118,   119,   123,   124,   125,
-     128,   129,   130,   133,   134,   135,   136,   139,   140,   143,
-     144
+       0,    32,    32,    35,    36,    39,    40,    43,    44,    47,
+      50,    56,    57,    60,    61,    64,    65,    68,    71,    72,
+      75,    76,    79,    80,    83,    84,    85,    86,    87,    90,
+      91,    94,    95,    98,   101,   102,   105,   106,   110,   111,
+     114,   115,   116,   117,   118,   119,   120,   124,   125,   126,
+     129,   130,   131,   134,   135,   136,   137,   140,   141,   144,
+     145
 };
 #endif
 
@@ -1413,367 +1414,367 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 31 "parse.y"
+#line 32 "parse.y"
                            {(yyval.m_node) = newStmtNode(ProgramK); (yyval.m_node)->listChild[0] = (yyvsp[0].m_node);programNode = (yyval.m_node); programNode->attr.name = "helloworld";}
-#line 1419 "parse.tab.c"
+#line 1420 "parse.tab.c"
     break;
 
   case 3:
-#line 34 "parse.y"
+#line 35 "parse.y"
                                                 {addNode((yyvsp[-1].m_node), (yyvsp[0].m_node));(yyval.m_node) = (yyvsp[-1].m_node);}
-#line 1425 "parse.tab.c"
+#line 1426 "parse.tab.c"
     break;
 
   case 4:
-#line 35 "parse.y"
+#line 36 "parse.y"
                     {(yyval.m_node) = newStmtNode(DeclK); addNode((yyval.m_node), (yyvsp[0].m_node));}
-#line 1431 "parse.tab.c"
+#line 1432 "parse.tab.c"
     break;
 
   case 5:
-#line 38 "parse.y"
+#line 39 "parse.y"
                               {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1437 "parse.tab.c"
+#line 1438 "parse.tab.c"
     break;
 
   case 6:
-#line 39 "parse.y"
+#line 40 "parse.y"
                       {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1443 "parse.tab.c"
+#line 1444 "parse.tab.c"
     break;
 
   case 7:
-#line 42 "parse.y"
+#line 43 "parse.y"
                                   {(yyval.m_node) = newExpNode(IdK); (yyval.m_node)->attr.name = (yyvsp[-1].m_id);}
-#line 1449 "parse.tab.c"
+#line 1450 "parse.tab.c"
     break;
 
   case 8:
-#line 43 "parse.y"
+#line 44 "parse.y"
                                                                   {node *t = newExpNode(ConstK); t->attr.val = (yyvsp[-2].m_num); (yyval.m_node) = newExpNode(ArrayK);(yyval.m_node)->nodeChild[0] = t;}
-#line 1455 "parse.tab.c"
+#line 1456 "parse.tab.c"
     break;
 
   case 9:
-#line 46 "parse.y"
+#line 47 "parse.y"
                                                                        {(yyval.m_node) = newStmtNode(VoidFundecK);
                                                                       (yyval.m_node)->attr.name = (yyvsp[-4].m_id); (yyval.m_node)->listChild[0] = (yyvsp[-2].m_node);
                                                                       (yyval.m_node)->nodeChild[0] = (yyvsp[0].m_node);}
-#line 1463 "parse.tab.c"
+#line 1464 "parse.tab.c"
     break;
 
   case 10:
-#line 49 "parse.y"
+#line 50 "parse.y"
                                                             {(yyval.m_node) = newStmtNode(IntFundecK);
                                                                       (yyval.m_node)->attr.name = (yyvsp[-4].m_id); (yyval.m_node)->listChild[0] = (yyvsp[-2].m_node);
                                                                       (yyval.m_node)->nodeChild[0] = (yyvsp[0].m_node);}
-#line 1471 "parse.tab.c"
+#line 1472 "parse.tab.c"
     break;
 
   case 11:
-#line 55 "parse.y"
+#line 56 "parse.y"
                     {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1477 "parse.tab.c"
+#line 1478 "parse.tab.c"
     break;
 
   case 12:
-#line 56 "parse.y"
+#line 57 "parse.y"
              {(yyval.m_node) = nullptr;}
-#line 1483 "parse.tab.c"
+#line 1484 "parse.tab.c"
     break;
 
   case 13:
-#line 59 "parse.y"
+#line 60 "parse.y"
                                     {addNode((yyvsp[-2].m_node), (yyvsp[0].m_node)); (yyval.m_node) = (yyvsp[-2].m_node);}
-#line 1489 "parse.tab.c"
+#line 1490 "parse.tab.c"
     break;
 
   case 14:
-#line 60 "parse.y"
+#line 61 "parse.y"
               {(yyval.m_node) = newStmtNode(ParamlK); addNode((yyval.m_node), (yyvsp[0].m_node));}
-#line 1495 "parse.tab.c"
+#line 1496 "parse.tab.c"
     break;
 
   case 15:
-#line 63 "parse.y"
+#line 64 "parse.y"
                {(yyval.m_node) = newExpNode(IdK); (yyval.m_node)->attr.name = (yyvsp[0].m_id);}
-#line 1501 "parse.tab.c"
+#line 1502 "parse.tab.c"
     break;
 
   case 16:
-#line 64 "parse.y"
+#line 65 "parse.y"
                                                     {(yyval.m_node) = newExpNode(ArrayptrK); (yyval.m_node)->attr.name = (yyvsp[-2].m_id);}
-#line 1507 "parse.tab.c"
+#line 1508 "parse.tab.c"
     break;
 
   case 17:
-#line 67 "parse.y"
+#line 68 "parse.y"
                                                                        {(yyval.m_node) = newStmtNode(CompK);
                                                                         (yyval.m_node)->listChild[0] = (yyvsp[-2].m_node);
                                                                         (yyval.m_node)->listChild[1] = (yyvsp[-1].m_node);}
-#line 1515 "parse.tab.c"
+#line 1516 "parse.tab.c"
     break;
 
   case 18:
-#line 70 "parse.y"
+#line 71 "parse.y"
                                                 {(yyval.m_node) = newStmtNode(CompK); (yyval.m_node)->listChild[0] = (yyvsp[-1].m_node);}
-#line 1521 "parse.tab.c"
+#line 1522 "parse.tab.c"
     break;
 
   case 19:
-#line 71 "parse.y"
+#line 72 "parse.y"
                                             {(yyval.m_node) = newStmtNode(CompK); (yyval.m_node)->listChild[1] = (yyvsp[-1].m_node);}
-#line 1527 "parse.tab.c"
+#line 1528 "parse.tab.c"
     break;
 
   case 20:
-#line 74 "parse.y"
+#line 75 "parse.y"
                                                         {addNode((yyvsp[-1].m_node), (yyvsp[0].m_node)); (yyval.m_node) = (yyvsp[-1].m_node);}
-#line 1533 "parse.tab.c"
+#line 1534 "parse.tab.c"
     break;
 
   case 21:
-#line 75 "parse.y"
+#line 76 "parse.y"
                         {(yyval.m_node) = newStmtNode(LocdeclK); addNode((yyval.m_node), (yyvsp[0].m_node));}
-#line 1539 "parse.tab.c"
+#line 1540 "parse.tab.c"
     break;
 
   case 22:
-#line 78 "parse.y"
+#line 79 "parse.y"
                                           {addNode((yyvsp[-1].m_node), (yyvsp[0].m_node)); (yyval.m_node) = (yyvsp[-1].m_node);}
-#line 1545 "parse.tab.c"
+#line 1546 "parse.tab.c"
     break;
 
   case 23:
-#line 79 "parse.y"
+#line 80 "parse.y"
                   {(yyval.m_node) = newStmtNode(StmtlK); addNode((yyval.m_node), (yyvsp[0].m_node));}
-#line 1551 "parse.tab.c"
+#line 1552 "parse.tab.c"
     break;
 
   case 24:
-#line 82 "parse.y"
+#line 83 "parse.y"
                             {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1557 "parse.tab.c"
+#line 1558 "parse.tab.c"
     break;
 
   case 25:
-#line 83 "parse.y"
+#line 84 "parse.y"
                        {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1563 "parse.tab.c"
+#line 1564 "parse.tab.c"
     break;
 
   case 26:
-#line 84 "parse.y"
+#line 85 "parse.y"
                       {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1569 "parse.tab.c"
+#line 1570 "parse.tab.c"
     break;
 
   case 27:
-#line 85 "parse.y"
+#line 86 "parse.y"
                        {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1575 "parse.tab.c"
+#line 1576 "parse.tab.c"
     break;
 
   case 28:
-#line 86 "parse.y"
+#line 87 "parse.y"
                     {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1581 "parse.tab.c"
+#line 1582 "parse.tab.c"
     break;
 
   case 29:
-#line 89 "parse.y"
+#line 90 "parse.y"
                                       {(yyval.m_node) = newStmtNode(ExpressionK); (yyval.m_node)->nodeChild[0] = (yyvsp[-1].m_node);}
-#line 1587 "parse.tab.c"
+#line 1588 "parse.tab.c"
     break;
 
   case 30:
-#line 90 "parse.y"
+#line 91 "parse.y"
                   {(yyval.m_node) = newStmtNode(ExpressionK);}
-#line 1593 "parse.tab.c"
+#line 1594 "parse.tab.c"
     break;
 
   case 31:
-#line 93 "parse.y"
+#line 94 "parse.y"
                                                                   {(yyval.m_node) = newStmtNode(SelectK); (yyval.m_node)->nodeChild[0] = (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node);}
-#line 1599 "parse.tab.c"
+#line 1600 "parse.tab.c"
     break;
 
   case 32:
-#line 94 "parse.y"
+#line 95 "parse.y"
                                                                         {(yyval.m_node) = newStmtNode(SelectK); (yyval.m_node)->nodeChild[0] = (yyvsp[-4].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[2] = (yyvsp[0].m_node);}
-#line 1605 "parse.tab.c"
+#line 1606 "parse.tab.c"
     break;
 
   case 33:
-#line 97 "parse.y"
+#line 98 "parse.y"
                                                                      {(yyval.m_node) = newStmtNode(IteraK); (yyval.m_node)->nodeChild[0] = (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node);}
-#line 1611 "parse.tab.c"
+#line 1612 "parse.tab.c"
     break;
 
   case 34:
-#line 100 "parse.y"
+#line 101 "parse.y"
                                {(yyval.m_node) = newStmtNode(ReturnK);}
-#line 1617 "parse.tab.c"
+#line 1618 "parse.tab.c"
     break;
 
   case 35:
-#line 101 "parse.y"
+#line 102 "parse.y"
                                     {(yyval.m_node) = newStmtNode(ReturnK); (yyval.m_node)->nodeChild[0] = (yyvsp[-1].m_node);}
-#line 1623 "parse.tab.c"
+#line 1624 "parse.tab.c"
     break;
 
   case 36:
-#line 104 "parse.y"
+#line 105 "parse.y"
                                        {(yyval.m_node)=newExpNode(AssignK); (yyval.m_node)->nodeChild[0] = (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[-2].m_node);}
-#line 1629 "parse.tab.c"
+#line 1630 "parse.tab.c"
     break;
 
   case 37:
-#line 105 "parse.y"
+#line 106 "parse.y"
                          {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1635 "parse.tab.c"
+#line 1636 "parse.tab.c"
     break;
 
   case 38:
-#line 109 "parse.y"
+#line 110 "parse.y"
          {(yyval.m_node) = newExpNode(IdK); (yyval.m_node)->attr.name = (yyvsp[0].m_id);}
-#line 1641 "parse.tab.c"
+#line 1642 "parse.tab.c"
     break;
 
   case 39:
-#line 110 "parse.y"
+#line 111 "parse.y"
                                                            {(yyval.m_node) = newExpNode(IndexK); (yyval.m_node)->nodeChild[0] = (yyvsp[-1].m_node);}
-#line 1647 "parse.tab.c"
+#line 1648 "parse.tab.c"
     break;
 
   case 40:
-#line 113 "parse.y"
+#line 114 "parse.y"
                                                                       {(yyval.m_node) = newExpNode(OpK); (yyval.m_node)->nodeChild[0] = (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node); (yyval.m_node)->attr.op = (yyvsp[-1].m_op);}
-#line 1653 "parse.tab.c"
+#line 1654 "parse.tab.c"
     break;
 
   case 41:
-#line 114 "parse.y"
+#line 115 "parse.y"
                                                      {(yyval.m_node) = newExpNode(OpK); (yyval.m_node)->nodeChild[0]= (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node); (yyval.m_node)->attr.op = (yyvsp[-1].m_op);}
-#line 1659 "parse.tab.c"
+#line 1660 "parse.tab.c"
     break;
 
   case 42:
-#line 115 "parse.y"
+#line 116 "parse.y"
                                                         {(yyval.m_node) = newExpNode(OpK); (yyval.m_node)->nodeChild[0]= (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node); (yyval.m_node)->attr.op = (yyvsp[-1].m_op);}
-#line 1665 "parse.tab.c"
+#line 1666 "parse.tab.c"
     break;
 
   case 43:
-#line 116 "parse.y"
+#line 117 "parse.y"
                                                              {(yyval.m_node) = newExpNode(OpK); (yyval.m_node)->nodeChild[0]= (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node); (yyval.m_node)->attr.op = (yyvsp[-1].m_op);}
-#line 1671 "parse.tab.c"
+#line 1672 "parse.tab.c"
     break;
 
   case 44:
-#line 117 "parse.y"
+#line 118 "parse.y"
                                                       {(yyval.m_node) = newExpNode(OpK); (yyval.m_node)->nodeChild[0]= (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node); (yyval.m_node)->attr.op = (yyvsp[-1].m_op);}
-#line 1677 "parse.tab.c"
+#line 1678 "parse.tab.c"
     break;
 
   case 45:
-#line 118 "parse.y"
+#line 119 "parse.y"
                                                         {(yyval.m_node) = newExpNode(OpK); (yyval.m_node)->nodeChild[0]= (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node); (yyval.m_node)->attr.op = (yyvsp[-1].m_op);}
-#line 1683 "parse.tab.c"
+#line 1684 "parse.tab.c"
     break;
 
   case 46:
-#line 119 "parse.y"
+#line 120 "parse.y"
                             {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1689 "parse.tab.c"
+#line 1690 "parse.tab.c"
     break;
 
   case 47:
-#line 123 "parse.y"
+#line 124 "parse.y"
                                                      { (yyval.m_node) = newExpNode(AddK); (yyval.m_node)->attr.op = (yyvsp[-1].m_op); (yyval.m_node)->nodeChild[0] = (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node);}
-#line 1695 "parse.tab.c"
+#line 1696 "parse.tab.c"
     break;
 
   case 48:
-#line 124 "parse.y"
+#line 125 "parse.y"
                                         { (yyval.m_node) = newExpNode(AddK); (yyval.m_node)->attr.op = (yyvsp[-1].m_op); (yyval.m_node)->nodeChild[0]= (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node);}
-#line 1701 "parse.tab.c"
+#line 1702 "parse.tab.c"
     break;
 
   case 49:
-#line 125 "parse.y"
+#line 126 "parse.y"
                                  { (yyval.m_node) = (yyvsp[0].m_node);}
-#line 1707 "parse.tab.c"
+#line 1708 "parse.tab.c"
     break;
 
   case 50:
-#line 128 "parse.y"
+#line 129 "parse.y"
                          {(yyval.m_node) = newExpNode(MulK); (yyval.m_node)->attr.op = (yyvsp[-1].m_op); (yyval.m_node)->nodeChild[0] = (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node);}
-#line 1713 "parse.tab.c"
+#line 1714 "parse.tab.c"
     break;
 
   case 51:
-#line 129 "parse.y"
+#line 130 "parse.y"
                            {(yyval.m_node) = newExpNode(MulK); (yyval.m_node)->attr.op = (yyvsp[-1].m_op); (yyval.m_node)->nodeChild[0] = (yyvsp[-2].m_node); (yyval.m_node)->nodeChild[1] = (yyvsp[0].m_node);}
-#line 1719 "parse.tab.c"
+#line 1720 "parse.tab.c"
     break;
 
   case 52:
-#line 130 "parse.y"
+#line 131 "parse.y"
                {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1725 "parse.tab.c"
+#line 1726 "parse.tab.c"
     break;
 
   case 53:
-#line 133 "parse.y"
+#line 134 "parse.y"
                                              {(yyval.m_node) = (yyvsp[-1].m_node);}
-#line 1731 "parse.tab.c"
+#line 1732 "parse.tab.c"
     break;
 
   case 54:
-#line 134 "parse.y"
+#line 135 "parse.y"
             {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1737 "parse.tab.c"
+#line 1738 "parse.tab.c"
     break;
 
   case 55:
-#line 135 "parse.y"
+#line 136 "parse.y"
              {(yyval.m_node) = (yyvsp[0].m_node);}
-#line 1743 "parse.tab.c"
+#line 1744 "parse.tab.c"
     break;
 
   case 56:
-#line 136 "parse.y"
+#line 137 "parse.y"
             {(yyval.m_node) = newExpNode(ConstK); (yyval.m_node)->attr.val = (yyvsp[0].m_num);}
-#line 1749 "parse.tab.c"
+#line 1750 "parse.tab.c"
     break;
 
   case 57:
-#line 139 "parse.y"
+#line 140 "parse.y"
                                         {(yyval.m_node) = newExpNode(CallK); (yyval.m_node)->listChild[0] = (yyvsp[-1].m_node); (yyval.m_node)->attr.name = (yyvsp[-3].m_id);}
-#line 1755 "parse.tab.c"
+#line 1756 "parse.tab.c"
     break;
 
   case 58:
-#line 140 "parse.y"
+#line 141 "parse.y"
                                     {(yyval.m_node) = newExpNode(CallK); (yyval.m_node)->attr.name = (yyvsp[-2].m_id);}
-#line 1761 "parse.tab.c"
+#line 1762 "parse.tab.c"
     break;
 
   case 59:
-#line 143 "parse.y"
+#line 144 "parse.y"
                              {addNode((yyvsp[-2].m_node), (yyvsp[0].m_node)); (yyval.m_node) = (yyvsp[-2].m_node);}
-#line 1767 "parse.tab.c"
+#line 1768 "parse.tab.c"
     break;
 
   case 60:
-#line 144 "parse.y"
+#line 145 "parse.y"
                    {(yyval.m_node) = newStmtNode(ArgsK); addNode((yyval.m_node), (yyvsp[0].m_node));}
-#line 1773 "parse.tab.c"
+#line 1774 "parse.tab.c"
     break;
 
 
-#line 1777 "parse.tab.c"
+#line 1778 "parse.tab.c"
 
       default: break;
     }
@@ -2005,10 +2006,18 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 146 "parse.y"
+#line 147 "parse.y"
 
 
+/**
+ * @description: 处理解析错误并打印到文件
+ * @param {void} 
+ * @return: void
+ * @author: David.Huangjunlang
+ */
 void yyerror(const char *s){
-    printf("error: %s\n in line : %d\n text: %s\n", s, yylineno, yytext);
+    printf("error: %s\n in line : %d\n unexpected token: %s\n", s, yylineno, yytext);
+    fprintf(result ,"error: %s\n in line : %d\n unexpected token: %s\n", s, yylineno, yytext);
+    fclose(result);
 }
 

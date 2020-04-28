@@ -1,5 +1,5 @@
 
-#line 2 "lex.yy.c"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -462,13 +462,16 @@ char *yytext;
     #include "main.h"
     #include "parse.tab.h"
     int isReservedWords();
+    void lexAnalysis(int index);
+    extern FILE* lexOut;
     extern "C"{
         int yywrap(void);
         int yylex(void);
     }
-#line 469 "lex.yy.c"
+    char c[4][10]={"ID","NUM","RESERVED","OPERATOR"};
+#line 473 "lex.yy.c"
 
-#line 471 "lex.yy.c"
+#line 475 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -686,9 +689,9 @@ YY_DECL
 		}
 
 	{
-#line 18 "scan.l"
+#line 21 "scan.l"
 
-#line 691 "lex.yy.c"
+#line 695 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -747,141 +750,141 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 19 "scan.l"
+#line 22 "scan.l"
 {return isReservedWords();}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 20 "scan.l"
-{yylval.m_num = atoi(yytext);return NUM;}
+#line 23 "scan.l"
+{yylval.m_num = atoi(yytext);lexAnalysis(1);return NUM;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 21 "scan.l"
+#line 24 "scan.l"
 {}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 22 "scan.l"
+#line 25 "scan.l"
 {yylineno++;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 23 "scan.l"
-{yylval.m_op = yytext;return PLUS;}
+#line 26 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return PLUS;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 24 "scan.l"
-{yylval.m_op = yytext;return MINUS;}
+#line 27 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return MINUS;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 25 "scan.l"
-{yylval.m_op = yytext;return MULTI;}
+#line 28 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return MULTI;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 26 "scan.l"
-{yylval.m_op = yytext;return DIVIDE;}
+#line 29 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return DIVIDE;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 27 "scan.l"
-{yylval.m_op = yytext;return LESS;}
+#line 30 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return LESS;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 28 "scan.l"
-{yylval.m_op = yytext;return LESSEQUAL;}
+#line 31 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return LESSEQUAL;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 29 "scan.l"
-{yylval.m_op = yytext;return GREATER;}
+#line 32 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return GREATER;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 30 "scan.l"
-{yylval.m_op = yytext;return GREATEREQUAL;}
+#line 33 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return GREATEREQUAL;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 31 "scan.l"
-{yylval.m_op = yytext;return EQUAL;}
+#line 34 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return EQUAL;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 32 "scan.l"
-{yylval.m_op = yytext;return UNEQUAL;}
+#line 35 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return UNEQUAL;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 33 "scan.l"
-{yylval.m_op = yytext;return ASSIGNMENT;}
+#line 36 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return ASSIGNMENT;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 34 "scan.l"
-{yylval.m_op = yytext;return SEMICOLON;}
+#line 37 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return SEMICOLON;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 35 "scan.l"
-{yylval.m_op = yytext;return COMMA;}
+#line 38 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return COMMA;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 36 "scan.l"
-{yylval.m_op = yytext;return LEFTBRACKET;}
+#line 39 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return LEFTBRACKET;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 37 "scan.l"
-{yylval.m_op = yytext;return RIGHTBRACKET;}
+#line 40 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return RIGHTBRACKET;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 38 "scan.l"
-{yylval.m_op = yytext;return LEFTSQUAREBRACKET;}
+#line 41 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return LEFTSQUAREBRACKET;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 39 "scan.l"
-{yylval.m_op = yytext;return RIGHTSQUAREBRACKET;}
+#line 42 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return RIGHTSQUAREBRACKET;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 40 "scan.l"
-{yylval.m_op = yytext;return LEFTBRACE;}
+#line 43 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return LEFTBRACE;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 41 "scan.l"
-{yylval.m_op = yytext;return RIGHTBRACE;}
+#line 44 "scan.l"
+{yylval.m_op = yytext;lexAnalysis(3);return RIGHTBRACE;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 42 "scan.l"
+#line 45 "scan.l"
 {BEGIN COMMENT;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 43 "scan.l"
+#line 46 "scan.l"
 {BEGIN INITIAL;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 44 "scan.l"
+#line 47 "scan.l"
 {;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 45 "scan.l"
+#line 48 "scan.l"
 ECHO;
 	YY_BREAK
-#line 884 "lex.yy.c"
+#line 888 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 	yyterminate();
@@ -1887,19 +1890,43 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 45 "scan.l"
+#line 48 "scan.l"
 
+
+/**
+ * @description: lex 函数
+ * @param {void} 
+ * @return: void
+ * @author: David.Huangjunlang
+ */
 int yywrap(){
     return 1;
 }
 
+/**
+ * @description:  判断是否为关键字，如果不是则返回类型为ID 
+ * @param {void} 
+ * @return: int
+ * @author: David.Huangjunlang
+ */
 int isReservedWords(){
-        if(strcmp(yytext,"else") == 0){yylval.m_reserved = yytext;return ELSE;}
-        if(strcmp(yytext,"if") == 0){yylval.m_reserved = yytext;return IF;}
-        if(strcmp(yytext,"int") == 0){yylval.m_reserved = yytext;return INT;}
-        if(strcmp(yytext,"return") == 0){yylval.m_reserved = yytext;return RETURN;}
-        if(strcmp(yytext,"void") == 0){yylval.m_reserved = yytext;return VOID;}
-        if(strcmp(yytext,"while") == 0){yylval.m_reserved = yytext;return WHILE;}
+        if(strcmp(yytext,"else") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return ELSE;}
+        if(strcmp(yytext,"if") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return IF;}
+        if(strcmp(yytext,"int") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return INT;}
+        if(strcmp(yytext,"return") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return RETURN;}
+        if(strcmp(yytext,"void") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return VOID;}
+        if(strcmp(yytext,"while") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return WHILE;}
         yylval.m_id = yytext;
+        lexAnalysis(0);
         return ID;
+}
+
+/**
+ * @description: 打印词法树
+ * @param {int} 
+ * @return: void
+ * @author: David.Huangjunlang
+ */
+void lexAnalysis(int index){
+    fprintf(lexOut, "< %-6d, %-10s, %-7s>\n", yylineno, c[index], yytext);
 }

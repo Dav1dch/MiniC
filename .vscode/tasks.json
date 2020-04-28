@@ -3,7 +3,7 @@
         {
             "type": "shell",
             "label": "g++ build active file",
-            "command": "/usr/sbin/g++",
+            "command": "/usr/bin/g++",
             "args": [
                 "-g",
                  "${file}",
@@ -12,7 +12,8 @@
                 "${fileDirname}/lex.yy.c",
                 "-o",
                 // "prgram.out"
-                "${fileDirname}/${fileBasenameNoExtension}"
+                // "${fileDirname}/${fileBasenameNoExtension}"
+                "${fileDirname}/program.out"
             ],
             "options": {
                 "cwd": "/usr/sbin"
