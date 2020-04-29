@@ -8,11 +8,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include "main.h"
+#include <string>
 
-// 链接程序根节点
-extern node *programNode;
-// 链接程序语法树打印的目标文件
-extern FILE *result;
 
 /**
  * @description: 新建一个 statement 类型的 node 并返回 

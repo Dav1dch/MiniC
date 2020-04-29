@@ -1,9 +1,0 @@
-void hello(void){return;}
-/* hello*/
-
-
-int gcd(int u, int v){
-    if (v == 0return u;
-    else return gcd(v, u-u/v*v);
-    /* test */
-}

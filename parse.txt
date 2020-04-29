@@ -1,3 +1,0 @@
-error: syntax error
- in line : 6
- unexpected token: return

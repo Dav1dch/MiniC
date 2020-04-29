@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Copyright: minic
  * @Author: David.Huangjunlang
  * @Description: 主程序头文件
@@ -11,7 +11,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 #include <stdio.h>
-#include <stdlib.h>
 #include <string>
 
 // 枚举节点类型 
@@ -60,9 +59,11 @@ typedef enum
 // 每一个节点最多有三个子节点
 #define MAXCHILDREN 3
 
+
 // 用于语法树的结构体
 typedef struct node
 {
+
     node *nodeChild[MAXCHILDREN]; // 子节点
     node *listChild[MAXCHILDREN]; // 子列表节点，用于节点的某个子节点为列表
     node *next; // 链表指针
@@ -71,11 +72,9 @@ typedef struct node
         StmtKind stmt;
         ExpKind exp;
     } kind; // statement & expression 节点类型细分
-    union {
-        std::string op;
-        std::string name;
-        int val;
-    } attr; // 节点可能有的三个属性
+    std::string op; // 运算符属性
+    std::string name; // 变量名属性
+    int val; // 常量属性
 };
 
 // 用于区分不同yacc 中token type 的变量
@@ -88,8 +87,7 @@ typedef struct
     node *m_node; // node 存储语句
 }   ytype;
 
-// 链接程序根节点
-extern node *programNode;
+
 
 // 定义 yacc 节点 token 类型
 #define YYSTYPE ytype

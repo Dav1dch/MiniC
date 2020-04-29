@@ -3,16 +3,15 @@
     #include "utils.h"
     extern node* programNode;
     extern FILE* result;
+    extern int yylineno;
+    extern char* yytext;
+    extern int yylex(void);
     extern "C"{
-        int yywrap(void);
-        int yylex(void);
         void yyerror(const char *s);
-        extern int yylineno;
-        extern char* yytext;
+
 }
 %}
-%code requires{
-}
+
 
 %token <m_id> ID 
 %token <m_num> NUM
@@ -29,7 +28,7 @@
 
 %%
 
-program : declaration_list {$$ = newStmtNode(ProgramK); $$->listChild[0] = $1;programNode = $$; programNode->attr.name = "helloworld";}
+program : declaration_list {$$ = newStmtNode(ProgramK); $$->listChild[0] = $1;programNode = $$; programNode->name = "helloworld";}
     ;
 
 declaration_list : declaration_list declaration {addNode($1, $2);$$ = $1;}
@@ -40,15 +39,15 @@ declaration : var_declaration {$$ = $1;}
     | fun_declaration {$$ = $1;}
     ;
 
-var_declaration : INT ID SEMICOLON{$$ = newExpNode(IdK); $$->attr.name = $2;}
-    |   INT ID LEFTSQUAREBRACKET NUM RIGHTSQUAREBRACKET SEMICOLON {node *t = newExpNode(ConstK); t->attr.val = $4; $$ = newExpNode(ArrayK);$$->nodeChild[0] = t;}
+var_declaration : INT ID{$$ = newExpNode(IdK); $$->name = $2;}
+    |   INT ID LEFTSQUAREBRACKET NUM RIGHTSQUAREBRACKET{node *t = newExpNode(ConstK); t->val = $4; $$ = newExpNode(ArrayK);$$->nodeChild[0] = t;}
     ;
 
 fun_declaration : VOID ID LEFTBRACKET params RIGHTBRACKET compound_stmt{$$ = newStmtNode(VoidFundecK);
-                                                                      $$->attr.name = $2; $$->listChild[0] = $4;
+                                                                      $$->name = $2; $$->listChild[0] = $4;
                                                                       $$->nodeChild[0] = $6;}
     |   INT ID LEFTBRACKET params RIGHTBRACKET compound_stmt{$$ = newStmtNode(IntFundecK);
-                                                                      $$->attr.name = $2; $$->listChild[0] = $4;
+                                                                      $$->name = $2; $$->listChild[0] = $4;
                                                                       $$->nodeChild[0] = $6;}
  
     ;
@@ -61,8 +60,8 @@ param_list : param_list COMMA param {addNode($1, $3); $$ = $1;}
     |   param {$$ = newStmtNode(ParamlK); addNode($$, $1);}
     ;
 
-param : INT ID {$$ = newExpNode(IdK); $$->attr.name = $2;}
-    |   INT ID LEFTSQUAREBRACKET RIGHTSQUAREBRACKET {$$ = newExpNode(ArrayptrK); $$->attr.name = $2;}
+param : INT ID {$$ = newExpNode(IdK); $$->name = $2;}
+    |   INT ID LEFTSQUAREBRACKET RIGHTSQUAREBRACKET {$$ = newExpNode(ArrayptrK); $$->name = $2;}
     ;
 
 compound_stmt : LEFTBRACE local_declarations statement_list RIGHTBRACE {$$ = newStmtNode(CompK);
@@ -72,8 +71,9 @@ compound_stmt : LEFTBRACE local_declarations statement_list RIGHTBRACE {$$ = new
     |   LEFTBRACE statement_list RIGHTBRACE {$$ = newStmtNode(CompK); $$->listChild[1] = $2;}
     ;
 
-local_declarations : local_declarations var_declaration {addNode($1, $2); $$ = $1;}
-    |   var_declaration {$$ = newStmtNode(LocdeclK); addNode($$, $1);}
+local_declarations : local_declarations var_declaration SEMICOLON {addNode($1, $2); $$ = $1;}
+    |   var_declaration COMMA {$$ = newStmtNode(LocdeclK); addNode($$, $1);}
+    |
     ;
 
 statement_list : statement_list statement {addNode($1, $2); $$ = $1;}
@@ -102,43 +102,43 @@ return_stmt : RETURN SEMICOLON {$$ = newStmtNode(ReturnK);}
     |   RETURN expression SEMICOLON {$$ = newStmtNode(ReturnK); $$->nodeChild[0] = $2;}
     ;
 
-expression : var ASSIGNMENT expression {$$=newExpNode(AssignK); $$->nodeChild[0] = $1; $$->nodeChild[1] = $1;}
+expression : var ASSIGNMENT expression {$$=newExpNode(AssignK); $$->nodeChild[0] = $1; $$->nodeChild[1] = $3;}
     |  simple_expression {$$ = $1;} 
     ;
 
 
-var : ID {$$ = newExpNode(IdK); $$->attr.name = $1;}
+var : ID {$$ = newExpNode(IdK); $$->name = $1;}
     |   ID LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET {$$ = newExpNode(IndexK); $$->nodeChild[0] = $3;}
     ;
 
-simple_expression : additive_expression LESSEQUAL additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0] = $1; $$->nodeChild[1] = $3; $$->attr.op = $2;}
-    |   additive_expression LESS additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0]= $1; $$->nodeChild[1] = $3; $$->attr.op = $2;}
-    |   additive_expression GREATER additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0]= $1; $$->nodeChild[1] = $3; $$->attr.op = $2;}
-    |   additive_expression GREATEREQUAL additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0]= $1; $$->nodeChild[1] = $3; $$->attr.op = $2;}
-    |   additive_expression EQUAL additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0]= $1; $$->nodeChild[1] = $3; $$->attr.op = $2;}
-    |   additive_expression UNEQUAL additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0]= $1; $$->nodeChild[1] = $3; $$->attr.op = $2;}
+simple_expression : additive_expression LESSEQUAL additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0] = $1; $$->nodeChild[1] = $3; $$->op = $2;}
+    |   additive_expression LESS additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0]= $1; $$->nodeChild[1] = $3; $$->op = $2;}
+    |   additive_expression GREATER additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0]= $1; $$->nodeChild[1] = $3; $$->op = $2;}
+    |   additive_expression GREATEREQUAL additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0]= $1; $$->nodeChild[1] = $3; $$->op = $2;}
+    |   additive_expression EQUAL additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0]= $1; $$->nodeChild[1] = $3; $$->op = $2;}
+    |   additive_expression UNEQUAL additive_expression {$$ = newExpNode(OpK); $$->nodeChild[0]= $1; $$->nodeChild[1] = $3; $$->op = $2;}
     |   additive_expression {$$ = $1;}
     ;
 
 
-additive_expression : additive_expression PLUS term  { $$ = newExpNode(AddK); $$->attr.op = $2; $$->nodeChild[0] = $1; $$->nodeChild[1] = $3;}
-    |   additive_expression MINUS term  { $$ = newExpNode(AddK); $$->attr.op = $2; $$->nodeChild[0]= $1; $$->nodeChild[1] = $3;}
+additive_expression : additive_expression PLUS term  { $$ = newExpNode(AddK); $$->op = $2; $$->nodeChild[0] = $1; $$->nodeChild[1] = $3;}
+    |   additive_expression MINUS term  { $$ = newExpNode(AddK); $$->op = $2; $$->nodeChild[0]= $1; $$->nodeChild[1] = $3;}
     |   term                     { $$ = $1;}
     ;
 
-term : term MULTI factor {$$ = newExpNode(MulK); $$->attr.op = $2; $$->nodeChild[0] = $1; $$->nodeChild[1] = $3;}
-    |   term DIVIDE factor {$$ = newExpNode(MulK); $$->attr.op = $2; $$->nodeChild[0] = $1; $$->nodeChild[1] = $3;}
+term : term MULTI factor {$$ = newExpNode(MulK); $$->op = $2; $$->nodeChild[0] = $1; $$->nodeChild[1] = $3;}
+    |   term DIVIDE factor {$$ = newExpNode(MulK); $$->op = $2; $$->nodeChild[0] = $1; $$->nodeChild[1] = $3;}
     |   factor {$$ = $1;}
     ;
 
 factor : LEFTBRACKET expression RIGHTBRACKET {$$ = $2;}
     |   var {$$ = $1;}
     |   call {$$ = $1;}
-    |   NUM {$$ = newExpNode(ConstK); $$->attr.val = $1;}
+    |   NUM {$$ = newExpNode(ConstK); $$->val = $1;}
     ;
     
-call : ID LEFTBRACKET args RIGHTBRACKET {$$ = newExpNode(CallK); $$->listChild[0] = $3; $$->attr.name = $1;}
-    |   ID LEFTBRACKET RIGHTBRACKET {$$ = newExpNode(CallK); $$->attr.name = $1;}
+call : ID LEFTBRACKET args RIGHTBRACKET {$$ = newExpNode(CallK); $$->listChild[0] = $3; $$->name = $1;}
+    |   ID LEFTBRACKET RIGHTBRACKET {$$ = newExpNode(CallK); $$->name = $1;}
     ;
 
 args : args COMMA expression {addNode($1, $3); $$ = $1;}

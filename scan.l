@@ -6,7 +6,6 @@
     extern FILE* lexOut;
     extern "C"{
         int yywrap(void);
-        int yylex(void);
     }
     char c[4][10]={"ID","NUM","RESERVED","OPERATOR"};
 %}

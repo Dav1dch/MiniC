@@ -1,7 +1,2 @@
-﻿  TinySyntaxAnalyserDlg.cpp
-D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(242,26): warning C4244:  “参数”: 从“wchar_t”转换到“_Elem”，可能丢失数据
-D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(242,26): warning C4244:         with
-D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(242,26): warning C4244:         [
-D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(242,26): warning C4244:             _Elem=char
-D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\TinySyntaxAnalyserDlg.cpp(242,26): warning C4244:         ]
-  TinySyntaxAnalyser.vcxproj -> D:\编译原理实验\TinySyntaxAnalyser\TinySyntaxAnalyser\x64\Debug\TinySyntaxAnalyser.exe
+﻿D:\Program Files (x86)\vs2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: 中间目录(x64\Debug\)包含从另一个项目(MiniCAnalyser.vcxproj)共享的文件。   这会导致错误的清除和重新生成行为。
+  TinySyntaxAnalyser.vcxproj -> C:\Users\dav1d\Documents\code\cplusplus\minic\x64\Debug\TinySyntaxAnalyser.exe

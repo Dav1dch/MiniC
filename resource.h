@@ -1,10 +1,10 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ 生成的包含文件。
-// 供 TinySyntaxAnalyser.rc 使用
+// 供 MiniCAnalyser.rc 使用
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDS_ABOUTBOX                    101
-#define IDD_TINYSYNTAXANALYSER_DIALOG   102
+#define IDD_MiniCANALYSER_DIALOG   102
 #define IDR_MAINFRAME                   128
 #define IDR_MENU1                       130
 #define IDC_FILE                        1002
