@@ -1,3 +1,11 @@
+/*
+ * @Copyright: minic
+ * @Author: David.Huangjunlang
+ * @Description: Yacc 文件，包含 token 定义，以及规则移进规约定义，以及解析错误是输出错误信息
+ * @LastEditors: David.Huangjunlang
+ * @LastEditTime: 2020-04-30 09:30:51
+ * @FilePath: /minic/parse.y
+ */
 %{
     #include "main.h"
     #include "utils.h"
@@ -73,7 +81,7 @@ compound_stmt : LEFTBRACE local_declarations statement_list RIGHTBRACE {$$ = new
 
 local_declarations : local_declarations var_declaration SEMICOLON {addNode($1, $2); $$ = $1;}
     |   var_declaration COMMA {$$ = newStmtNode(LocdeclK); addNode($$, $1);}
-    |
+    |   {}
     ;
 
 statement_list : statement_list statement {addNode($1, $2); $$ = $1;}
