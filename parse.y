@@ -1,7 +1,7 @@
 /*
  * @Copyright: minic
  * @Author: David.Huangjunlang
- * @Description: Yacc 文件，包含 token 定义，以及规则移进规约定义，以及解析错误是输出错误信息
+ * @Description: Yacc 文件，包含 token 定义，以及规则移进规约定义，以及解析错误时输出错误信息
  * @LastEditors: David.Huangjunlang
  * @LastEditTime: 2020-04-30 09:30:51
  * @FilePath: /minic/parse.y
