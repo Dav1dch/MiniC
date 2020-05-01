@@ -190,6 +190,9 @@ HCURSOR CMiniCAnalyserDlg::OnQueryDragIcon()
 */
 void CMiniCAnalyserDlg::Open()
 {
+	if (yyin != nullptr) {
+		fclose(yyin);
+	}
 	cout << "打开" << endl;
 	CFileDialog opendlg(true, NULL, NULL, 
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, 
@@ -234,6 +237,7 @@ void CMiniCAnalyserDlg::CreateTree()
 	string treePath = "./txt/syntaxtree.txt";
 	result = fopen(treePath.c_str(), "w+");
 	lexOut = fopen("./txt/lex.txt", "w+");
+	programNode = newStmtNode(ProgramK);
 	yyparse(); // 生成语法树同时打印词法树
 	printTree(); // 打印语法树
 	fclose(result);
