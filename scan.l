@@ -75,6 +75,9 @@ NUM         {digit}+
  * @author: David.Huangjunlang
  */
 int yywrap(){
+    yy_flush_buffer(YY_CURRENT_BUFFER);
+    {BEGIN INITIAL;}
+    yylineno = 1;
     return 1;
 }
 
@@ -105,3 +108,4 @@ int isReservedWords(){
 void lexAnalysis(int index){
     fprintf(lexOut, "< %-6d, %-10s, %-7s>\n", yylineno, c[index], yytext);
 }
+

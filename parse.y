@@ -16,7 +16,7 @@
     extern int yylex(void);
     extern "C"{
         void yyerror(const char *s);
-
+        int yywrap(void);
 }
 %}
 
@@ -161,8 +161,7 @@ args : args COMMA expression {addNode($1, $3); $$ = $1;}
  * @author: David.Huangjunlang
  */
 void yyerror(const char *s){
-    printf("error: %s\n in line : %d\n unexpected token: %s\n", s, yylineno, yytext);
     fprintf(result ,"error: %s\n in line : %d\n unexpected token: %s\n", s, yylineno, yytext);
-    fclose(result);
+    yywrap();
 }
 

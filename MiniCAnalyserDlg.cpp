@@ -24,8 +24,10 @@ using namespace std;
 extern FILE* yyin;
 extern FILE* result;
 extern FILE* lexOut;
+extern "C" int yywrap(void);
 extern int yyparse(void);
 extern node* programNode;
+string temp;
 
 class CAboutDlg : public CDialogEx
 {
@@ -213,8 +215,8 @@ void CMiniCAnalyserDlg::Open()
 				 content.SetWindowTextW(fileContent); //将读取的文本显示在编辑框
 				 fsend.Close();
 			 }
-			 string temp = CT2A(filepathname.GetString());
-			 yyin = fopen(temp.c_str(), "r");
+			 temp = CT2A(filepathname.GetString());
+			 
 		  
 		
 			 
@@ -235,13 +237,16 @@ void CMiniCAnalyserDlg::CreateTree()
 
 	//生成的语法树存放的文件位置以及文件名
 	string treePath = "./txt/syntaxtree.txt";
+	yyin = fopen(temp.c_str(), "r");
 	result = fopen(treePath.c_str(), "w+");
 	lexOut = fopen("./txt/lex.txt", "w+");
 	programNode = newStmtNode(ProgramK);
 	yyparse(); // 生成语法树同时打印词法树
 	printTree(); // 打印语法树
+	yywrap();
 	fclose(result);
 	fclose(lexOut);
+	fclose(yyin);
 
 	/*
 	ofstream out(treePath, ofstream::out | std::ios::binary);
