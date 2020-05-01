@@ -234,8 +234,8 @@ void CMiniCAnalyserDlg::CreateTree()
 	string treePath = "./txt/syntaxtree.txt";
 	result = fopen(treePath.c_str(), "w+");
 	lexOut = fopen("./txt/lex.txt", "w+");
-	yyparse();
-	printTree();
+	yyparse(); // 生成语法树同时打印词法树
+	printTree(); // 打印语法树
 	fclose(result);
 	fclose(lexOut);
 

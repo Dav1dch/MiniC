@@ -3,8 +3,10 @@
  * @Author: David.Huangjunlang
  * @Description: 工具集的函数实现，包括新节点生成，以及打印语法树
  * @LastEditors: David.Huangjunlang
- * @LastEditTime: 2020-04-29 02:27:41
+ * @LastEditTime: 2020-04-30 10:12:27
+ * @FilePath: /minic/utils.cpp
  */
+
 #include "utils.h"
  // 链接程序根节点
 extern node* programNode;

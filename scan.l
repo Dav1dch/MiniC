@@ -1,8 +1,30 @@
+/*
+ * @Copyright: minic
+ * @Author: David.Huangjunlang
+ * @Description: lex 文件，定义各token 匹配规则，并返回相应值，同时会判断identifier 是否为保留字
+ * @LastEditors: David.Huangjunlang
+ * @LastEditTime: 2020-04-30 10:11:42
+ * @FilePath: /minic/scan.l
+ */
 %{
     #include "main.h"
     #include "parse.tab.h"
+    /**
+    * @description:  判断是否为关键字，如果不是则返回类型为ID 
+    * @param {void} 
+    * @return: int
+    * @author: David.Huangjunlang
+    */
     int isReservedWords();
+
+    /**
+    * @description: 打印词法树
+    * @param {int} 
+    * @return: void
+    * @author: David.Huangjunlang
+    */
     void lexAnalysis(int index);
+    // 链接词法输出文件
     extern FILE* lexOut;
     extern "C"{
         int yywrap(void);
