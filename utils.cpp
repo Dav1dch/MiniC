@@ -23,7 +23,6 @@ node *newStmtNode(StmtKind kind)
     for (int i = 0; i < MAXCHILDREN; i++)
     {
         t->nodeChild[i] = nullptr;
-        t->listChild[i] = nullptr;
     }
 
     t->nodekind = StmtK;
@@ -44,7 +43,6 @@ node *newExpNode(ExpKind kind)
     for (int i = 0; i < MAXCHILDREN; i++)
     {
         t->nodeChild[i] = nullptr;
-        t->listChild[i] = nullptr;
     }
     t->nodekind = ExpK;
     t->kind.exp = kind;
@@ -76,7 +74,7 @@ void addNode(node *list, node *stmt)
  */
 void printTree()
 {
-    node *temp = programNode->listChild[0];
+    node *temp = programNode->nodeChild[0];
     if (temp == nullptr)
     {
         return;
@@ -111,16 +109,16 @@ void printNode(node *t, int level)
             fprintf(result, "fun-declaration: \n");
             fprintf(result, "\ttype: int\n");
             fprintf(result, "\tname: %s\n", t->name.c_str());
-            if (t->listChild[0] != nullptr)
+            if (t->nodeChild[0] != nullptr)
             {
-                printNode(t->listChild[0], level + 1);
+                printNode(t->nodeChild[0], level + 1);
             }
             else
             {
                 fprintf(result, "\tparams: void\n");
             }
 
-            printNode(t->nodeChild[0], level + 1);
+            printNode(t->nodeChild[1], level + 1);
             break;
         }
         case VoidFundecK:
@@ -128,16 +126,16 @@ void printNode(node *t, int level)
             fprintf(result, "fun-declaration: \n");
             fprintf(result, "\ttype: void\n");
             fprintf(result, "\tname: %s\n", t->name.c_str());
-            if (t->listChild[0] != nullptr)
+            if (t->nodeChild[0] != nullptr)
             {
-                printNode(t->listChild[0], level + 2);
+                printNode(t->nodeChild[0], level + 2);
             }
             else
             {
                 fprintf(result, "\tparams: void\n");
             }
 
-            printNode(t->nodeChild[0], level + 2);
+            printNode(t->nodeChild[1], level + 2);
             break;
         }
         case ParamlK:
@@ -161,20 +159,20 @@ void printNode(node *t, int level)
         case CompK:
         {
             fprintf(result, "\tcompound: \n");
-            if (t->listChild[0] != nullptr)
+            if (t->nodeChild[0] != nullptr)
             {
                 fprintf(result, "\t\tlocal-declarations: \n");
-                printNode(t->listChild[0], 3);
+                printNode(t->nodeChild[0], 3);
             }
             else
             {
                 fprintf(result, "\t\tlocal-declarations: null\n");
             }
 
-            if (t->listChild[1] != nullptr)
+            if (t->nodeChild[1] != nullptr)
             {
                 fprintf(result, "\t\tstatement-list: \n");
-                printNode(t->listChild[1], 3);
+                printNode(t->nodeChild[1], 3);
             }
             else
             {
@@ -320,10 +318,10 @@ void printNode(node *t, int level)
         case CallK:
             fprintf(result, "%sfunctionCall: \n", preWhiteSpace.c_str());
             fprintf(result, "%s\tname: %s\n", preWhiteSpace.c_str(), t->name.c_str());
-            if (t->listChild[0] != nullptr)
+            if (t->nodeChild[0] != nullptr)
             {
                 fprintf(result, "%s\targs: \n", preWhiteSpace.c_str());
-                printNode(t->listChild[0], level + 2);
+                printNode(t->nodeChild[0], level + 2);
             }
             else
             {

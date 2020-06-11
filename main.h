@@ -65,7 +65,7 @@ typedef struct node
 {
 
     node *nodeChild[MAXCHILDREN]; // 子节点
-    node *listChild[MAXCHILDREN]; // 子列表节点，用于节点的某个子节点为列表
+    int lineno;
     node *next; // 链表指针
     NodeKind nodekind; // 节点类型
     union {

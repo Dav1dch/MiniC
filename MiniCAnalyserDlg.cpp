@@ -195,7 +195,6 @@ void CMiniCAnalyserDlg::Open()
 	if (yyin != nullptr) {
 		fclose(yyin);
 	}
-	cout << "打开" << endl;
 	CFileDialog opendlg(true, NULL, NULL, 
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, 
 		(LPCTSTR)_TEXT("TXT Files (*.txt)|*.txt|All Files (*.*)|*.*||"), NULL);
@@ -282,9 +281,25 @@ void CMiniCAnalyserDlg::CreateTree()
 void CMiniCAnalyserDlg::ShowTree()
 {	
 	UpdateData(TRUE);
+	string treePath = "./txt/syntaxtree.txt";
+	CString t = L"./txt/syntaxtree.txt";
+
+	CStdioFile fsend;
+	CString s_one;
+	CString fileContent;
+	if (fsend.Open(t, CFile::typeText | CFile::modeRead)) { //只读模式打开txt文件
+		while (fsend.ReadString(s_one)) { //逐行读取文件内容
+			fileContent += s_one;
+			fileContent += "\r\n";
+
+		}
+		content2.SetWindowTextW(fileContent); //将读取的文本显示在编辑框
+		fsend.Close();
+	}
 
 	//语法树已经写进treePath这个文件里
-	string treePath = "./txt/syntaxtree.txt";
+	/*
+	
 
 	fileName2 = treePath.c_str();
 	ifstream in(treePath);
@@ -303,7 +318,7 @@ void CMiniCAnalyserDlg::ShowTree()
 	in.close();
 	content2.SetWindowTextW(fileContent2);
 	treeFileName.SetWindowTextW(fileName2);
-	
+	*/
 }
 
 
