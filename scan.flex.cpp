@@ -1938,6 +1938,8 @@ int isReservedWords(){
         if(strcmp(yytext,"return") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return RETURN;}
         if(strcmp(yytext,"void") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return VOID;}
         if(strcmp(yytext,"while") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return WHILE;}
+        if(strcmp(yytext,"output") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return OUTPUT;}
+        if(strcmp(yytext,"intput") == 0){yylval.m_reserved = yytext;lexAnalysis(2);return INPUT;}
         yylval.m_id = yytext;
         lexAnalysis(0);
         return ID;

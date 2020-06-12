@@ -27,7 +27,7 @@
 %token <m_op> LESS LESSEQUAL GREATER GREATEREQUAL EQUAL UNEQUAL
 %token <m_op> ASSIGNMENT SEMICOLON COMMA 
 %token <m_op> LEFTBRACKET RIGHTBRACKET LEFTSQUAREBRACKET RIGHTSQUAREBRACKET LEFTBRACE RIGHTBRACE
-%token <m_reserved> ELSE IF INT VOID RETURN WHILE 
+%token <m_reserved> ELSE IF INT VOID RETURN WHILE OUTPUT INPUT
 
 %type <m_node> declaration fun_declaration var_declaration param expression simple_expression additive_expression var term factor call program
 %type <m_node> expression_stmt compound_stmt statement selection_stmt iteration_stmt return_stmt
@@ -147,6 +147,8 @@ factor : LEFTBRACKET expression RIGHTBRACKET {$$ = $2;$$->lineno = yylineno;}
     
 call : ID LEFTBRACKET args RIGHTBRACKET {$$ = newExpNode(CallK); $$->nodeChild[0] = $3; $$->name = $1;$$->lineno = yylineno;}
     |   ID LEFTBRACKET RIGHTBRACKET {$$ = newExpNode(CallK); $$->name = $1;$$->lineno = yylineno;}
+    |   INPUT LEFTBRACKET RIGHTBRACKET {$$ = newExpNode(ReadK);$$->lineno = yylineno;}
+    |   OUTPUT LEFTBRACKET simple_expression RIGHTBRACKET {$$ = newExpNode(WriteK);$$->lineno = yylineno; $$->nodeChild[0] = $3;}
     ;
 
 args : args COMMA expression {addNode($1, $3); $$ = $1;$$->lineno = yylineno;}

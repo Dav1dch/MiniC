@@ -53,6 +53,8 @@ typedef enum
     OpK,
     MulK,
     CallK,
+    ReadK,
+    WriteK,
     AddK
 } ExpKind;
 

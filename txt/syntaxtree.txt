@@ -85,7 +85,9 @@ fun-declaration:
 					name: input
 					args: void
 			functionCall: 
-				name: output
+				name: Output
+			functionCall: 
+				name: Input
 				args: 
 					functionCall: 
 						name: gcd

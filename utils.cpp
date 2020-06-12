@@ -8,10 +8,10 @@
  */
 
 #include "utils.h"
- // 链接程序根节点
-extern node* programNode;
+// 链接程序根节点
+extern node *programNode;
 // 链接语法树输出文件
-extern FILE* result;
+extern FILE *result;
 /**
  * @description: 新建一个 statement 类型的 node 并返回 
  * @param {StmtKind} 
@@ -19,7 +19,7 @@ extern FILE* result;
  */
 node *newStmtNode(StmtKind kind)
 {
-    node* t = new node;
+    node *t = new node;
     for (int i = 0; i < MAXCHILDREN; i++)
     {
         t->nodeChild[i] = nullptr;
@@ -328,6 +328,14 @@ void printNode(node *t, int level)
                 fprintf(result, "%s\targs: void\n", preWhiteSpace.c_str());
             }
             break;
+        case WriteK:
+            fprintf(result, "%sfunctionCall: \n", preWhiteSpace.c_str());
+            fprintf(result, "%s\tname: Output\n", preWhiteSpace.c_str());
+        case ReadK:
+            fprintf(result, "%sfunctionCall: \n", preWhiteSpace.c_str());
+            fprintf(result, "%s\tname: Input\n", preWhiteSpace.c_str());
+            fprintf(result, "%s\targs: \n", preWhiteSpace.c_str());
+            printNode(t->nodeChild[0], level + 2);
         default:
             break;
         }
