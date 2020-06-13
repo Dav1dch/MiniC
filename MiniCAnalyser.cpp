@@ -18,7 +18,7 @@ using namespace std;
 
 
 // CMiniCAnalyserApp
-FILE* code;
+
 // 打印语法树目标文件
 FILE* result;
 // 打印词法树目标文件

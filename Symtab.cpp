@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Symtab.h"
-
+#include <string>
+using namespace std;
 
 
 #define SIZE 211
@@ -10,7 +11,7 @@
 #define SHIFT 4
 
 
-static int hash(char* key) {
+static int Hash(string key) {
 	int temp = 0;
 	int i = 0;
 	while (key[i] != '\0') {
@@ -29,7 +30,7 @@ typedef struct LineListRec
 
 typedef struct BucketListRec
 {
-	char* name;
+	string name;
 	LineList lines;
 	int memloc; /* memory location for variable */
 	struct BucketListRec* next;
@@ -41,12 +42,10 @@ static BucketList hashTable[SIZE];
 
 
 
-
-
-void st_insert(char* name, int lineno, int loc) {
-	int h = hash(name);
+void st_insert(string name, int lineno, int loc) {
+	int h = Hash(name);
 	BucketList l = hashTable[h];
-	while ((l != NULL) && (strcmp(name, l->name) != 0))
+	while ((l != NULL) && (name != l->name))
 		l = l->next;
 	if (l == NULL) /* variable not yet in table */
 	{
@@ -70,10 +69,10 @@ void st_insert(char* name, int lineno, int loc) {
 }
 
 
-int st_lookup(char* name) {
-	int h = hash(name);
+int st_lookup(string name) {
+	int h = Hash(name);
 	BucketList l = hashTable[h];
-	while ((l != NULL) && (strcmp(name, l->name) != 0))
+	while ((l != NULL) && name != l->name)
 		l = l->next;
 	if (l == NULL) return -1;
 	else return l->memloc;

@@ -35,11 +35,11 @@ static void insertNode(node* t) {
 		switch (t->kind.exp) {
 		case IdK:
 		case AssignK:
-			if (st_lookup(t->name.data()) == -1) {
-				st_insert(t->name.data(), t->lineno, location++);
+			if (st_lookup(t->name) == -1) {
+				st_insert(t->name, t->lineno, location++);
 			}
 			else {
-				st_insert((t->name).data(), t->lineno, 0);
+				st_insert(t->name, t->lineno, 0);
 			}
 			break;
 		default:

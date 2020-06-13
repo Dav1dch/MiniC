@@ -3,6 +3,8 @@
         "type_traits": "cpp",
         "xlocale": "cpp",
         "xstring": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "__locale": "cpp",
+        "iosfwd": "cpp"
     }
 }

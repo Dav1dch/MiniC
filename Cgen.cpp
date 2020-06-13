@@ -153,10 +153,10 @@ static void cGen(node * tree){
 }
 
 
-void codeGen(node * syntaxTree, char * codefile){
-    char * s = malloc(strlen(codefile) + 7);
+void codeGen(node * syntaxTree, string codefile){
+    char* s = (char*)malloc(codefile.length() + 7);
     strcpy(s, "File: ");
-    strcat(s, codefile);
+    strcat(s, codefile.c_str());
     emitComment("TINY Compilation to TM Code");
     emitComment(s);
 
