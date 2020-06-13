@@ -28,6 +28,11 @@ node *newStmtNode(StmtKind kind)
     t->nodekind = StmtK;
     t->kind.stmt = kind;
     t->next = nullptr;
+    t->isArray = 0;
+    t->isGlobal = 0;
+    t->isParameter = 0;
+    t->local_size = 0;
+    t->param_size = 0;
     return t;
 }
 
@@ -47,6 +52,12 @@ node *newExpNode(ExpKind kind)
     t->nodekind = ExpK;
     t->kind.exp = kind;
     t->next = nullptr;
+    t->isArray = 0;
+    t->isGlobal = 0;
+    t->isParameter = 0;
+    t->local_size = 0;
+    t->param_size = 0;
+
     return t;
 }
 

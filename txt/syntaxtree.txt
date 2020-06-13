@@ -71,6 +71,8 @@ fun-declaration:
 				name: x
 			var: 
 				name: y
+			var: 
+				name: a
 		statement-list: 
 			assignment: 
 				varName: x

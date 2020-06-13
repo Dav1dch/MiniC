@@ -39,8 +39,8 @@
 program : declaration_list {$$ = newStmtNode(ProgramK); $$->nodeChild[0] = $1;programNode = $$; programNode->name = "helloworld";$$->lineno = yylineno;}
     ;
 
-declaration_list : declaration_list declaration {addNode($1, $2);$$ = $1;$$->lineno = yylineno;}
-    |   declaration {$$ = newStmtNode(DeclK); addNode($$, $1);$$->lineno = yylineno;}
+declaration_list : declaration_list declaration {addNode($1, $2);$$ = $1;$$->lineno = yylineno; $1->isGlobal = 1;}
+    |   declaration {$$ = newStmtNode(DeclK); addNode($$, $1);$$->lineno = yylineno; $1->isGlobal = 1;}
     ;
 
 declaration : var_declaration {$$ = $1;$$->lineno = yylineno;}
@@ -48,14 +48,18 @@ declaration : var_declaration {$$ = $1;$$->lineno = yylineno;}
     ;
 
 var_declaration : INT ID{$$ = newExpNode(IdK); $$->name = $2;$$->lineno = yylineno;}
-    |   INT ID LEFTSQUAREBRACKET NUM RIGHTSQUAREBRACKET{node *t = newExpNode(ConstK); t->val = $4; $$ = newExpNode(ArrayK);$$->nodeChild[0] = t;$$->lineno = yylineno;}
+    |   INT ID LEFTSQUAREBRACKET NUM RIGHTSQUAREBRACKET{node *t = newExpNode(ConstK); t->val = $4; $$ = newExpNode(ArrayK);$$->nodeChild[0] = t;$$->lineno = yylineno; $$->isArray = 1;}
     ;
 
 fun_declaration : VOID ID LEFTBRACKET params RIGHTBRACKET compound_stmt{$$ = newStmtNode(VoidFundecK);$$->lineno = yylineno;
                                                                       $$->name = $2; $$->nodeChild[0] = $4;
+                                                                      if($4 != nullptr){$$->param_size = $4->param_size;};
+                                                                      $$->local_size = $6->local_size;
                                                                       $$->nodeChild[1] = $6;}
     |   INT ID LEFTBRACKET params RIGHTBRACKET compound_stmt{$$ = newStmtNode(IntFundecK);$$->lineno = yylineno;
                                                                       $$->name = $2; $$->nodeChild[0] = $4;
+                                                                      if($4 != nullptr){$$->param_size = $4->param_size;};
+                                                                      $$->local_size = $6->local_size;
                                                                       $$->nodeChild[1] = $6;}
  
     ;
@@ -64,23 +68,26 @@ params : param_list {$$ = $1;$$->lineno = yylineno;}
     |   VOID {$$ = nullptr;}
     ;
 
-param_list : param_list COMMA param {addNode($1, $3); $$ = $1;}
-    |   param {$$ = newStmtNode(ParamlK); addNode($$, $1);$$->lineno = yylineno;}
+param_list : param_list COMMA param {addNode($1, $3); $$ = $1; $$->param_size += 1;}
+    |   param {$$ = newStmtNode(ParamlK); $$->param_size += 1;addNode($$, $1);$$->lineno = yylineno;}
     ;
 
-param : INT ID {$$ = newExpNode(IdK); $$->name = $2;$$->lineno = yylineno;}
-    |   INT ID LEFTSQUAREBRACKET RIGHTSQUAREBRACKET {$$ = newExpNode(ArrayptrK); $$->name = $2;$$->lineno = yylineno;}
+param : INT ID {$$ = newExpNode(IdK); $$->name = $2;$$->lineno = yylineno;$$->isParameter = 1;}
+    |   INT ID LEFTSQUAREBRACKET RIGHTSQUAREBRACKET {$$ = newExpNode(ArrayptrK); $$->name = $2;$$->lineno = yylineno;$$->isParameter = 1; $$->isArray = 1;}
     ;
 
 compound_stmt : LEFTBRACE local_declarations statement_list RIGHTBRACE {$$ = newStmtNode(CompK);$$->lineno = yylineno;
+                                                                        $$->local_size = $2->local_size;
                                                                         $$->nodeChild[0] = $2;
                                                                         $$->nodeChild[1] = $3;}
-    |   LEFTBRACE local_declarations RIGHTBRACE {$$ = newStmtNode(CompK); $$->nodeChild[0] = $2;$$->lineno = yylineno;}
+    |   LEFTBRACE local_declarations RIGHTBRACE {$$ = newStmtNode(CompK); $$->nodeChild[0] = $2;
+                                                                        $$->local_size = $2->local_size;
+                                                                        $$->lineno = yylineno;}
     |   LEFTBRACE statement_list RIGHTBRACE {$$ = newStmtNode(CompK); $$->nodeChild[1] = $2;$$->lineno = yylineno;}
     ;
 
-local_declarations : local_declarations var_declaration SEMICOLON {addNode($1, $2); $$ = $1;$$->lineno = yylineno;}
-    |   var_declaration COMMA {$$ = newStmtNode(LocdeclK); addNode($$, $1);$$->lineno = yylineno;}
+local_declarations : local_declarations var_declaration SEMICOLON {addNode($1, $2); $$ = $1;$$->lineno = yylineno; $$->local_size += 1;}
+    |   var_declaration COMMA {$$ = newStmtNode(LocdeclK); addNode($$, $1);$$->lineno = yylineno; $$->local_size += 1;}
     |   {}
     ;
 

@@ -77,6 +77,24 @@ typedef struct node
     std::string op; // 运算符属性
     std::string name; // 变量名属性
     int val; // 常量属性
+    int isArray;       
+     /*
+     * If isParameter is TRUE, then this node declares an actual parameter
+     *   to a function.
+     */
+    int isParameter;
+
+    /* If isGlobal is TRUE, then the variable is a global */
+    int isGlobal;
+    
+    /* parameter count and local variable count*/
+    int param_size;
+    
+    int local_size;
+    
+    /* scope of the node */
+    int scope;
+
 };
 
 // 用于区分不同yacc 中token type 的变量
