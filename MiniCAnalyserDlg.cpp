@@ -10,6 +10,7 @@
 #include"MiniCAnalyserDlg.h"
 #include"afxdialogex.h"
 #include"utils.h"
+#include"cgen.h"
 
 
 using namespace std;
@@ -20,7 +21,7 @@ using namespace std;
 
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-
+extern FILE* code;
 extern FILE* yyin;
 extern FILE* result;
 extern FILE* lexOut;
@@ -269,6 +270,13 @@ void CMiniCAnalyserDlg::CreateTree()
 	
 
 	*/
+
+	code = fopen("./txt/lex.txt", "w+");
+	// 	生成字符表
+	buildSymtab(programNode);
+
+	// 生成中间代码
+	codeGen(programNode);
 	
 	MessageBox(L"生成成功，点击查看即可查看语法树");
 }

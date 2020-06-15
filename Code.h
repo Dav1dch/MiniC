@@ -7,21 +7,28 @@
 #define  pc 7
 
 /* mp = "memory pointer" points
- * to top of memory (for temp storage)
+ * to bottom of memory (for temp storage)
  */
-#define  mp 6
+#define  gp 6
 
 /* gp = "global pointer" points
- * to bottom of memory for (global)
- * variable storage
+ * to maximum address (global
+ * variable storage)
  */
-#define gp 5
+#define bp 5
 
+/*fp="frame pointer" points
+ *points to current frame in the stack
+ */
+#define sp 4
+ 
 /* accumulator */
-#define  ac 0
+#define  bx 2
 
 /* 2nd accumulator */
-#define  ac1 1
+#define  ax 1
+
+#define  zero 0
 
 /* code emitting utilities */
 

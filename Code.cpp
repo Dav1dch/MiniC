@@ -1,14 +1,22 @@
 #include"Code.h"
 
-static int emitLoc = 0;
+extern FILE* code;
 
+/* TM location number for current instruction emission */
+static int emitLoc = 0 ;
+
+/* Highest TM location emitted so far
+   For use in conjunction with emitSkip,
+   emitBackup, and emitRestore */
 static int highEmitLoc = 0;
 
-//可以省略不写
-void emitComment(char * c){
-    
+/* Procedure emitComment prints a comment line 
+ * with comment c in the code file
+ */
+void emitComment( char * c )
+{ 
+  
 }
-
 
 /* Procedure emitRO emits a register-only
  * TM instruction
@@ -24,8 +32,6 @@ void emitRO( char *op, int r, int s, int t, char *c)
   if (highEmitLoc < emitLoc) highEmitLoc = emitLoc ;
 } /* emitRO */
 
-
-
 /* Procedure emitRM emits a register-to-memory
  * TM instruction
  * op = the opcode
@@ -39,9 +45,6 @@ void emitRM( char * op, int r, int d, int s, char *c)
   fprintf(code,"\n") ;
   if (highEmitLoc < emitLoc)  highEmitLoc = emitLoc ;
 } /* emitRM */
-
-
-
 
 /* Function emitSkip skips "howMany" code
  * locations for later backpatch. It also

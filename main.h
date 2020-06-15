@@ -12,7 +12,7 @@
 #define MAIN_H
 #include <stdio.h>
 #include <string>
-
+using namespace std;
 // 枚举节点类型 
 typedef enum
 {
@@ -74,8 +74,8 @@ typedef struct node
         StmtKind stmt;
         ExpKind exp;
     } kind; // statement & expression 节点类型细分
-    std::string op; // 运算符属性
-    std::string name; // 变量名属性
+    string op; // 运算符属性
+    string name; // 变量名属性
     int val; // 常量属性
     int isArray;       
      /*
@@ -96,6 +96,9 @@ typedef struct node
     int scope;
 
 };
+
+
+
 
 // 用于区分不同yacc 中token type 的变量
 typedef struct

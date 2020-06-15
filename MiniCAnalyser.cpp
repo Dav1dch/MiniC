@@ -16,9 +16,10 @@ using namespace std;
 #define new DEBUG_NEW
 #endif
 
-
+int lineno = 0;
+int HighScope = 0;
 // CMiniCAnalyserApp
-
+FILE *code;
 // 打印语法树目标文件
 FILE* result;
 // 打印词法树目标文件
