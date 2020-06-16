@@ -1,9 +1,13 @@
 #pragma once
 #include"main.h"
 
+/*
+构建符号表
+*/
 void buildSymtab(node*);
 
-/* Procedure typeCheck performs type checking
- * by a postorder syntax tree traversal
- */
+
+/*
+类型检查
+*/
 void typeCheck(node*);

@@ -6,11 +6,12 @@ using namespace std;
 
 extern int HighScope;
 
-/* SHIFT is the power of two used as multiplier
-   in hash function  */
+
 #define SHIFT 4
 
-/* the hash function */
+/*
+哈希值
+*/
 static int Hash(string key)
 {
   int temp = 0;
@@ -23,11 +24,11 @@ static int Hash(string key)
   return temp;
 }
 
-/* Procedure st_insert inserts line numbers and
- * memory locations into the symbol table
- * loc = memory location is inserted only the
- * first time, otherwise ignored
- */
+/*
+插入符号表，
+如果哈希值对应的位置不存在，则在头部插入
+如果哈希值对应的位置存在，则在尾部连上
+*/
 void st_insert(string name, int lineno, int loc, int sp, int para)
 {
   int h = Hash(name);
@@ -48,7 +49,7 @@ void st_insert(string name, int lineno, int loc, int sp, int para)
     l->next = Scope[sp].hashTable[h];
     Scope[sp].hashTable[h] = l;
   }
-  else /* found in table, so just add line number */
+  else 
   {
     LineList t = l->lines;
     while (t->next != NULL)
@@ -57,10 +58,10 @@ void st_insert(string name, int lineno, int loc, int sp, int para)
     t->next->lineno = lineno;
     t->next->next = NULL;
   }
-} /* st_insert */
+} 
 
-/* Function fun_lookup returns the  bucket 
- * location of a funtion or NULL if not found
+/* 
+查询函数在符号表中的位置
  */
 BucketList fun_lookup(string name, int sp)
 {
@@ -74,8 +75,8 @@ BucketList fun_lookup(string name, int sp)
     return l;
 }
 
-/* Function var_lookup returns the  bucket 
- * location of a var or NULL if not found
+/* 
+查询变量在符号表中的位置
  */
 BucketList var_lookup(string name, int sp)
 {
@@ -89,9 +90,7 @@ BucketList var_lookup(string name, int sp)
     return l;
 }
 
-/* Function st_lookup returns the memory 
- * location of a variable or -1 if not found
- */
+
 int st_lookup(string name, int sp)
 {
   int h = Hash(name);
@@ -104,9 +103,8 @@ int st_lookup(string name, int sp)
     return l->memloc;
 }
 
-/* Procedure printSymTab prints a formatted 
- * listing of the symbol table contents 
- * to the listing file
+/* 
+迭代输出符号表
  */
 void printSymTab(FILE *listing)
 {
