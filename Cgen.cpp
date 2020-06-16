@@ -2,33 +2,39 @@
 #include "Code.h"
 #include "symtab.h"
 
+// 记录输出
 int TraceCode = 1;
-/* to store local var of main 
-*/
+
 static int main_locals = 0;
 
-/* getValue:
- * 1 - store value in ax
- * 0 - store address in bx
- */
+/*
+  1 表示存储值
+  0 表示存储地址
+*/
 static int getValue = 1;
 
 /* prototype for internal recursive code generator */
 static void cGen(node *tree);
 
+
 static int tmp;
 
-/* isRecursive:
- * 1 - cGen will recurse on next
- * 0 - cGen won't recurse on next
- */
+/*
+1 表示会递归
+0 表示不递归
+*/
 static int isRecursive = 1;
 
-/* stack used for call */
+
+/*
+函数调用的数组
+*/
 node *paramStack[10];
 int top = 0;
 
-/* stack routines*/
+/*
+函数入栈
+*/
 int pushParam(node *param)
 {
   if (top == SIZE)
@@ -38,6 +44,9 @@ int pushParam(node *param)
   return 0;
 }
 
+/*
+栈顶出栈
+*/
 node *popParam()
 {
   if (top == 0)
@@ -46,16 +55,15 @@ node *popParam()
   return paramStack[--top];
 }
 
-/* emit one instruction to get the address of a var,
- * store the address in bx,
- * we can access the var by bx[0]
- */
+/*
+获取变量的地址
+*/
 void emitGetAddr(node *var)
 {
 
   switch (var->scope)
   {
-  case 0:
+  case 0:  // 全局的变量
     if (var->isArray)
     {
       emitRM("LDA", bx, -(st_lookup(var->name, 0)), gp, "get global array address");
@@ -96,7 +104,9 @@ void emitGetAddr(node *var)
   }
 }
 
-/* Procedure genDec generates code at an declaration node */
+/* 
+针对函数、变量以及数组的定义
+ */
 static void genDec(node *tree)
 {
   int loc;
@@ -111,26 +121,20 @@ static void genDec(node *tree)
     if (TraceCode)
       emitComment("-> function:");
 
-    p1 = tree->nodeChild[0]->next; /*parameter*/
-    p2 = tree->nodeChild[1];       /*body*/
+    p1 = tree->nodeChild[0]->next; // 参数
+    p2 = tree->nodeChild[1];       // 方法体
 
     fun = fun_lookup(tree->name, 0);
     fun->fun_start = emitSkip(0);
 
-    /*prepare bp & sp*/
     emitRM("LDA", sp, -1, sp, "push prepare");
     emitRM("ST", bp, 0, sp, "push old bp");
     emitRM("LDA", bp, 0, sp, "let bp == sp");
     emitRM("LDA", sp, p2->nodeChild[0] != NULL ? -((p2->nodeChild[0])->local_size) : 0, sp, "allocate for local variables");
 
-    /*push param symtab, prepare for body*/
 
-    // pushTable(fun->symbolTable);
-    /*generate body*/
     cGen(p2);
-    //  popTable();
 
-    /*generate return code for void functions*/
     if (tree->type == 0)
     {
       /*return*/
@@ -166,10 +170,8 @@ static void genDec(node *tree)
         emitComment("-> array element");
       p1 = tree->nodeChild[0]; /*index expression*/
 
-      //  var = lookup_var(tree->name);
       emitGetAddr(tree);
 
-      /* protect bx*/
       emitRM("LDA", sp, -1, sp, "push prepare");
       emitRM("ST", bx, 0, sp, "protect array address");
 
@@ -189,15 +191,17 @@ static void genDec(node *tree)
       if (TraceCode)
         emitComment("<- array element");
     }
-    break; /* ArrayK */
+    break; 
 
   default:
     emitComment("BUG: Unknown declaration");
     break;
   }
-} /* genDec */
+} 
 
-/* Procedure genStmt generates code at a statement node */
+/*
+针对 stmt结点 
+ */
 static void genStmt(node *tree)
 {
   BucketList fun;
@@ -219,7 +223,6 @@ static void genStmt(node *tree)
       p1 = p1->next;
     }
 
-    /* first - push parameters */
     isRecursive = 0;
     while ((p1 = popParam()) != NULL)
     {
@@ -229,7 +232,6 @@ static void genStmt(node *tree)
     }
     isRecursive = 1;
 
-    /*second - call function*/
     fun = fun_lookup(tree->name, 0);
     /* emitCall(fun); */
     emitRM("LDA", ax, 3, pc, "store returned PC");
@@ -260,9 +262,6 @@ static void genStmt(node *tree)
     emitRM("LDA", bp, 0, sp, "let bp == sp");
     emitRM("LDA", sp, p2->nodeChild[0] != NULL ? -((p2->nodeChild[0])->local_size) : 0, sp, "allocate for local variables");
 
-    /*push param symtab, prepare for body*/
-
-    // pushTable(fun->symbolTable);
     /*generate body*/
     cGen(p2);
     //  popTable();
@@ -354,7 +353,7 @@ static void genStmt(node *tree)
     emitRestore();
     if (TraceCode)
       emitComment("<- if");
-    break; /* if_k */
+    break; 
 
   case IteraK:
     if (TraceCode)
@@ -557,9 +556,10 @@ static void genExp(node *tree)
   }
 } /* genExp */
 
-/* Procedure cGen recursively generates code by
- * tree traversal
- */
+
+/*
+生成中间代码
+*/
 static void cGen(node *tree)
 {
   if (tree != NULL)
@@ -582,15 +582,10 @@ static void cGen(node *tree)
   }
 }
 
-/**********************************************/
-/* the primary function of the code generator */
-/**********************************************/
-/* Procedure codeGen generates code to a code
- * file by traversal of the syntax tree. The
- * second parameter (codefile) is the file name
- * of the code file, and is used to print the
- * file name as a comment in the code file
- */
+
+/*
+递归生成中间代码
+*/
 void codeGen(node *syntaxTree)
 {
   BucketList fun; /*function bucket */

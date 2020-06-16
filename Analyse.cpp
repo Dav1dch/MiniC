@@ -1,10 +1,6 @@
 #include "Analyse.h"
 #include "Symtab.h"
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 2b077d41a07e52291a32c3aa74c88b3955505b2a
 extern int HighScope;
 
 static int scope_a = 0;
