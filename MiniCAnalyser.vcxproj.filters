@@ -42,6 +42,18 @@
     <ClInclude Include="MiniCAnalyserDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Cgen.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Symtab.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Code.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Analyse.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -60,6 +72,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MiniCAnalyserDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Cgen.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Code.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Symtab.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Analyse.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

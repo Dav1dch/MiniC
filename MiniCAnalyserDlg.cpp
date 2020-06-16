@@ -1,17 +1,17 @@
 ﻿
 // MiniCAnalyserDlg.cpp: 实现文件
 //
-#include<iostream>
-#include<string>
-#include<fstream>
-#include"pch.h"
-#include"framework.h"
-#include"MiniCAnalyser.h"
-#include"MiniCAnalyserDlg.h"
-#include"afxdialogex.h"
-#include"utils.h"
-#include"cgen.h"
-
+#include <iostream>
+#include <string>
+#include <fstream>
+#include "pch.h"
+#include "framework.h"
+#include "MiniCAnalyser.h"
+#include "MiniCAnalyserDlg.h"
+#include "afxdialogex.h"
+#include "utils.h"
+#include "Cgen.h"
+#include "Analyse.h"
 
 using namespace std;
 
@@ -19,38 +19,38 @@ using namespace std;
 #define new DEBUG_NEW
 #endif
 
-
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-extern FILE* code;
-extern FILE* yyin;
-extern FILE* result;
-extern FILE* lexOut;
+extern FILE *code_mc;
+extern FILE *yyin;
+extern FILE *result;
+FILE *code;
+extern FILE *lexOut;
 extern "C" int yywrap(void);
 extern int yyparse(void);
-extern node* programNode;
+extern node *programNode;
 string temp;
+int traceCode = 1;
 
 class CAboutDlg : public CDialogEx
 {
 public:
-
-
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_ABOUTBOX };
+	enum
+	{
+		IDD = IDD_ABOUTBOX
+	};
 #endif
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+protected:
+	virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV 支持
 
-// 实现
+	// 实现
 protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+void CAboutDlg::DoDataExchange(CDataExchange *pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
@@ -58,21 +58,15 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
-
 // CMiniCAnalyserDlg 对话框
 
-
-
-CMiniCAnalyserDlg::CMiniCAnalyserDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MiniCANALYSER_DIALOG, pParent)
-	, fileContent(_T(""))
-	, fileName(_T(""))
-	, fileName2(_T(""))
+CMiniCAnalyserDlg::CMiniCAnalyserDlg(CWnd *pParent /*=nullptr*/)
+	: CDialogEx(IDD_MiniCANALYSER_DIALOG, pParent), fileContent(_T("")), fileName(_T("")), fileName2(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CMiniCAnalyserDlg::DoDataExchange(CDataExchange* pDX)
+void CMiniCAnalyserDlg::DoDataExchange(CDataExchange *pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 
@@ -87,17 +81,16 @@ void CMiniCAnalyserDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CMiniCAnalyserDlg, CDialogEx)
-	ON_WM_SYSCOMMAND()
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
-	ON_COMMAND(ID_32771, &CMiniCAnalyserDlg::Open)
-	ON_COMMAND(ID_32773, &CMiniCAnalyserDlg::CreateTree)
-	ON_COMMAND(ID_32774, &CMiniCAnalyserDlg::ShowTree)
-	ON_COMMAND(ID_32775, &CMiniCAnalyserDlg::Exit)
-	ON_EN_CHANGE(IDC_FILE, &CMiniCAnalyserDlg::OnEnChangeFile)
-	ON_EN_CHANGE(IDC_CONTENT2, &CMiniCAnalyserDlg::OnEnChangeContent2)
+ON_WM_SYSCOMMAND()
+ON_WM_PAINT()
+ON_WM_QUERYDRAGICON()
+ON_COMMAND(ID_32771, &CMiniCAnalyserDlg::Open)
+ON_COMMAND(ID_32773, &CMiniCAnalyserDlg::CreateTree)
+ON_COMMAND(ID_32774, &CMiniCAnalyserDlg::ShowTree)
+ON_COMMAND(ID_32775, &CMiniCAnalyserDlg::Exit)
+ON_EN_CHANGE(IDC_FILE, &CMiniCAnalyserDlg::OnEnChangeFile)
+ON_EN_CHANGE(IDC_CONTENT2, &CMiniCAnalyserDlg::OnEnChangeContent2)
 END_MESSAGE_MAP()
-
 
 // CMiniCAnalyserDlg 消息处理程序
 
@@ -111,7 +104,7 @@ BOOL CMiniCAnalyserDlg::OnInitDialog()
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
 
-	CMenu* pSysMenu = GetSystemMenu(FALSE);
+	CMenu *pSysMenu = GetSystemMenu(FALSE);
 	if (pSysMenu != nullptr)
 	{
 		BOOL bNameValid;
@@ -127,12 +120,12 @@ BOOL CMiniCAnalyserDlg::OnInitDialog()
 
 	// 设置此对话框的图标。  当应用程序主窗口不是对话框时，框架将自动
 	//  执行此操作
-	SetIcon(m_hIcon, TRUE);			// 设置大图标
-	SetIcon(m_hIcon, FALSE);		// 设置小图标
+	SetIcon(m_hIcon, TRUE);	 // 设置大图标
+	SetIcon(m_hIcon, FALSE); // 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
 
-	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
+	return TRUE; // 除非将焦点设置到控件，否则返回 TRUE
 }
 
 void CMiniCAnalyserDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -184,47 +177,42 @@ HCURSOR CMiniCAnalyserDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
-
 /*
 	打开文件函数
 	打开的位置是当前根目录同级的txt文件夹之下
 */
 void CMiniCAnalyserDlg::Open()
 {
-	if (yyin != nullptr) {
+	if (yyin != nullptr)
+	{
 		fclose(yyin);
 	}
-	CFileDialog opendlg(true, NULL, NULL, 
-		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, 
-		(LPCTSTR)_TEXT("TXT Files (*.txt)|*.txt|All Files (*.*)|*.*||"), NULL);
-	     if (opendlg.DoModal() == IDOK) { //显示对话框并允许用户进行选择。
-			 
-			 CString filepathname = opendlg.GetPathName(); //文件路径
-			 name.SetWindowText(filepathname);
-			 CStdioFile fsend;
-			 CString s_one;
-			 CString fileContent;
-			 if (fsend.Open(filepathname, CFile::typeText | CFile::modeRead)) { //只读模式打开txt文件
-				 while (fsend.ReadString(s_one)) { //逐行读取文件内容
-					 fileContent += s_one;
-					 fileContent += "\r\n";
+	CFileDialog opendlg(true, NULL, NULL,
+						OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+						(LPCTSTR)_TEXT("TXT Files (*.txt)|*.txt|All Files (*.*)|*.*||"), NULL);
+	if (opendlg.DoModal() == IDOK)
+	{ //显示对话框并允许用户进行选择。
 
-				 }
-				 content.SetWindowTextW(fileContent); //将读取的文本显示在编辑框
-				 fsend.Close();
-			 }
-			 temp = CT2A(filepathname.GetString());
-			 
-		  
-		
-			 
-		 }
-	     else return;
+		CString filepathname = opendlg.GetPathName(); //文件路径
+		name.SetWindowText(filepathname);
+		CStdioFile fsend;
+		CString s_one;
+		CString fileContent;
+		if (fsend.Open(filepathname, CFile::typeText | CFile::modeRead))
+		{ //只读模式打开txt文件
+			while (fsend.ReadString(s_one))
+			{ //逐行读取文件内容
+				fileContent += s_one;
+				fileContent += "\r\n";
+			}
+			content.SetWindowTextW(fileContent); //将读取的文本显示在编辑框
+			fsend.Close();
+		}
+		temp = CT2A(filepathname.GetString());
+	}
+	else
+		return;
 }
-
-
 
 /*
 	生成语法树函数
@@ -233,7 +221,6 @@ void CMiniCAnalyserDlg::Open()
 */
 void CMiniCAnalyserDlg::CreateTree()
 {
-	
 
 	//生成的语法树存放的文件位置以及文件名
 	string treePath = "./txt/syntaxtree.txt";
@@ -241,53 +228,33 @@ void CMiniCAnalyserDlg::CreateTree()
 	result = fopen(treePath.c_str(), "w+");
 	lexOut = fopen("./txt/lex.txt", "w+");
 	programNode = newStmtNode(ProgramK);
-	yyparse(); // 生成语法树同时打印词法树
+	yyparse();	 // 生成语法树同时打印词法树
 	printTree(); // 打印语法树
 	yywrap();
 	fclose(result);
 	fclose(lexOut);
 	fclose(yyin);
 
-	/*
-	ofstream out(treePath, ofstream::out | std::ios::binary);
 
-	CString fileContent2 = _T("");
-
-		生成语法树的函数插入在这里
-		
-		这里插入代码
-
-		将生成的语法树加到fileContent2  fileContent += xxx;
-		fileContent2 += "abc";
-
-	int len = fileContent2.GetLength();
-	for (int i = 0; i < len; i++) {
-		if (fileContent2[i] != '\r')
-			out.put(fileContent2[i]);
-	}
-
-	out.close();
-	
-
-	*/
-
-	code = fopen("./txt/lex.txt", "w+");
+	//code_mc = fopen("./txt/lex.txt", "w+");
+	code = fopen("code.mc", "w+");
 	// 	生成字符表
-	buildSymtab(programNode);
+	buildSymtab(programNode->nodeChild[0]->next);
+
 
 	// 生成中间代码
-	codeGen(programNode);
-	
+	codeGen(programNode->nodeChild[0]->next);
+	fclose(code);
+
 	MessageBox(L"生成成功，点击查看即可查看语法树");
 }
-
 
 /*
 	查看语法树函数
 	对指定的文件进行查看
 */
 void CMiniCAnalyserDlg::ShowTree()
-{	
+{
 	UpdateData(TRUE);
 	string treePath = "./txt/syntaxtree.txt";
 	CString t = L"./txt/syntaxtree.txt";
@@ -295,11 +262,12 @@ void CMiniCAnalyserDlg::ShowTree()
 	CStdioFile fsend;
 	CString s_one;
 	CString fileContent;
-	if (fsend.Open(t, CFile::typeText | CFile::modeRead)) { //只读模式打开txt文件
-		while (fsend.ReadString(s_one)) { //逐行读取文件内容
+	if (fsend.Open(t, CFile::typeText | CFile::modeRead))
+	{ //只读模式打开txt文件
+		while (fsend.ReadString(s_one))
+		{ //逐行读取文件内容
 			fileContent += s_one;
 			fileContent += "\r\n";
-
 		}
 		content2.SetWindowTextW(fileContent); //将读取的文本显示在编辑框
 		fsend.Close();
@@ -329,16 +297,13 @@ void CMiniCAnalyserDlg::ShowTree()
 	*/
 }
 
-
-
 /*
 退出函数
 */
 void CMiniCAnalyserDlg::Exit()
-{	
+{
 	OnCancel();
 }
-
 
 void CMiniCAnalyserDlg::OnEnChangeFile()
 {
@@ -349,7 +314,6 @@ void CMiniCAnalyserDlg::OnEnChangeFile()
 
 	// TODO:  在此添加控件通知处理程序代码
 }
-
 
 void CMiniCAnalyserDlg::OnEnChangeContent2()
 {

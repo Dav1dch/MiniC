@@ -115,7 +115,7 @@ void printNode(node *t, int level)
     {
         switch (t->kind.stmt)
         {
-        case IntFundecK:
+        case FunK:
         {
             fprintf(result, "fun-declaration: \n");
             fprintf(result, "\ttype: int\n");
@@ -130,23 +130,6 @@ void printNode(node *t, int level)
             }
 
             printNode(t->nodeChild[1], level + 1);
-            break;
-        }
-        case VoidFundecK:
-        {
-            fprintf(result, "fun-declaration: \n");
-            fprintf(result, "\ttype: void\n");
-            fprintf(result, "\tname: %s\n", t->name.c_str());
-            if (t->nodeChild[0] != nullptr)
-            {
-                printNode(t->nodeChild[0], level + 2);
-            }
-            else
-            {
-                fprintf(result, "\tparams: void\n");
-            }
-
-            printNode(t->nodeChild[1], level + 2);
             break;
         }
         case ParamlK:
@@ -265,6 +248,10 @@ void printNode(node *t, int level)
 
             break;
         }
+        case ArrayK:
+            fprintf(result, "%svarArray: \n%s\tname: %s\n%s\tlength: %d\n", preWhiteSpace.c_str(),
+                    preWhiteSpace.c_str(), t->name.c_str(), preWhiteSpace.c_str(), t->nodeChild[0]->val);
+            break;
         default:
             break;
         }
@@ -280,17 +267,17 @@ void printNode(node *t, int level)
         case IdK:
             fprintf(result, "%svar: \n%s\tname: %s\n", preWhiteSpace.c_str(), preWhiteSpace.c_str(), t->name.c_str());
             break;
-        case IndexK:
-            fprintf(result, "%sarrayIndex: \n%s\tname: %s\n%s\tindex: \n", preWhiteSpace.c_str(), preWhiteSpace.c_str(), t->name.c_str(), preWhiteSpace.c_str());
-            printNode(t->nodeChild[0], level + 1);
+        case VarK:
+            fprintf(result, "%svar: \n%s\tname: %s\n", preWhiteSpace.c_str(), preWhiteSpace.c_str(), t->name.c_str());
             break;
-        case ArrayptrK:
-            fprintf(result, "%sarrayPtr: \n%s\tname: %s\n", preWhiteSpace.c_str(), preWhiteSpace.c_str(), t->name.c_str());
-            break;
-        case ArrayK:
-            fprintf(result, "%svarArray: \n%s\tname: %s\n%s\tlength: %d\n", preWhiteSpace.c_str(),
-                    preWhiteSpace.c_str(), t->name.c_str(), preWhiteSpace.c_str(), t->nodeChild[0]->val);
-            break;
+            // case IndexK:
+            //     fprintf(result, "%sarrayIndex: \n%s\tname: %s\n%s\tindex: \n", preWhiteSpace.c_str(), preWhiteSpace.c_str(), t->name.c_str(), preWhiteSpace.c_str());
+            //     printNode(t->nodeChild[0], level + 1);
+            //     break;
+            // case ArrayptrK:
+            //     fprintf(result, "%sarrayPtr: \n%s\tname: %s\n", preWhiteSpace.c_str(), preWhiteSpace.c_str(), t->name.c_str());
+            //     break;
+
         case ConstK:
             fprintf(result, "%sconst: \n%s\tval: %d\n", preWhiteSpace.c_str(), preWhiteSpace.c_str(), t->val);
             break;
@@ -310,7 +297,7 @@ void printNode(node *t, int level)
             }
             break;
 
-        case AddK:
+       /* case AddK:
             fprintf(result, "%sadditive-expression: \n", preWhiteSpace.c_str());
             fprintf(result, "%s\tfirst:\n", preWhiteSpace.c_str());
             printNode(t->nodeChild[0], level + 2);
@@ -325,7 +312,7 @@ void printNode(node *t, int level)
             fprintf(result, "%s\top: %s\n", preWhiteSpace.c_str(), t->op.c_str());
             fprintf(result, "%s\tsecond:\n", preWhiteSpace.c_str());
             printNode(t->nodeChild[1], level + 2);
-            break;
+            break;*/
         case CallK:
             fprintf(result, "%sfunctionCall: \n", preWhiteSpace.c_str());
             fprintf(result, "%s\tname: %s\n", preWhiteSpace.c_str(), t->name.c_str());
@@ -339,14 +326,6 @@ void printNode(node *t, int level)
                 fprintf(result, "%s\targs: void\n", preWhiteSpace.c_str());
             }
             break;
-        case WriteK:
-            fprintf(result, "%sfunctionCall: \n", preWhiteSpace.c_str());
-            fprintf(result, "%s\tname: Output\n", preWhiteSpace.c_str());
-        case ReadK:
-            fprintf(result, "%sfunctionCall: \n", preWhiteSpace.c_str());
-            fprintf(result, "%s\tname: Input\n", preWhiteSpace.c_str());
-            fprintf(result, "%s\targs: \n", preWhiteSpace.c_str());
-            printNode(t->nodeChild[0], level + 2);
         default:
             break;
         }

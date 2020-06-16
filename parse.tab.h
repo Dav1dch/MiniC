@@ -72,9 +72,7 @@ extern int yydebug;
      INT = 281,
      VOID = 282,
      RETURN = 283,
-     WHILE = 284,
-     OUTPUT = 285,
-     INPUT = 286
+     WHILE = 284
    };
 #endif
 
