@@ -43,12 +43,12 @@ declaration_list : declaration_list declaration {addNode($1, $2);$$ = $1;$$->lin
     |   declaration {$$ = newStmtNode(DeclK); addNode($$, $1);$$->lineno = yylineno; $1->isGlobal = 1;}
     ;
 
-declaration : var_declaration {$$ = $1;$$->lineno = yylineno;}
+declaration : var_declaration SEMICOLON{$$ = $1;$$->lineno = yylineno;}
     | fun_declaration {$$ = $1;$$->lineno = yylineno;}
     ;
 
-var_declaration : INT ID{$$ = newStmtNode(VarK); $$->name = $2;$$->lineno = yylineno;}
-    |   INT ID LEFTSQUAREBRACKET NUM RIGHTSQUAREBRACKET{node *t = newExpNode(ConstK); t->val = $4; $$ = newStmtNode(ArrayK);$$->nodeChild[0] = t;$$->lineno = yylineno; $$->isArray = 1;}
+var_declaration : INT ID {$$ = newStmtNode(VarK); $$->name = $2;$$->lineno = yylineno;}
+    |   INT ID LEFTSQUAREBRACKET NUM RIGHTSQUAREBRACKET {node *t = newExpNode(ConstK); t->val = $4; $$ = newStmtNode(ArrayK);$$->name = $2;$$->nodeChild[0] = t;$$->lineno = yylineno; $$->isArray = 1;}
     ;
 
 fun_declaration : VOID ID LEFTBRACKET params RIGHTBRACKET compound_stmt{$$ = newStmtNode(FunK);$$->lineno = yylineno;
@@ -90,6 +90,7 @@ compound_stmt : LEFTBRACE local_declarations statement_list RIGHTBRACE {$$ = new
 
 local_declarations : local_declarations var_declaration SEMICOLON {addNode($1, $2); $$ = $1;$$->lineno = yylineno; $$->local_size += 1;}
     |   var_declaration COMMA {$$ = newStmtNode(LocdeclK); addNode($$, $1);$$->lineno = yylineno; $$->local_size += 1;}
+    |   var_declaration SEMICOLON {$$ = newStmtNode(LocdeclK); addNode($$, $1);$$->lineno = yylineno; $$->local_size += 1;}
     |   {}
     ;
 

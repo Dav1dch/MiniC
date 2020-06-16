@@ -33,6 +33,7 @@ node *newStmtNode(StmtKind kind)
     t->isParameter = 0;
     t->local_size = 0;
     t->param_size = 0;
+    t->val = 0;
     return t;
 }
 
@@ -57,6 +58,7 @@ node *newExpNode(ExpKind kind)
     t->isParameter = 0;
     t->local_size = 0;
     t->param_size = 0;
+    t->val = 0;
 
     return t;
 }
@@ -249,8 +251,8 @@ void printNode(node *t, int level)
             break;
         }
         case ArrayK:
-            fprintf(result, "%svarArray: \n%s\tname: %s\n%s\tlength: %d\n", preWhiteSpace.c_str(),
-                    preWhiteSpace.c_str(), t->name.c_str(), preWhiteSpace.c_str(), t->nodeChild[0]->val);
+            fprintf(result, "%svarArray: \n%s\tname: %s\n%s\t\n", preWhiteSpace.c_str(),
+                    preWhiteSpace.c_str(), t->name.c_str(), preWhiteSpace.c_str());
             break;
         default:
             break;

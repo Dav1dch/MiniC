@@ -595,7 +595,7 @@ void codeGen(node *syntaxTree)
 {
   BucketList fun; /*function bucket */
 
-  emitComment("C- Compilation to TM Code");
+  emitComment("miniC- Compilation to MC Code");
   /* generate standard prelude */
   emitComment("Standard prelude:");
   emitRM("LD", gp, 0, zero, "load maxaddress from location 0");

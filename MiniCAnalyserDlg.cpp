@@ -273,28 +273,6 @@ void CMiniCAnalyserDlg::ShowTree()
 		fsend.Close();
 	}
 
-	//语法树已经写进treePath这个文件里
-	/*
-	
-
-	fileName2 = treePath.c_str();
-	ifstream in(treePath);
-
-	if (!in.is_open()) {
-		MessageBox(L"语法树还没生成，无法查看");
-		return;
-	}
-	CString fileContent2 = _T("");
-	string sline = "";
-
-	while (getline(in, sline)) {
-		fileContent2 += (sline.c_str());
-		fileContent2 += "\r\n";
-	}
-	in.close();
-	content2.SetWindowTextW(fileContent2);
-	treeFileName.SetWindowTextW(fileName2);
-	*/
 }
 
 /*
