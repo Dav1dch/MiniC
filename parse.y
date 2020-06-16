@@ -126,7 +126,7 @@ expression : var ASSIGNMENT expression {$$=newExpNode(AssignK); $$->nodeChild[0]
 
 
 var : ID {$$ = newExpNode(IdK); $$->name = $1;$$->lineno = yylineno;}
-    |   ID LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET {$$ = newStmtNode(ArrayK); $$->nodeChild[0] = $3;$$->lineno = yylineno;}
+    |   ID LEFTSQUAREBRACKET expression RIGHTSQUAREBRACKET {$$ = newStmtNode(ArrayK); $$->name=$1;$$->nodeChild[0] = $3;$$->lineno = yylineno;$$->isArray = 1;}
     ;
 
 simple_expression : additive_expression LESSEQUAL additive_expression {$$ = newExpNode(OpK); $$->type=8;$$->nodeChild[0] = $1; $$->nodeChild[1] = $3; $$->op = $2;$$->lineno = yylineno;}

@@ -1721,7 +1721,7 @@ yyreduce:
   case 41:
 /* Line 1792 of yacc.c  */
 #line 129 "parse.y"
-    {(yyval.m_node) = newStmtNode(ArrayK); (yyval.m_node)->nodeChild[0] = (yyvsp[(3) - (4)].m_node);(yyval.m_node)->lineno = yylineno;}
+    {(yyval.m_node) = newStmtNode(ArrayK); (yyval.m_node)->name=(yyvsp[(1) - (4)].m_id);(yyval.m_node)->nodeChild[0] = (yyvsp[(3) - (4)].m_node);(yyval.m_node)->lineno = yylineno;(yyval.m_node)->isArray = 1;}
     break;
 
   case 42:

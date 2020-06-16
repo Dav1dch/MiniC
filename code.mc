@@ -50,586 +50,600 @@
 * <- assign
 * -> assign
 * -> Id
- 36:    LDA  2,-1(6) 	get global address
+ 36:    LDA  2,-3(5) 	get local address
 * <- Id
  37:    LDA  4,-1(4) 	push prepare
  38:     ST  2,0(4) 	protect bx
- 39:    LDA  4,1(4) 	pop prepare
- 40:     LD  2,-1(4) 	recover bx
- 41:     ST  1,0(2) 	assign: store
+* -> array element
+ 39:     LD  2,2(5) 	get param array address
+ 40:    LDA  4,-1(4) 	push prepare
+ 41:     ST  2,0(4) 	protect array address
+* -> Id
+ 42:    LDA  2,2(5) 	get param variable address
+ 43:     LD  1,0(2) 	get variable value
+* <- Id
+ 44:    LDA  4,1(4) 	pop prepare
+ 45:     LD  2,-1(4) 	recover array address
+ 46:    SUB  2,2,1 	get address of array element
+ 47:     LD  1,0(2) 	get value of array element
+* <- array element
+ 48:    LDA  4,1(4) 	pop prepare
+ 49:     LD  2,-1(4) 	recover bx
+ 50:     ST  1,0(2) 	assign: store
 * <- assign
 * -> assign
 * -> Id
- 42:    LDA  2,-2(5) 	get local address
+ 51:    LDA  2,-2(5) 	get local address
 * <- Id
- 43:    LDA  4,-1(4) 	push prepare
- 44:     ST  2,0(4) 	protect bx
+ 52:    LDA  4,-1(4) 	push prepare
+ 53:     ST  2,0(4) 	protect bx
 * -> Op
 * -> Id
- 45:    LDA  2,2(5) 	get param variable address
- 46:     LD  1,0(2) 	get variable value
+ 54:    LDA  2,2(5) 	get param variable address
+ 55:     LD  1,0(2) 	get variable value
 * <- Id
- 47:    LDA  4,-1(4) 	push prepare
- 48:     ST  1,0(4) 	op: protect left
+ 56:    LDA  4,-1(4) 	push prepare
+ 57:     ST  1,0(4) 	op: protect left
 * -> Const
- 49:    LDC  1,1(0) 	load const
+ 58:    LDC  1,1(0) 	load const
 * <- Const
- 50:    LDA  4,1(4) 	pop prepare
- 51:     LD  2,-1(4) 	op: recover left
- 52:    ADD  1,2,1 	op +
+ 59:    LDA  4,1(4) 	pop prepare
+ 60:     LD  2,-1(4) 	op: recover left
+ 61:    ADD  1,2,1 	op +
 * <- Op
- 53:    LDA  4,1(4) 	pop prepare
- 54:     LD  2,-1(4) 	recover bx
- 55:     ST  1,0(2) 	assign: store
+ 62:    LDA  4,1(4) 	pop prepare
+ 63:     LD  2,-1(4) 	recover bx
+ 64:     ST  1,0(2) 	assign: store
 * <- assign
 * -> while
 * jump here after body
+* -> Op
+* -> Id
+ 65:    LDA  2,-2(5) 	get local address
+ 66:     LD  1,0(2) 	get variable value
+* <- Id
+ 67:    LDA  4,-1(4) 	push prepare
+ 68:     ST  1,0(4) 	op: protect left
+* -> Id
+ 69:    LDA  2,3(5) 	get param variable address
+ 70:     LD  1,0(2) 	get variable value
+* <- Id
+ 71:    LDA  4,1(4) 	pop prepare
+ 72:     LD  2,-1(4) 	op: recover left
+ 73:    SUB  1,2,1 	op <
+ 74:    JLT  1,2(7) 	br if true
+ 75:    LDC  1,0(0) 	false case
+ 76:    LDA  7,1(7) 	unconditional jmp
+ 77:    LDC  1,1(0) 	true case
+* <- Op
+* jump to end if test fails
 * -> compound
 * -> if
 * -> Op
- 56:    LDA  4,-1(4) 	push prepare
- 57:     ST  1,0(4) 	op: protect left
+* -> array element
+ 79:     LD  2,2(5) 	get param array address
+ 80:    LDA  4,-1(4) 	push prepare
+ 81:     ST  2,0(4) 	protect array address
 * -> Id
- 58:    LDA  2,-1(6) 	get global address
- 59:     LD  1,0(2) 	get variable value
+ 82:    LDA  2,-2(5) 	get local address
+ 83:     LD  1,0(2) 	get variable value
 * <- Id
- 60:    LDA  4,1(4) 	pop prepare
- 61:     LD  2,-1(4) 	op: recover left
- 62:    SUB  1,2,1 	op <
- 63:    JLT  1,2(7) 	br if true
- 64:    LDC  1,0(0) 	false case
- 65:    LDA  7,1(7) 	unconditional jmp
- 66:    LDC  1,1(0) 	true case
+ 84:    LDA  4,1(4) 	pop prepare
+ 85:     LD  2,-1(4) 	recover array address
+ 86:    SUB  2,2,1 	get address of array element
+ 87:     LD  1,0(2) 	get value of array element
+* <- array element
+ 88:    LDA  4,-1(4) 	push prepare
+ 89:     ST  1,0(4) 	op: protect left
+* -> Id
+ 90:    LDA  2,-3(5) 	get local address
+ 91:     LD  1,0(2) 	get variable value
+* <- Id
+ 92:    LDA  4,1(4) 	pop prepare
+ 93:     LD  2,-1(4) 	op: recover left
+ 94:    SUB  1,2,1 	op <
+ 95:    JLT  1,2(7) 	br if true
+ 96:    LDC  1,0(0) 	false case
+ 97:    LDA  7,1(7) 	unconditional jmp
+ 98:    LDC  1,1(0) 	true case
 * <- Op
 * if: jump to else belongs here
 * -> compound
 * -> assign
 * -> Id
- 68:    LDA  2,-1(6) 	get global address
+100:    LDA  2,-3(5) 	get local address
 * <- Id
- 69:    LDA  4,-1(4) 	push prepare
- 70:     ST  2,0(4) 	protect bx
- 71:    LDA  4,1(4) 	pop prepare
- 72:     LD  2,-1(4) 	recover bx
- 73:     ST  1,0(2) 	assign: store
+101:    LDA  4,-1(4) 	push prepare
+102:     ST  2,0(4) 	protect bx
+* -> array element
+103:     LD  2,2(5) 	get param array address
+104:    LDA  4,-1(4) 	push prepare
+105:     ST  2,0(4) 	protect array address
+* -> Id
+106:    LDA  2,-2(5) 	get local address
+107:     LD  1,0(2) 	get variable value
+* <- Id
+108:    LDA  4,1(4) 	pop prepare
+109:     LD  2,-1(4) 	recover array address
+110:    SUB  2,2,1 	get address of array element
+111:     LD  1,0(2) 	get value of array element
+* <- array element
+112:    LDA  4,1(4) 	pop prepare
+113:     LD  2,-1(4) 	recover bx
+114:     ST  1,0(2) 	assign: store
 * <- assign
 * -> assign
 * -> Id
- 74:    LDA  2,-4(5) 	get local address
+115:    LDA  2,-4(5) 	get local address
 * <- Id
- 75:    LDA  4,-1(4) 	push prepare
- 76:     ST  2,0(4) 	protect bx
+116:    LDA  4,-1(4) 	push prepare
+117:     ST  2,0(4) 	protect bx
 * -> Id
- 77:    LDA  2,-2(5) 	get local address
- 78:     LD  1,0(2) 	get variable value
+118:    LDA  2,-2(5) 	get local address
+119:     LD  1,0(2) 	get variable value
 * <- Id
- 79:    LDA  4,1(4) 	pop prepare
- 80:     LD  2,-1(4) 	recover bx
- 81:     ST  1,0(2) 	assign: store
+120:    LDA  4,1(4) 	pop prepare
+121:     LD  2,-1(4) 	recover bx
+122:     ST  1,0(2) 	assign: store
 * <- assign
 * <- compound
 * if: jump to end belongs here
- 67:    JEQ  1,15(7) 	if: jmp to else
- 82:    LDA  7,0(7) 	jmp to end
+ 99:    JEQ  1,24(7) 	if: jmp to else
+123:    LDA  7,0(7) 	jmp to end
 * <- if
 * -> assign
 * -> Id
- 83:    LDA  2,-2(5) 	get local address
+124:    LDA  2,-2(5) 	get local address
 * <- Id
- 84:    LDA  4,-1(4) 	push prepare
- 85:     ST  2,0(4) 	protect bx
+125:    LDA  4,-1(4) 	push prepare
+126:     ST  2,0(4) 	protect bx
 * -> Op
 * -> Id
- 86:    LDA  2,-2(5) 	get local address
- 87:     LD  1,0(2) 	get variable value
+127:    LDA  2,-2(5) 	get local address
+128:     LD  1,0(2) 	get variable value
 * <- Id
- 88:    LDA  4,-1(4) 	push prepare
- 89:     ST  1,0(4) 	op: protect left
+129:    LDA  4,-1(4) 	push prepare
+130:     ST  1,0(4) 	op: protect left
 * -> Const
- 90:    LDC  1,1(0) 	load const
+131:    LDC  1,1(0) 	load const
 * <- Const
- 91:    LDA  4,1(4) 	pop prepare
- 92:     LD  2,-1(4) 	op: recover left
- 93:    ADD  1,2,1 	op +
+132:    LDA  4,1(4) 	pop prepare
+133:     LD  2,-1(4) 	op: recover left
+134:    ADD  1,2,1 	op +
 * <- Op
- 94:    LDA  4,1(4) 	pop prepare
- 95:     LD  2,-1(4) 	recover bx
- 96:     ST  1,0(2) 	assign: store
+135:    LDA  4,1(4) 	pop prepare
+136:     LD  2,-1(4) 	recover bx
+137:     ST  1,0(2) 	assign: store
 * <- assign
 * <- compound
-* jump to end if test fails
-* -> Op
-* -> Id
- 98:    LDA  2,-2(5) 	get local address
- 99:     LD  1,0(2) 	get variable value
-* <- Id
-100:    LDA  4,-1(4) 	push prepare
-101:     ST  1,0(4) 	op: protect left
-* -> Id
-102:    LDA  2,3(5) 	get param variable address
-103:     LD  1,0(2) 	get variable value
-* <- Id
-104:    LDA  4,1(4) 	pop prepare
-105:     LD  2,-1(4) 	op: recover left
-106:    SUB  1,2,1 	op <
-107:    JLT  1,2(7) 	br if true
-108:    LDC  1,0(0) 	false case
-109:    LDA  7,1(7) 	unconditional jmp
-110:    LDC  1,1(0) 	true case
-* <- Op
-111:    LDA  7,56(0) 	jump to test
- 97:    JEQ  1,112(0) 	jump to end
+138:    LDA  7,65(0) 	jump to test
+ 78:    JEQ  1,139(0) 	jump to end
 * <- while
 * -> return
 * -> Id
-112:    LDA  2,-4(5) 	get local address
-113:     LD  1,0(2) 	get variable value
+139:    LDA  2,-4(5) 	get local address
+140:     LD  1,0(2) 	get variable value
 * <- Id
-114:    LDA  4,0(5) 	let sp == bp
-115:    LDA  4,2(4) 	pop prepare
-116:     LD  5,-2(4) 	pop old bp
-117:     LD  7,-1(4) 	pop return addr
+141:    LDA  4,0(5) 	let sp == bp
+142:    LDA  4,2(4) 	pop prepare
+143:     LD  5,-2(4) 	pop old bp
+144:     LD  7,-1(4) 	pop return addr
 * <- return
 * <- compound
 * <- function
 * -> function:
-118:    LDA  4,-1(4) 	push prepare
-119:     ST  5,0(4) 	push old bp
-120:    LDA  5,0(4) 	let bp == sp
-121:    LDA  4,-2(4) 	allocate for local variables
+145:    LDA  4,-1(4) 	push prepare
+146:     ST  5,0(4) 	push old bp
+147:    LDA  5,0(4) 	let bp == sp
+148:    LDA  4,-2(4) 	allocate for local variables
 * -> compound
 * -> assign
 * -> Id
-122:    LDA  2,-2(5) 	get local address
+149:    LDA  2,-2(5) 	get local address
 * <- Id
-123:    LDA  4,-1(4) 	push prepare
-124:     ST  2,0(4) 	protect bx
+150:    LDA  4,-1(4) 	push prepare
+151:     ST  2,0(4) 	protect bx
 * -> Id
-125:    LDA  2,6(5) 	get param variable address
-126:     LD  1,0(2) 	get variable value
+152:    LDA  2,6(5) 	get param variable address
+153:     LD  1,0(2) 	get variable value
 * <- Id
-127:    LDA  4,1(4) 	pop prepare
-128:     LD  2,-1(4) 	recover bx
-129:     ST  1,0(2) 	assign: store
+154:    LDA  4,1(4) 	pop prepare
+155:     LD  2,-1(4) 	recover bx
+156:     ST  1,0(2) 	assign: store
 * <- assign
-* -> assign
-130:    LDA  4,-1(4) 	push prepare
-131:     ST  2,0(4) 	protect bx
+* -> while
+* jump here after body
+* -> Op
+* -> Id
+157:    LDA  2,-2(5) 	get local address
+158:     LD  1,0(2) 	get variable value
+* <- Id
+159:    LDA  4,-1(4) 	push prepare
+160:     ST  1,0(4) 	op: protect left
+* -> Op
+* -> Id
+161:    LDA  2,7(5) 	get param variable address
+162:     LD  1,0(2) 	get variable value
+* <- Id
+163:    LDA  4,-1(4) 	push prepare
+164:     ST  1,0(4) 	op: protect left
 * -> Const
-132:    LDC  1,0(0) 	load const
+165:    LDC  1,1(0) 	load const
 * <- Const
-133:    LDA  4,1(4) 	pop prepare
-134:     LD  2,-1(4) 	recover bx
-135:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
-136:    LDA  4,-1(4) 	push prepare
-137:     ST  2,0(4) 	protect bx
-* -> Const
-138:    LDC  1,0(0) 	load const
-* <- Const
-139:    LDA  4,1(4) 	pop prepare
-140:     LD  2,-1(4) 	recover bx
-141:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
-142:    LDA  4,-1(4) 	push prepare
-143:     ST  2,0(4) 	protect bx
-* -> Const
-144:    LDC  1,0(0) 	load const
-* <- Const
-145:    LDA  4,1(4) 	pop prepare
-146:     LD  2,-1(4) 	recover bx
-147:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
-148:    LDA  4,-1(4) 	push prepare
-149:     ST  2,0(4) 	protect bx
-* -> Const
-150:    LDC  1,0(0) 	load const
-* <- Const
-151:    LDA  4,1(4) 	pop prepare
-152:     LD  2,-1(4) 	recover bx
-153:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
-154:    LDA  4,-1(4) 	push prepare
-155:     ST  2,0(4) 	protect bx
-* -> Const
-156:    LDC  1,0(0) 	load const
-* <- Const
-157:    LDA  4,1(4) 	pop prepare
-158:     LD  2,-1(4) 	recover bx
-159:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
-160:    LDA  4,-1(4) 	push prepare
-161:     ST  2,0(4) 	protect bx
-* -> Const
-162:    LDC  1,0(0) 	load const
-* <- Const
-163:    LDA  4,1(4) 	pop prepare
-164:     LD  2,-1(4) 	recover bx
-165:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
-166:    LDA  4,-1(4) 	push prepare
-167:     ST  2,0(4) 	protect bx
-* -> Const
-168:    LDC  1,0(0) 	load const
-* <- Const
+166:    LDA  4,1(4) 	pop prepare
+167:     LD  2,-1(4) 	op: recover left
+168:    SUB  1,2,1 	op -
+* <- Op
 169:    LDA  4,1(4) 	pop prepare
-170:     LD  2,-1(4) 	recover bx
-171:     ST  1,0(2) 	assign: store
-* <- assign
+170:     LD  2,-1(4) 	op: recover left
+171:    SUB  1,2,1 	op <
+172:    JLT  1,2(7) 	br if true
+173:    LDC  1,0(0) 	false case
+174:    LDA  7,1(7) 	unconditional jmp
+175:    LDC  1,1(0) 	true case
+* <- Op
+* jump to end if test fails
+* -> compound
 * -> assign
-172:    LDA  4,-1(4) 	push prepare
-173:     ST  2,0(4) 	protect bx
-* -> Const
-174:    LDC  1,0(0) 	load const
-* <- Const
-175:    LDA  4,1(4) 	pop prepare
-176:     LD  2,-1(4) 	recover bx
-177:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
+* -> Id
+177:    LDA  2,-3(5) 	get local address
+* <- Id
 178:    LDA  4,-1(4) 	push prepare
 179:     ST  2,0(4) 	protect bx
-* -> Const
-180:    LDC  1,0(0) 	load const
-* <- Const
-181:    LDA  4,1(4) 	pop prepare
-182:     LD  2,-1(4) 	recover bx
-183:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
-184:    LDA  4,-1(4) 	push prepare
-185:     ST  2,0(4) 	protect bx
-* -> Const
-186:    LDC  1,0(0) 	load const
-* <- Const
-187:    LDA  4,1(4) 	pop prepare
-188:     LD  2,-1(4) 	recover bx
-189:     ST  1,0(2) 	assign: store
-* <- assign
-* -> while
-* jump here after body
-* -> compound
-* -> assign
-* -> Id
-190:    LDA  2,-3(5) 	get local address
-* <- Id
-191:    LDA  4,-1(4) 	push prepare
-192:     ST  2,0(4) 	protect bx
 * -> call
 * -> Id
-193:    LDA  2,7(5) 	get param variable address
-194:     LD  1,0(2) 	get variable value
+180:    LDA  2,7(5) 	get param variable address
+181:     LD  1,0(2) 	get variable value
 * <- Id
-195:    LDA  4,-1(4) 	push prepare
-196:     ST  1,0(4) 	push parameters
+182:    LDA  4,-1(4) 	push prepare
+183:     ST  1,0(4) 	push parameters
 * -> Id
-197:    LDA  2,-2(5) 	get local address
-198:     LD  1,0(2) 	get variable value
+184:    LDA  2,-2(5) 	get local address
+185:     LD  1,0(2) 	get variable value
 * <- Id
-199:    LDA  4,-1(4) 	push prepare
-200:     ST  1,0(4) 	push parameters
+186:    LDA  4,-1(4) 	push prepare
+187:     ST  1,0(4) 	push parameters
 * -> Id
-201:    LDA  2,2(5) 	get param variable address
-202:     LD  1,0(2) 	get variable value
+188:    LDA  2,2(5) 	get param variable address
+189:     LD  1,0(2) 	get variable value
 * <- Id
-203:    LDA  4,-1(4) 	push prepare
-204:     ST  1,0(4) 	push parameters
-205:    LDA  1,3(7) 	store returned PC
-206:    LDA  4,-1(4) 	push prepare
-207:     ST  1,0(4) 	push returned PC
-208:    LDC  7,24(0) 	jump to function
-209:    LDA  4,3(4) 	release parameters
+190:    LDA  4,-1(4) 	push prepare
+191:     ST  1,0(4) 	push parameters
+192:    LDA  1,3(7) 	store returned PC
+193:    LDA  4,-1(4) 	push prepare
+194:     ST  1,0(4) 	push returned PC
+195:    LDC  7,24(0) 	jump to function
+196:    LDA  4,3(4) 	release parameters
 * <- call
-210:    LDA  4,1(4) 	pop prepare
-211:     LD  2,-1(4) 	recover bx
-212:     ST  1,0(2) 	assign: store
+197:    LDA  4,1(4) 	pop prepare
+198:     LD  2,-1(4) 	recover bx
+199:     ST  1,0(2) 	assign: store
 * <- assign
 * -> assign
 * -> Id
-213:    LDA  2,-4(5) 	get local address
+200:    LDA  2,-4(5) 	get local address
 * <- Id
-214:    LDA  4,-1(4) 	push prepare
-215:     ST  2,0(4) 	protect bx
-216:    LDA  4,1(4) 	pop prepare
-217:     LD  2,-1(4) 	recover bx
-218:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
-219:    LDA  4,-1(4) 	push prepare
-220:     ST  2,0(4) 	protect bx
-221:    LDA  4,1(4) 	pop prepare
-222:     LD  2,-1(4) 	recover bx
-223:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
-224:    LDA  4,-1(4) 	push prepare
-225:     ST  2,0(4) 	protect bx
+201:    LDA  4,-1(4) 	push prepare
+202:     ST  2,0(4) 	protect bx
+* -> array element
+203:     LD  2,2(5) 	get param array address
+204:    LDA  4,-1(4) 	push prepare
+205:     ST  2,0(4) 	protect array address
 * -> Id
-226:    LDA  2,-4(5) 	get local address
-227:     LD  1,0(2) 	get variable value
+206:    LDA  2,-3(5) 	get local address
+207:     LD  1,0(2) 	get variable value
 * <- Id
-228:    LDA  4,1(4) 	pop prepare
-229:     LD  2,-1(4) 	recover bx
-230:     ST  1,0(2) 	assign: store
+208:    LDA  4,1(4) 	pop prepare
+209:     LD  2,-1(4) 	recover array address
+210:    SUB  2,2,1 	get address of array element
+211:     LD  1,0(2) 	get value of array element
+* <- array element
+212:    LDA  4,1(4) 	pop prepare
+213:     LD  2,-1(4) 	recover bx
+214:     ST  1,0(2) 	assign: store
+* <- assign
+* -> assign
+* -> array element
+215:     LD  2,2(5) 	get param array address
+216:    LDA  4,-1(4) 	push prepare
+217:     ST  2,0(4) 	protect array address
+* -> Id
+218:    LDA  2,-3(5) 	get local address
+219:     LD  1,0(2) 	get variable value
+* <- Id
+220:    LDA  4,1(4) 	pop prepare
+221:     LD  2,-1(4) 	recover array address
+222:    SUB  2,2,1 	get address of array element
+* <- array element
+223:    LDA  4,-1(4) 	push prepare
+224:     ST  2,0(4) 	protect bx
+* -> array element
+225:     LD  2,2(5) 	get param array address
+226:    LDA  4,-1(4) 	push prepare
+227:     ST  2,0(4) 	protect array address
+* -> Id
+228:    LDA  2,-2(5) 	get local address
+229:     LD  1,0(2) 	get variable value
+* <- Id
+230:    LDA  4,1(4) 	pop prepare
+231:     LD  2,-1(4) 	recover array address
+232:    SUB  2,2,1 	get address of array element
+233:     LD  1,0(2) 	get value of array element
+* <- array element
+234:    LDA  4,1(4) 	pop prepare
+235:     LD  2,-1(4) 	recover bx
+236:     ST  1,0(2) 	assign: store
+* <- assign
+* -> assign
+* -> array element
+237:     LD  2,2(5) 	get param array address
+238:    LDA  4,-1(4) 	push prepare
+239:     ST  2,0(4) 	protect array address
+* -> Id
+240:    LDA  2,-2(5) 	get local address
+241:     LD  1,0(2) 	get variable value
+* <- Id
+242:    LDA  4,1(4) 	pop prepare
+243:     LD  2,-1(4) 	recover array address
+244:    SUB  2,2,1 	get address of array element
+* <- array element
+245:    LDA  4,-1(4) 	push prepare
+246:     ST  2,0(4) 	protect bx
+* -> Id
+247:    LDA  2,-4(5) 	get local address
+248:     LD  1,0(2) 	get variable value
+* <- Id
+249:    LDA  4,1(4) 	pop prepare
+250:     LD  2,-1(4) 	recover bx
+251:     ST  1,0(2) 	assign: store
 * <- assign
 * -> assign
 * -> Id
-231:    LDA  2,-2(5) 	get local address
+252:    LDA  2,-2(5) 	get local address
 * <- Id
-232:    LDA  4,-1(4) 	push prepare
-233:     ST  2,0(4) 	protect bx
+253:    LDA  4,-1(4) 	push prepare
+254:     ST  2,0(4) 	protect bx
 * -> Op
 * -> Id
-234:    LDA  2,-2(5) 	get local address
-235:     LD  1,0(2) 	get variable value
+255:    LDA  2,-2(5) 	get local address
+256:     LD  1,0(2) 	get variable value
 * <- Id
-236:    LDA  4,-1(4) 	push prepare
-237:     ST  1,0(4) 	op: protect left
+257:    LDA  4,-1(4) 	push prepare
+258:     ST  1,0(4) 	op: protect left
 * -> Const
-238:    LDC  1,1(0) 	load const
+259:    LDC  1,1(0) 	load const
 * <- Const
-239:    LDA  4,1(4) 	pop prepare
-240:     LD  2,-1(4) 	op: recover left
-241:    ADD  1,2,1 	op +
+260:    LDA  4,1(4) 	pop prepare
+261:     LD  2,-1(4) 	op: recover left
+262:    ADD  1,2,1 	op +
 * <- Op
-242:    LDA  4,1(4) 	pop prepare
-243:     LD  2,-1(4) 	recover bx
-244:     ST  1,0(2) 	assign: store
+263:    LDA  4,1(4) 	pop prepare
+264:     LD  2,-1(4) 	recover bx
+265:     ST  1,0(2) 	assign: store
 * <- assign
 * <- compound
-* jump to end if test fails
-* -> Op
-* -> Id
-246:    LDA  2,-2(5) 	get local address
-247:     LD  1,0(2) 	get variable value
-* <- Id
-248:    LDA  4,-1(4) 	push prepare
-249:     ST  1,0(4) 	op: protect left
-* -> Op
-* -> Id
-250:    LDA  2,7(5) 	get param variable address
-251:     LD  1,0(2) 	get variable value
-* <- Id
-252:    LDA  4,-1(4) 	push prepare
-253:     ST  1,0(4) 	op: protect left
-* -> Const
-254:    LDC  1,1(0) 	load const
-* <- Const
-255:    LDA  4,1(4) 	pop prepare
-256:     LD  2,-1(4) 	op: recover left
-257:    SUB  1,2,1 	op -
-* <- Op
-258:    LDA  4,1(4) 	pop prepare
-259:     LD  2,-1(4) 	op: recover left
-260:    SUB  1,2,1 	op <
-261:    JLT  1,2(7) 	br if true
-262:    LDC  1,0(0) 	false case
-263:    LDA  7,1(7) 	unconditional jmp
-264:    LDC  1,1(0) 	true case
-* <- Op
-265:    LDA  7,190(0) 	jump to test
-245:    JEQ  1,266(0) 	jump to end
+266:    LDA  7,157(0) 	jump to test
+176:    JEQ  1,267(0) 	jump to end
 * <- while
 * <- compound
-266:    LDA  4,0(5) 	let sp == bp
-267:    LDA  4,2(4) 	pop prepare
-268:     LD  5,-2(4) 	pop old bp
-269:     LD  7,-1(4) 	pop return addr
+267:    LDA  4,0(5) 	let sp == bp
+268:    LDA  4,2(4) 	pop prepare
+269:     LD  5,-2(4) 	pop old bp
+270:     LD  7,-1(4) 	pop return addr
 * <- function
 * -> function:
-270:    LDA  4,-1(4) 	push prepare
-271:     ST  5,0(4) 	push old bp
-272:    LDA  5,0(4) 	let bp == sp
-273:    LDA  4,-1(4) 	allocate for local variables
+271:    LDA  4,-1(4) 	push prepare
+272:     ST  5,0(4) 	push old bp
+273:    LDA  5,0(4) 	let bp == sp
+274:    LDA  4,-1(4) 	allocate for local variables
 * -> compound
 * -> assign
 * -> Id
-274:    LDA  2,-1(5) 	get local address
+275:    LDA  2,-1(5) 	get local address
 * <- Id
-275:    LDA  4,-1(4) 	push prepare
-276:     ST  2,0(4) 	protect bx
+276:    LDA  4,-1(4) 	push prepare
+277:     ST  2,0(4) 	protect bx
 * -> Const
-277:    LDC  1,0(0) 	load const
+278:    LDC  1,0(0) 	load const
 * <- Const
-278:    LDA  4,1(4) 	pop prepare
-279:     LD  2,-1(4) 	recover bx
-280:     ST  1,0(2) 	assign: store
+279:    LDA  4,1(4) 	pop prepare
+280:     LD  2,-1(4) 	recover bx
+281:     ST  1,0(2) 	assign: store
 * <- assign
 * -> while
 * jump here after body
-* -> compound
-* -> assign
-281:    LDA  4,-1(4) 	push prepare
-282:     ST  2,0(4) 	protect bx
-* -> call
-283:    LDA  1,3(7) 	store returned PC
-284:    LDA  4,-1(4) 	push prepare
-285:     ST  1,0(4) 	push returned PC
-286:    LDC  7,9(0) 	jump to function
-287:    LDA  4,0(4) 	release parameters
-* <- call
-288:    LDA  4,1(4) 	pop prepare
-289:     LD  2,-1(4) 	recover bx
-290:     ST  1,0(2) 	assign: store
-* <- assign
-* -> assign
-* -> Id
-291:    LDA  2,-1(5) 	get local address
-* <- Id
-292:    LDA  4,-1(4) 	push prepare
-293:     ST  2,0(4) 	protect bx
 * -> Op
 * -> Id
-294:    LDA  2,-1(5) 	get local address
-295:     LD  1,0(2) 	get variable value
+282:    LDA  2,-1(5) 	get local address
+283:     LD  1,0(2) 	get variable value
 * <- Id
-296:    LDA  4,-1(4) 	push prepare
-297:     ST  1,0(4) 	op: protect left
+284:    LDA  4,-1(4) 	push prepare
+285:     ST  1,0(4) 	op: protect left
 * -> Const
-298:    LDC  1,1(0) 	load const
+286:    LDC  1,10(0) 	load const
 * <- Const
-299:    LDA  4,1(4) 	pop prepare
-300:     LD  2,-1(4) 	op: recover left
-301:    ADD  1,2,1 	op +
+287:    LDA  4,1(4) 	pop prepare
+288:     LD  2,-1(4) 	op: recover left
+289:    SUB  1,2,1 	op <
+290:    JLT  1,2(7) 	br if true
+291:    LDC  1,0(0) 	false case
+292:    LDA  7,1(7) 	unconditional jmp
+293:    LDC  1,1(0) 	true case
 * <- Op
-302:    LDA  4,1(4) 	pop prepare
-303:     LD  2,-1(4) 	recover bx
-304:     ST  1,0(2) 	assign: store
-* <- assign
-* -> call
-* -> Const
-305:    LDC  1,10(0) 	load const
-* <- Const
-306:    LDA  4,-1(4) 	push prepare
-307:     ST  1,0(4) 	push parameters
-* -> Const
-308:    LDC  1,0(0) 	load const
-* <- Const
-309:    LDA  4,-1(4) 	push prepare
-310:     ST  1,0(4) 	push parameters
+* jump to end if test fails
+* -> compound
+* -> assign
+* -> array element
+295:    LDA  2,0(6) 	get global array address
+296:    LDA  4,-1(4) 	push prepare
+297:     ST  2,0(4) 	protect array address
 * -> Id
-311:    LDA  2,-1(6) 	get global address
-312:     LD  1,0(2) 	get variable value
+298:    LDA  2,-1(5) 	get local address
+299:     LD  1,0(2) 	get variable value
 * <- Id
-313:    LDA  4,-1(4) 	push prepare
-314:     ST  1,0(4) 	push parameters
-315:    LDA  1,3(7) 	store returned PC
-316:    LDA  4,-1(4) 	push prepare
-317:     ST  1,0(4) 	push returned PC
-318:    LDC  7,118(0) 	jump to function
-319:    LDA  4,3(4) 	release parameters
+300:    LDA  4,1(4) 	pop prepare
+301:     LD  2,-1(4) 	recover array address
+302:    SUB  2,2,1 	get address of array element
+* <- array element
+303:    LDA  4,-1(4) 	push prepare
+304:     ST  2,0(4) 	protect bx
+* -> call
+305:    LDA  1,3(7) 	store returned PC
+306:    LDA  4,-1(4) 	push prepare
+307:     ST  1,0(4) 	push returned PC
+308:    LDC  7,9(0) 	jump to function
+309:    LDA  4,0(4) 	release parameters
 * <- call
+310:    LDA  4,1(4) 	pop prepare
+311:     LD  2,-1(4) 	recover bx
+312:     ST  1,0(2) 	assign: store
+* <- assign
 * -> assign
 * -> Id
-320:    LDA  2,-1(5) 	get local address
+313:    LDA  2,-1(5) 	get local address
 * <- Id
-321:    LDA  4,-1(4) 	push prepare
-322:     ST  2,0(4) 	protect bx
+314:    LDA  4,-1(4) 	push prepare
+315:     ST  2,0(4) 	protect bx
+* -> Op
+* -> Id
+316:    LDA  2,-1(5) 	get local address
+317:     LD  1,0(2) 	get variable value
+* <- Id
+318:    LDA  4,-1(4) 	push prepare
+319:     ST  1,0(4) 	op: protect left
 * -> Const
-323:    LDC  1,0(0) 	load const
+320:    LDC  1,1(0) 	load const
 * <- Const
+321:    LDA  4,1(4) 	pop prepare
+322:     LD  2,-1(4) 	op: recover left
+323:    ADD  1,2,1 	op +
+* <- Op
 324:    LDA  4,1(4) 	pop prepare
 325:     LD  2,-1(4) 	recover bx
 326:     ST  1,0(2) 	assign: store
 * <- assign
-* -> while
-* jump here after body
-* -> compound
+* <- compound
+327:    LDA  7,282(0) 	jump to test
+294:    JEQ  1,328(0) 	jump to end
+* <- while
 * -> call
-327:    LDA  4,-1(4) 	push prepare
-328:     ST  1,0(4) 	push parameters
-329:    LDA  1,3(7) 	store returned PC
-330:    LDA  4,-1(4) 	push prepare
-331:     ST  1,0(4) 	push returned PC
-332:    LDC  7,12(0) 	jump to function
-333:    LDA  4,1(4) 	release parameters
+* -> Const
+328:    LDC  1,10(0) 	load const
+* <- Const
+329:    LDA  4,-1(4) 	push prepare
+330:     ST  1,0(4) 	push parameters
+* -> Const
+331:    LDC  1,0(0) 	load const
+* <- Const
+332:    LDA  4,-1(4) 	push prepare
+333:     ST  1,0(4) 	push parameters
+* -> Id
+334:    LDA  2,-1(6) 	get global address
+335:     LD  1,0(2) 	get variable value
+* <- Id
+336:    LDA  4,-1(4) 	push prepare
+337:     ST  1,0(4) 	push parameters
+338:    LDA  1,3(7) 	store returned PC
+339:    LDA  4,-1(4) 	push prepare
+340:     ST  1,0(4) 	push returned PC
+341:    LDC  7,145(0) 	jump to function
+342:    LDA  4,3(4) 	release parameters
 * <- call
 * -> assign
 * -> Id
-334:    LDA  2,-1(5) 	get local address
+343:    LDA  2,-1(5) 	get local address
 * <- Id
-335:    LDA  4,-1(4) 	push prepare
-336:     ST  2,0(4) 	protect bx
+344:    LDA  4,-1(4) 	push prepare
+345:     ST  2,0(4) 	protect bx
+* -> Const
+346:    LDC  1,0(0) 	load const
+* <- Const
+347:    LDA  4,1(4) 	pop prepare
+348:     LD  2,-1(4) 	recover bx
+349:     ST  1,0(2) 	assign: store
+* <- assign
+* -> while
+* jump here after body
 * -> Op
 * -> Id
-337:    LDA  2,-1(5) 	get local address
-338:     LD  1,0(2) 	get variable value
+350:    LDA  2,-1(5) 	get local address
+351:     LD  1,0(2) 	get variable value
 * <- Id
-339:    LDA  4,-1(4) 	push prepare
-340:     ST  1,0(4) 	op: protect left
+352:    LDA  4,-1(4) 	push prepare
+353:     ST  1,0(4) 	op: protect left
 * -> Const
-341:    LDC  1,1(0) 	load const
+354:    LDC  1,10(0) 	load const
 * <- Const
-342:    LDA  4,1(4) 	pop prepare
-343:     LD  2,-1(4) 	op: recover left
-344:    ADD  1,2,1 	op +
+355:    LDA  4,1(4) 	pop prepare
+356:     LD  2,-1(4) 	op: recover left
+357:    SUB  1,2,1 	op <
+358:    JLT  1,2(7) 	br if true
+359:    LDC  1,0(0) 	false case
+360:    LDA  7,1(7) 	unconditional jmp
+361:    LDC  1,1(0) 	true case
 * <- Op
-345:    LDA  4,1(4) 	pop prepare
-346:     LD  2,-1(4) 	recover bx
-347:     ST  1,0(2) 	assign: store
+* jump to end if test fails
+* -> compound
+* -> call
+* -> array element
+363:    LDA  2,0(6) 	get global array address
+364:    LDA  4,-1(4) 	push prepare
+365:     ST  2,0(4) 	protect array address
+* -> Id
+366:    LDA  2,-1(5) 	get local address
+367:     LD  1,0(2) 	get variable value
+* <- Id
+368:    LDA  4,1(4) 	pop prepare
+369:     LD  2,-1(4) 	recover array address
+370:    SUB  2,2,1 	get address of array element
+371:     LD  1,0(2) 	get value of array element
+* <- array element
+372:    LDA  4,-1(4) 	push prepare
+373:     ST  1,0(4) 	push parameters
+374:    LDA  1,3(7) 	store returned PC
+375:    LDA  4,-1(4) 	push prepare
+376:     ST  1,0(4) 	push returned PC
+377:    LDC  7,12(0) 	jump to function
+378:    LDA  4,1(4) 	release parameters
+* <- call
+* -> assign
+* -> Id
+379:    LDA  2,-1(5) 	get local address
+* <- Id
+380:    LDA  4,-1(4) 	push prepare
+381:     ST  2,0(4) 	protect bx
+* -> Op
+* -> Id
+382:    LDA  2,-1(5) 	get local address
+383:     LD  1,0(2) 	get variable value
+* <- Id
+384:    LDA  4,-1(4) 	push prepare
+385:     ST  1,0(4) 	op: protect left
+* -> Const
+386:    LDC  1,1(0) 	load const
+* <- Const
+387:    LDA  4,1(4) 	pop prepare
+388:     LD  2,-1(4) 	op: recover left
+389:    ADD  1,2,1 	op +
+* <- Op
+390:    LDA  4,1(4) 	pop prepare
+391:     LD  2,-1(4) 	recover bx
+392:     ST  1,0(2) 	assign: store
 * <- assign
 * <- compound
-* jump to end if test fails
-* -> Op
-* -> Id
-349:    LDA  2,-1(5) 	get local address
-350:     LD  1,0(2) 	get variable value
-* <- Id
-351:    LDA  4,-1(4) 	push prepare
-352:     ST  1,0(4) 	op: protect left
-* -> Const
-353:    LDC  1,10(0) 	load const
-* <- Const
-354:    LDA  4,1(4) 	pop prepare
-355:     LD  2,-1(4) 	op: recover left
-356:    SUB  1,2,1 	op <
-357:    JLT  1,2(7) 	br if true
-358:    LDC  1,0(0) 	false case
-359:    LDA  7,1(7) 	unconditional jmp
-360:    LDC  1,1(0) 	true case
-* <- Op
-361:    LDA  7,327(0) 	jump to test
-348:    JEQ  1,362(0) 	jump to end
+393:    LDA  7,350(0) 	jump to test
+362:    JEQ  1,394(0) 	jump to end
 * <- while
 * <- compound
-* jump to end if test fails
-* -> Op
-* -> Id
-363:    LDA  2,-1(5) 	get local address
-364:     LD  1,0(2) 	get variable value
-* <- Id
-365:    LDA  4,-1(4) 	push prepare
-366:     ST  1,0(4) 	op: protect left
-* -> Const
-367:    LDC  1,10(0) 	load const
-* <- Const
-368:    LDA  4,1(4) 	pop prepare
-369:     LD  2,-1(4) 	op: recover left
-370:    SUB  1,2,1 	op <
-371:    JLT  1,2(7) 	br if true
-372:    LDC  1,0(0) 	false case
-373:    LDA  7,1(7) 	unconditional jmp
-374:    LDC  1,1(0) 	true case
-* <- Op
-375:    LDA  7,281(0) 	jump to test
-362:    JEQ  1,376(0) 	jump to end
-* <- while
-* <- compound
-376:    LDA  4,0(5) 	let sp == bp
-377:    LDA  4,2(4) 	pop prepare
-378:     LD  5,-2(4) 	pop old bp
-379:     LD  7,-1(4) 	pop return addr
+394:    LDA  4,0(5) 	let sp == bp
+395:    LDA  4,2(4) 	pop prepare
+396:     LD  5,-2(4) 	pop old bp
+397:     LD  7,-1(4) 	pop return addr
 * <- function
   3:    LDA  1,3(7) 	store returned PC
   4:    LDA  4,-1(4) 	push prepare
   5:     ST  1,0(4) 	push returned PC
-  6:    LDC  7,270(0) 	jump to function
+  6:    LDC  7,271(0) 	jump to function
   7:    LDA  4,1(4) 	release local var
 * End of execution.
   8:   HALT  0,0,0 	

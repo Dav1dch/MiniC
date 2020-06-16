@@ -96,107 +96,6 @@ void emitGetAddr(node *var)
   }
 }
 
-/* Procedure genDec generates code at an declaration node */
-static void genDec(node *tree)
-{
-  int loc;
-  BucketList fun;
-  node *p1, *p2;
-  switch (tree->kind.exp)
-  {
-
-  case FunK:
-    if (tree->name == "main")
-      main_locals = tree->nodeChild[1]->local_size;
-    if (TraceCode)
-      emitComment("-> function:");
-
-    p1 = tree->nodeChild[0]->next; /*parameter*/
-    p2 = tree->nodeChild[1];       /*body*/
-
-    fun = fun_lookup(tree->name, 0);
-    fun->fun_start = emitSkip(0);
-
-    /*prepare bp & sp*/
-    emitRM("LDA", sp, -1, sp, "push prepare");
-    emitRM("ST", bp, 0, sp, "push old bp");
-    emitRM("LDA", bp, 0, sp, "let bp == sp");
-    emitRM("LDA", sp, p2->nodeChild[0] != NULL ? -((p2->nodeChild[0])->local_size) : 0, sp, "allocate for local variables");
-
-    /*push param symtab, prepare for body*/
-
-    // pushTable(fun->symbolTable);
-    /*generate body*/
-    cGen(p2);
-    //  popTable();
-
-    /*generate return code for void functions*/
-    if (tree->type == 0)
-    {
-      /*return*/
-      emitRM("LDA", sp, 0, bp, "let sp == bp");
-      emitRM("LDA", sp, 2, sp, "pop prepare");
-      emitRM("LD", bp, -2, sp, "pop old bp");
-      emitRM("LD", pc, -1, sp, "pop return addr");
-    }
-
-    if (TraceCode)
-      emitComment("<- function");
-
-    break;
-  case VarK:
-    /* if(TraceCode) emitComment("-> variable");
-  	     emitGetAddr(tree);
-
-             if(getValue){
-              if(tree->isArray)
-               emitRM("LDA",ax,0,bx,"get array variable value( == address)");
-             else
-                emitRM("LD",ax,0,bx,"get variable value");
-
-             }
-             if(TraceCode) emitComment("<- variable");
-            */
-    break;
-  case ArrayK:
-
-    if (tree->isGlobal)
-    {
-      if (TraceCode)
-        emitComment("-> array element");
-      p1 = tree->nodeChild[0]; /*index expression*/
-
-      //  var = lookup_var(tree->name);
-      emitGetAddr(tree);
-
-      /* protect bx*/
-      emitRM("LDA", sp, -1, sp, "push prepare");
-      emitRM("ST", bx, 0, sp, "protect array address");
-
-      tmp = getValue;
-      getValue = 1;
-      cGen(p1);
-      getValue = tmp;
-
-      /* recover bx*/
-      emitRM("LDA", sp, 1, sp, "pop prepare");
-      emitRM("LD", bx, -1, sp, "recover array address");
-
-      emitRO("SUB", bx, bx, ax, "get address of array element");
-      if (getValue)
-        emitRM("LD", ax, 0, bx, "get value of array element");
-
-      if (TraceCode)
-        emitComment("<- array element");
-    }
-    break; /* ArrayK */
-
-  default:
-    emitComment("BUG: Unknown declaration");
-    break;
-  }
-} /* genDec */
-
 /* Procedure genStmt generates code at a statement node */
 static void genStmt(node *tree)
 {
@@ -210,8 +109,9 @@ static void genStmt(node *tree)
     if (TraceCode)
       emitComment("-> call");
     p1 = tree->nodeChild[0]; /*arguments*/
-    if (p1 != NULL) {
-        p1 = p1->next;
+    if (p1 != NULL)
+    {
+      p1 = p1->next;
     }
     while (p1 != NULL)
     {
@@ -282,22 +182,52 @@ static void genStmt(node *tree)
 
     break;
   case VarK:
-    /* if(TraceCode) emitComment("-> variable");
-  	     emitGetAddr(tree);
+    // if (TraceCode)
+    //   emitComment("-> variable");
+    // emitGetAddr(tree);
 
-             if(getValue){
-              if(tree->isArray)
-               emitRM("LDA",ax,0,bx,"get array variable value( == address)");
-             else
-                emitRM("LD",ax,0,bx,"get variable value");
-
-             }
-             if(TraceCode) emitComment("<- variable");
-            */
+    // if (getValue)
+    // {
+    //   if (tree->isArray)
+    //     emitRM("LDA", ax, 0, bx, "get array variable value( == address)");
+    //   else
+    //     emitRM("LD", ax, 0, bx, "get variable value");
+    // }
+    // if (TraceCode)
+    //   emitComment("<- variable");
     break;
   case ArrayK:
 
     if (tree->isGlobal)
+    {
+      if (TraceCode)
+        emitComment("-> array element");
+      p1 = tree->nodeChild[0]; /*index expression*/
+
+      //  var = lookup_var(tree->name);
+      emitGetAddr(tree);
+
+      /* protect bx*/
+      emitRM("LDA", sp, -1, sp, "push prepare");
+      emitRM("ST", bx, 0, sp, "protect array address");
+
+      tmp = getValue;
+      getValue = 1;
+      cGen(p1);
+      getValue = tmp;
+
+      /* recover bx*/
+      emitRM("LDA", sp, 1, sp, "pop prepare");
+      emitRM("LD", bx, -1, sp, "recover array address");
+
+      emitRO("SUB", bx, bx, ax, "get address of array element");
+      if (getValue)
+        emitRM("LD", ax, 0, bx, "get value of array element");
+
+      if (TraceCode)
+        emitComment("<- array element");
+    }
+    else
     {
       if (TraceCode)
         emitComment("-> array element");
@@ -359,8 +289,8 @@ static void genStmt(node *tree)
   case IteraK:
     if (TraceCode)
       emitComment("-> while");
-    p2 = tree->nodeChild[0];
-    p1 = tree->nodeChild[1];
+    p1 = tree->nodeChild[0];
+    p2 = tree->nodeChild[1];
     savedLoc1 = emitSkip(0);
     emitComment("jump here after body");
     /* generate code for test */

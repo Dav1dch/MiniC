@@ -17,10 +17,10 @@ fun-declaration:
 				var: 
 					name: low
 			assignment: 
-				varName: x
+				varName: j
 				expression: 
 				varArray: 
-					name: 
+					name: a
 					
 			assignment: 
 				varName: i
@@ -52,21 +52,21 @@ fun-declaration:
 					simple-expression: 
 						first:
 							varArray: 
-								name: 
+								name: a
 								
 						op: <
 						second:
 							var: 
-								name: x
+								name: j
 				statement: 
 	compound: 
 		local-declarations: null
 		statement-list: 
 			assignment: 
-				varName: x
+				varName: j
 				expression: 
 				varArray: 
-					name: 
+					name: a
 					
 			assignment: 
 				varName: k
@@ -103,56 +103,6 @@ fun-declaration:
 				expression: 
 				var: 
 					name: low
-			assignment: 
-				varName: 
-				expression: 
-				const: 
-					val: 0
-			assignment: 
-				varName: 
-				expression: 
-				const: 
-					val: 0
-			assignment: 
-				varName: 
-				expression: 
-				const: 
-					val: 0
-			assignment: 
-				varName: 
-				expression: 
-				const: 
-					val: 0
-			assignment: 
-				varName: 
-				expression: 
-				const: 
-					val: 0
-			assignment: 
-				varName: 
-				expression: 
-				const: 
-					val: 0
-			assignment: 
-				varName: 
-				expression: 
-				const: 
-					val: 0
-			assignment: 
-				varName: 
-				expression: 
-				const: 
-					val: 0
-			assignment: 
-				varName: 
-				expression: 
-				const: 
-					val: 0
-			assignment: 
-				varName: 
-				expression: 
-				const: 
-					val: 0
 			iteration-stmt: 
 				expression: 
 					simple-expression: 
@@ -180,16 +130,16 @@ fun-declaration:
 				varName: t
 				expression: 
 				varArray: 
-					name: 
+					name: a
 					
 			assignment: 
-				varName: 
+				varName: a
 				expression: 
 				varArray: 
-					name: 
+					name: a
 					
 			assignment: 
-				varName: 
+				varName: a
 				expression: 
 				var: 
 					name: t
@@ -231,7 +181,7 @@ fun-declaration:
 		local-declarations: null
 		statement-list: 
 			assignment: 
-				varName: 
+				varName: x
 				expression: 
 			assignment: 
 				varName: i
