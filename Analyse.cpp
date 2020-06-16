@@ -1,6 +1,10 @@
 #include "Analyse.h"
 #include "Symtab.h"
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2b077d41a07e52291a32c3aa74c88b3955505b2a
 extern int HighScope;
 
 static int scope_a = 0;
@@ -8,11 +12,11 @@ static int scope_a = 0;
 static int location[MAX_SCOPE] = {0, 0, 0};
 
 static int No_change = 0;
-/* Procedure traverse is a generic recursive 
- * syntax tree traversal routine:
- * it applies preProc in preorder and postProc 
- * in postorder to tree pointed to by t
- */
+
+/*
+前序遍历生成符号表
+后序遍历类型检查
+*/
 static void traverse(node *t,
                      void (*preProc)(node *),
                      void (*postProc)(node *))
@@ -30,9 +34,8 @@ static void traverse(node *t,
   }
 }
 
-/* nullProc is a do-nothing procedure to 
- * generate preorder-only or postorder-only
- * traversals from traverse
+/* 
+空函数，什么也不执行
  */
 static void nullProc(node *t)
 {
@@ -42,9 +45,8 @@ static void nullProc(node *t)
     return;
 }
 
-/* Procedure insertNode inserts 
- * identifiers stored in t into 
- * the symbol table 
+/* 
+将语法树结点中的变量、方法名插入符号表中
  */
 static void insertNode(node *t)
 {
@@ -54,14 +56,10 @@ static void insertNode(node *t)
     switch (t->kind.stmt)
     {
     case FunK:
-      t->scope = 0; /* to parse tree */
-                    /* all functios are global so searching in global scope */
+      t->scope = 0;  // scope==0 表示是全局的方法， main() gcd()
       if (st_lookup(t->name, 0) == -1)
-        /* not yet in table, so treat as new definition */
         st_insert(t->name, t->lineno, -1, 0, 0);
       else
-        /* already in table, so ignore location, 
-             add line number of use only */
         st_insert(t->name, t->lineno, -1, 0, 0);
       break;
     case CompK:
@@ -88,11 +86,8 @@ static void insertNode(node *t)
     case VarK:
       t->scope = t->isParameter == 1 ? scope_a + 1 : scope_a;
       if (st_lookup(t->name, t->isParameter == 1 ? scope_a + 1 : scope_a) == -1)
-        /* not yet in table, so treat as new definition */
         st_insert(t->name, t->lineno, location[scope_a]++, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
       else
-        /* already in table, so ignore location, 
-             add line number of use only */
         st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
       break;
     case ArrayK:
@@ -100,48 +95,37 @@ static void insertNode(node *t)
       {
         t->scope = scope_a + 1;
         if (st_lookup(t->name, scope_a + 1) == -1)
-          /* not yet in table, so treat as new definition */
           st_insert(t->name, t->lineno, location[scope_a + 1]++, scope_a + 1, 1);
         else
-          /* already in table, so ignore location, 
-             	add line number of use only */
           st_insert(t->name, t->lineno, 0, scope_a + 1, 1);
       }
       else
       {
         if (st_lookup(t->name, 0) == -1)
         {
-          t->scope = scope_a; /* if not in global */
+          t->scope = scope_a; // 不是全局的
         }
         else
         {
-          t->scope = 0; /* in global already do not insert to symbol*/
+          t->scope = 0; 
           break;
         }
 
         if (st_lookup(t->name, scope_a) == -1)
         {
-          /* not yet in table, so treat as new definition */
           st_insert(t->name, t->lineno, location[scope_a]++, scope_a, t->isParameter == 1 ? 1 : 0);
           if (t->isParameter != 1)
             location[scope_a] = location[scope_a] + (t->val - 1);
         }
         else
-          /* already in table, so ignore location, 
-          	   add line number of use only */
           st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
       }
       break;
     case CallK:
-      // printf("%d %s\n",t->param_size,t->attr.name);
       t->scope = 0;
-      /* all functios are global so searching in global scope */
       if (st_lookup(t->name, 0) == -1)
-        /* not yet in table, so treat as new definition */
         st_insert(t->name, t->lineno, -1, 0, 0);
       else
-        /* already in table, so ignore location, 
-             add line number of use only */
         st_insert(t->name, t->lineno, -1, 0, 0);
       break;
 
@@ -157,16 +141,14 @@ static void insertNode(node *t)
         t->scope = t->isParameter == 1 ? scope_a + 1 : scope_a;
       else
         t->scope = 0;
-      /* all identifiers must be declared before use execpt parameter so we insert just parameters to symbol table*/
+        // 函数的参数
       if (t->isParameter == 1)
       {
         t->scope = t->isParameter == 1 ? scope_a + 1 : scope_a;
         if (st_lookup(t->name, t->isParameter == 1 ? scope_a + 1 : scope_a) == -1)
-          /* not yet in table, so treat as new definition */
           st_insert(t->name, t->lineno, location[scope_a]++, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
         else
-          /* already in table, so ignore location, 
-             	add line number of use only */
+
           st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
       }
       break;
@@ -179,27 +161,26 @@ static void insertNode(node *t)
   }
 }
 
-/* Function buildSymtab constructs the symbol 
- * table by preorder traversal of the syntax tree
- */
+/*
+遍历构建符号表
+*/
 void buildSymtab(node *syntaxTree)
 {
   traverse(syntaxTree, insertNode, nullProc);
 }
 
+
 static void typeError(node *t, char *message)
 {
 }
 
-/* Procedure checkNode performs
- * type checking at a single tree node
- */
+
 static void checkNode(node *t)
 {
 }
 
-/* Procedure typeCheck performs type checking 
- * by a postorder syntax tree traversal
+/* 
+类型检查
  */
 void typeCheck(node *syntaxTree)
 {
