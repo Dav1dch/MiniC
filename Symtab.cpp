@@ -1,3 +1,12 @@
+/*
+ * @Copyright: minic
+ * @Author: linmaosen
+ * @Description: 实现查询、插入符号表以及输出符号表到文件的函数
+ * @LastEditors: linmaosen
+ * @LastEditTime: 2020-06-01
+ * @FilePath: /minic/Symtab.cpp
+ */
+
 #include <stdio.h>
 #include <cstdlib>
 #include "Symtab.h"
@@ -5,13 +14,13 @@
 using namespace std;
 
 extern int HighScope;
-
-
 #define SHIFT 4
 
-/*
-哈希值
-*/
+/**
+ * @description: 返回哈希值
+ * @param {string} 
+ * @return: int
+ */
 static int Hash(string key)
 {
   int temp = 0;
@@ -24,11 +33,12 @@ static int Hash(string key)
   return temp;
 }
 
-/*
-插入符号表，
-如果哈希值对应的位置不存在，则在头部插入
-如果哈希值对应的位置存在，则在尾部连上
-*/
+
+/**
+ * @description: 插入符号表，如果哈希值对应的位置不存在，则在头部插入，如果哈希值对应的位置存在，则在尾部连上
+ * @param {string, int, int, int, int} 
+ * @return: void
+ */
 void st_insert(string name, int lineno, int loc, int sp, int para)
 {
   int h = Hash(name);
@@ -60,8 +70,11 @@ void st_insert(string name, int lineno, int loc, int sp, int para)
   }
 } 
 
-/* 
-查询函数在符号表中的位置
+
+/**
+ * @description: 查询函数名在符号表中的位置
+ * @param {string, int} 
+ * @return: BucketList
  */
 BucketList fun_lookup(string name, int sp)
 {
@@ -75,8 +88,11 @@ BucketList fun_lookup(string name, int sp)
     return l;
 }
 
-/* 
-查询变量在符号表中的位置
+
+/**
+ * @description: 查询变量在符号表中的位置
+ * @param {string, int} 
+ * @return: BucketList
  */
 BucketList var_lookup(string name, int sp)
 {
@@ -91,6 +107,11 @@ BucketList var_lookup(string name, int sp)
 }
 
 
+/**
+ * @description: 查询符号在符号表中的位置
+ * @param {string, int} 
+ * @return: int
+ */
 int st_lookup(string name, int sp)
 {
   int h = Hash(name);
@@ -103,8 +124,11 @@ int st_lookup(string name, int sp)
     return l->memloc;
 }
 
-/* 
-迭代输出符号表
+
+/**
+ * @description: 在指定文件中输出符号表
+ * @param {FILE} 
+ * @return: void
  */
 void printSymTab(FILE *listing)
 {
@@ -136,4 +160,4 @@ void printSymTab(FILE *listing)
     }
     fprintf(listing, "\n");
   }
-} /* printSymTab */
+} 

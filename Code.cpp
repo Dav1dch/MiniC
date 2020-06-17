@@ -1,30 +1,38 @@
+/*
+ * @Copyright: minic
+ * @Author: linmaosen
+ * @Description: 实现中间代码的记录出口等函数
+ * @LastEditors: linmaosen
+ * @LastEditTime: 2020-06-13
+ * @FilePath: /minic/Code.cpp
+ */
+
 #include "Code.h"
 
 extern FILE *code;
 
 extern int TraceCode;
 
-/* TM location number for current instruction emission */
+// 当前指令的位置
 static int emitLoc = 0 ;
 
-/* Highest TM location emitted so far
-   For use in conjunction with emitSkip,
-   emitBackup, and emitRestore */
+// 最大的位置
 static int highEmitLoc = 0;
 
-/* Procedure emitComment prints a comment line 
- * with comment c in the code file
+
+/**
+ * @description: 输出注释
+ * @param {char*} 
+ * @return: void
  */
 void emitComment( char * c )
 { if (TraceCode) fprintf(code,"* %s\n",c);}
 
-/* Procedure emitRO emits a register-only
- * TM instruction
- * op = the opcode
- * r = target register
- * s = 1st source register
- * t = 2nd source register
- * c = a comment to be printed if TraceCode is TRUE
+
+/**
+ * @description: 添加中间代码
+ * @param {char*, int, int, int, char*} 
+ * @return: void
  */
 void emitRO( char *op, int r, int s, int t, char *c)
 { fprintf(code,"%3d:  %5s  %d,%d,%d ",emitLoc++,op,r,s,t);
@@ -33,13 +41,11 @@ void emitRO( char *op, int r, int s, int t, char *c)
   if (highEmitLoc < emitLoc) highEmitLoc = emitLoc ;
 } /* emitRO */
 
-/* Procedure emitRM emits a register-to-memory
- * TM instruction
- * op = the opcode
- * r = target register
- * d = the offset
- * s = the base register
- * c = a comment to be printed if TraceCode is TRUE
+
+/**
+ * @description: 添加中间代码
+ * @param {char*, int, int, int, char*} 
+ * @return: void
  */
 void emitRM( char * op, int r, int d, int s, char *c)
 { fprintf(code,"%3d:  %5s  %d,%d(%d) ",emitLoc++,op,r,d,s);
@@ -48,9 +54,11 @@ void emitRM( char * op, int r, int d, int s, char *c)
   if (highEmitLoc < emitLoc)  highEmitLoc = emitLoc ;
 } /* emitRM */
 
-/* Function emitSkip skips "howMany" code
- * locations for later backpatch. It also
- * returns the current code position
+
+/**
+ * @description: 让emitLoc加上howMany, 并返回之前的位置
+ * @param {int} 
+ * @return: int
  */
 int emitSkip( int howMany)
 {  int i = emitLoc;
@@ -59,28 +67,31 @@ int emitSkip( int howMany)
    return i;
 } /* emitSkip */
 
-/* Procedure emitBackup backs up to 
- * loc = a previously skipped location
+
+/**
+ * @description: 回退到指定位置，用于回退设置出口
+ * @param {int} 
+ * @return: void
  */
 void emitBackup( int loc)
 { if (loc > highEmitLoc) emitComment("BUG in emitBackup");
   emitLoc = loc ;
 } /* emitBackup */
 
-/* Procedure emitRestore restores the current 
- * code position to the highest previously
- * unemitted position
+
+/**
+ * @description: 让emitLoc等于最大值，回到最大的位置
+ * @param {} 
+ * @return: void
  */
 void emitRestore(void)
 { emitLoc = highEmitLoc;}
 
-/* Procedure emitRM_Abs converts an absolute reference 
- * to a pc-relative reference when emitting a
- * register-to-memory TM instruction
- * op = the opcode
- * r = target register
- * a = the absolute location in memory
- * c = a comment to be printed if TraceCode is TRUE
+
+/**
+ * @description: 转换成绝对位置
+ * @param {char*, int, int, char*} 
+ * @return: void
  */
 void emitRM_Abs( char *op, int r, int a, char * c)
 { fprintf(code,"%3d:  %5s  %d,%d(%d) ",
