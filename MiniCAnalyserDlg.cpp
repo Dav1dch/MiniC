@@ -92,10 +92,7 @@ ON_COMMAND(ID_32771, &CMiniCAnalyserDlg::Open)
 ON_COMMAND(ID_32773, &CMiniCAnalyserDlg::CreateTree)
 ON_COMMAND(ID_32774, &CMiniCAnalyserDlg::ShowTree)
 ON_COMMAND(ID_32775, &CMiniCAnalyserDlg::Exit)
-ON_EN_CHANGE(IDC_FILE, &CMiniCAnalyserDlg::OnEnChangeFile)
-ON_EN_CHANGE(IDC_CONTENT2, &CMiniCAnalyserDlg::OnEnChangeContent2)
 ON_COMMAND(ID_32776, &CMiniCAnalyserDlg::On32776)
-ON_COMMAND(ID_32777, &CMiniCAnalyserDlg::On32777)
 END_MESSAGE_MAP()
 
 // CMiniCAnalyserDlg 消息处理程序
@@ -241,16 +238,6 @@ void CMiniCAnalyserDlg::CreateTree()
 	fclose(lexOut);
 	fclose(yyin);
 
-	symtab = fopen("./txt/symtab.txt", "w+");
-	code = fopen("./txt/code.mc", "w+");
-	// 	生成字符表
-	buildSymtab(programNode->nodeChild[0]->next);
-	printSymTab(symtab);
-
-
-	// 生成中间代码
-	codeGen(programNode->nodeChild[0]->next);
-	fclose(code);
 
 	MessageBox(L"生成成功，点击查看即可查看语法树");
 }
@@ -289,26 +276,26 @@ void CMiniCAnalyserDlg::Exit()
 	OnCancel();
 }
 
-void CMiniCAnalyserDlg::OnEnChangeFile()
+
+
+
+// 生成符号表和中间代码
+void CMiniCAnalyserDlg::On32778()
 {
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+	symtab = fopen("./txt/symtab.txt", "w+");
+	code = fopen("./txt/code.mc", "w+");
+	// 	生成符号表
+	buildSymtab(programNode->nodeChild[0]->next);
+	printSymTab(symtab);
 
-	// TODO:  在此添加控件通知处理程序代码
+
+	// 生成中间代码
+	codeGen(programNode->nodeChild[0]->next);
+	fclose(code);
+
+	MessageBox(L"生成成功，点击查看即可查看符号表和中间代码");
+
 }
-
-void CMiniCAnalyserDlg::OnEnChangeContent2()
-{
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
-
-	// TODO:  在此添加控件通知处理程序代码
-}
-
 
 /*
 查看符号表
@@ -335,10 +322,12 @@ void CMiniCAnalyserDlg::On32776()
 	treeFileName.SetWindowTextW(L"符号表");
 }
 
-/*
-查看中间代码
-*/
-void CMiniCAnalyserDlg::On32777()
+
+
+
+
+// 查看中间代码
+void CMiniCAnalyserDlg::On32780()
 {
 	UpdateData(TRUE);
 	string treePath = "./txt/code.mc";
@@ -358,5 +347,4 @@ void CMiniCAnalyserDlg::On32777()
 		fsend.Close();
 	}
 	treeFileName.SetWindowTextW(L"中间代码");
-	
 }
