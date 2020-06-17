@@ -146,7 +146,7 @@ void printSymTab(FILE *listing)
         {
           LineList t = l->lines;
           fprintf(listing, "%-6d ", l->scope);
-          fprintf(listing, "%-14s ", l->name);
+          fprintf(listing, "%-14s ", l->name.c_str());
           fprintf(listing, "%-8d  ", l->memloc);
           while (t != NULL)
           {
@@ -161,3 +161,5 @@ void printSymTab(FILE *listing)
     fprintf(listing, "\n");
   }
 } 
+
+

@@ -1,0 +1,8 @@
+void main(void){
+    int x;
+    x = input();
+    while(x > 0){
+        output(x);
+        x = x - 1;
+    }
+}

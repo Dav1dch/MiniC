@@ -93,6 +93,8 @@ ON_COMMAND(ID_32773, &CMiniCAnalyserDlg::CreateTree)
 ON_COMMAND(ID_32774, &CMiniCAnalyserDlg::ShowTree)
 ON_COMMAND(ID_32775, &CMiniCAnalyserDlg::Exit)
 ON_COMMAND(ID_32776, &CMiniCAnalyserDlg::On32776)
+ON_COMMAND(ID_32778, &CMiniCAnalyserDlg::On32778)
+ON_COMMAND(ID_32780, &CMiniCAnalyserDlg::On32780)
 END_MESSAGE_MAP()
 
 // CMiniCAnalyserDlg 消息处理程序
@@ -265,6 +267,7 @@ void CMiniCAnalyserDlg::ShowTree()
 		content2.SetWindowTextW(fileContent); //将读取的文本显示在编辑框
 		fsend.Close();
 	}
+	treeFileName.SetWindowTextW(L"语法树");
 
 }
 
@@ -278,24 +281,6 @@ void CMiniCAnalyserDlg::Exit()
 
 
 
-
-// 生成符号表和中间代码
-void CMiniCAnalyserDlg::On32778()
-{
-	symtab = fopen("./txt/symtab.txt", "w+");
-	code = fopen("./txt/code.mc", "w+");
-	// 	生成符号表
-	buildSymtab(programNode->nodeChild[0]->next);
-	printSymTab(symtab);
-
-
-	// 生成中间代码
-	codeGen(programNode->nodeChild[0]->next);
-	fclose(code);
-
-	MessageBox(L"生成成功，点击查看即可查看符号表和中间代码");
-
-}
 
 /*
 查看符号表
@@ -326,12 +311,30 @@ void CMiniCAnalyserDlg::On32776()
 
 
 
+// 生成符号表和中间代码
+void CMiniCAnalyserDlg::On32778()
+{	
+	symtab = fopen("./txt/symtab.txt", "w+");
+	
+	// 	生成符号表
+	buildSymtab(programNode->nodeChild[0]->next);
+	printSymTab(symtab);
+	fclose(symtab);
+
+	// 生成中间代码
+	code = fopen("./txt/code.txt", "w+");
+	codeGen(programNode->nodeChild[0]->next);
+	fclose(code);
+
+	MessageBox(L"生成成功，点击查看即可查看符号表和中间代码");
+}
+
 // 查看中间代码
 void CMiniCAnalyserDlg::On32780()
 {
 	UpdateData(TRUE);
-	string treePath = "./txt/code.mc";
-	CString t = L"./txt/code.mc";
+	string treePath = "./txt/code.txt";
+	CString t = L"./txt/code.txt";
 
 	CStdioFile fsend;
 	CString s_one;

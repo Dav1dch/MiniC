@@ -24,3 +24,4 @@ void buildSymtab(node*);
  * @return: void
  */
 void typeCheck(node*);
+

@@ -1,14 +1,5 @@
 fun-declaration: 
 	type: int
-	name: hello
-	params: void
-	compound: 
-		local-declarations: null
-		statement-list: 
-			return-stmt: 
-				expression: null
-fun-declaration: 
-	type: int
 	name: gcd
 	params: 
 	compound: 
