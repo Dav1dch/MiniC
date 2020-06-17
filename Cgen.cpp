@@ -16,7 +16,6 @@ static int getValue = 1;
 /* prototype for internal recursive code generator */
 static void cGen(node *tree);
 
-
 static int tmp;
 
 /*
@@ -24,7 +23,6 @@ static int tmp;
 0 表示不递归
 */
 static int isRecursive = 1;
-
 
 /*
 函数调用的数组
@@ -63,7 +61,7 @@ void emitGetAddr(node *var)
 
   switch (var->scope)
   {
-  case 0:  // 全局的变量
+  case 0: // 全局的变量
     if (var->isArray)
     {
       emitRM("LDA", bx, -(st_lookup(var->name, 0)), gp, "get global array address");
@@ -82,22 +80,22 @@ void emitGetAddr(node *var)
     {
       if (var->isArray)
       {
-        emitRM("LD", bx, 2 + (st_lookup(var->name, var->scope)), mp, "get param array address");
+        emitRM("LD", bx, 2 + (st_lookup(var->name, var->scope)), bp, "get param array address");
       }
       else
       {
-        emitRM("LDA", bx, 2 + (st_lookup(var->name, var->scope)), mp, "get param variable address");
+        emitRM("LDA", bx, 2 + (st_lookup(var->name, var->scope)), bp, "get param variable address");
       }
     }
     else
     {
       if (var->isArray)
       {
-        emitRM("LDA", bx, -(st_lookup(var->name, var->scope)), mp, "get local array address");
+        emitRM("LDA", bx, -(st_lookup(var->name, var->scope)), bp, "get local array address");
       }
       else
       {
-        emitRM("LDA", bx, -1 - (st_lookup(var->name, var->scope)), mp, "get local address");
+        emitRM("LDA", bx, -1 - (st_lookup(var->name, var->scope)), bp, "get local address");
       }
     }
     break;
@@ -162,8 +160,8 @@ static void genStmt(node *tree)
 
     /*prepare bp & sp*/
     emitRM("LDA", sp, -1, sp, "push prepare");
-    emitRM("ST", mp, 0, sp, "push old bp");
-    emitRM("LDA", mp, 0, sp, "let bp == sp");
+    emitRM("ST", bp, 0, sp, "push old bp");
+    emitRM("LDA", bp, 0, sp, "let bp == sp");
     emitRM("LDA", sp, p2->nodeChild[0] != NULL ? -((p2->nodeChild[0])->local_size) : 0, sp, "allocate for local variables");
 
     /*generate body*/
@@ -174,9 +172,9 @@ static void genStmt(node *tree)
     if (tree->type == 0)
     {
       /*return*/
-      emitRM("LDA", sp, 0, mp, "let sp == bp");
+      emitRM("LDA", sp, 0, bp, "let sp == bp");
       emitRM("LDA", sp, 2, sp, "pop prepare");
-      emitRM("LD", mp, -2, sp, "pop old bp");
+      emitRM("LD", bp, -2, sp, "pop old bp");
       emitRM("LD", pc, -1, sp, "pop return addr");
     }
 
@@ -287,7 +285,7 @@ static void genStmt(node *tree)
     emitRestore();
     if (TraceCode)
       emitComment("<- if");
-    break; 
+    break;
 
   case IteraK:
     if (TraceCode)
@@ -320,9 +318,9 @@ static void genStmt(node *tree)
       cGen(p1);
 
     /*return*/
-    emitRM("LDA", sp, 0, mp, "let sp == bp");
+    emitRM("LDA", sp, 0, bp, "let sp == bp");
     emitRM("LDA", sp, 2, sp, "pop prepare");
-    emitRM("LD", mp, -2, sp, "pop old bp");
+    emitRM("LD", bp, -2, sp, "pop old bp");
     emitRM("LD", pc, -1, sp, "pop return addr");
 
     if (TraceCode)
@@ -490,7 +488,6 @@ static void genExp(node *tree)
   }
 } /* genExp */
 
-
 /*
 生成中间代码
 */
@@ -515,7 +512,6 @@ static void cGen(node *tree)
       cGen(tree->next);
   }
 }
-
 
 /*
 递归生成中间代码
@@ -580,7 +576,7 @@ void codeGen(node *syntaxTree)
 
   emitRM("LDA", ax, 3, pc, "store returned PC");
   emitRM("LDA", sp, -1, sp, "push prepare");
-  emitRM("ST", ax0, fps "push returned PC");
+  emitRM("ST", ax, 0, sp, "push returned PC");
   emitRM("LDC", pc, fun->fun_start, 0, "jump to function");
   emitRM("LDA", sp, main_locals, sp, "release local var");
 

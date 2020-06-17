@@ -1,18 +1,29 @@
+/*
+ * @Copyright: minic
+ * @Author: linmaosen
+ * @Description: 语义分析：实现构建符号表和类型检查的函数
+ * @LastEditors: linmaosen
+ * @LastEditTime: 2020-06-13
+ * @FilePath: /minic/Analyse.cpp
+ */
+
 #include "Analyse.h"
 #include "Symtab.h"
 
+// 记录最大的scope
 extern int HighScope;
 
+// 记录是哪个scope
 static int scope_a = 0;
-/* counter for variable memory locations */
 static int location[MAX_SCOPE] = {0, 0, 0};
 
 static int No_change = 0;
 
-/*
-前序遍历生成符号表
-后序遍历类型检查
-*/
+/**
+ * @description: 前序遍历生成符号表,后序遍历类型检查
+ * @param {node*, void*, void*} 
+ * @return: void
+ */
 static void traverse(node *t,
                      void (*preProc)(node *),
                      void (*postProc)(node *))
@@ -30,8 +41,11 @@ static void traverse(node *t,
   }
 }
 
-/* 
-空函数，什么也不执行
+
+/**
+ * @description: 空函数，什么也不执行
+ * @param {node*} 
+ * @return: void
  */
 static void nullProc(node *t)
 {
@@ -41,8 +55,11 @@ static void nullProc(node *t)
     return;
 }
 
-/* 
-将语法树结点中的变量、方法名插入符号表中
+
+/**
+ * @description: 将语法树结点中的变量、方法名插入符号表中
+ * @param {node*} 
+ * @return: void
  */
 static void insertNode(node *t)
 {
@@ -144,7 +161,6 @@ static void insertNode(node *t)
         if (st_lookup(t->name, t->isParameter == 1 ? scope_a + 1 : scope_a) == -1)
           st_insert(t->name, t->lineno, location[scope_a]++, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
         else
-
           st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
       }
       break;
@@ -157,9 +173,12 @@ static void insertNode(node *t)
   }
 }
 
-/*
-遍历构建符号表
-*/
+
+/**
+ * @description: 前序遍历构建符号表
+ * @param {node*} 
+ * @return: void
+ */
 void buildSymtab(node *syntaxTree)
 {
   traverse(syntaxTree, insertNode, nullProc);
@@ -175,8 +194,11 @@ static void checkNode(node *t)
 {
 }
 
-/* 
-类型检查
+
+/**
+ * @description: 后序遍历类型检查
+ * @param {node*} 
+ * @return: void
  */
 void typeCheck(node *syntaxTree)
 {
