@@ -52,4 +52,6 @@ public:
 	CEdit treeFileName;
 //	CString fileContent2;
 	CString fileName2;
+	afx_msg void On32776();
+	afx_msg void On32777();
 };

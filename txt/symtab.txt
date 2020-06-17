@@ -1,0 +1,21 @@
+Scope Variable Name  Location   Line Numbers
+----- -------------  --------   ------------
+0      0a€V          -1          16 
+0      ðs€V          -1          13   14 
+0      €p€V          -1           1 
+0      Àq€V          -1          15 
+0      @e€V          -1           9    7   15 
+
+Scope Variable Name  Location   Line Numbers
+----- -------------  --------   ------------
+
+Scope Variable Name  Location   Line Numbers
+----- -------------  --------   ------------
+2      Ða€V          0            5 
+2      ði€V          1            5 
+
+Scope Variable Name  Location   Line Numbers
+----- -------------  --------   ------------
+3       l€V          0           12 
+3      à`€V          1           12 
+

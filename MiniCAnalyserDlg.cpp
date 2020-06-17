@@ -12,6 +12,7 @@
 #include "utils.h"
 #include "Cgen.h"
 #include "Analyse.h"
+#include "Symtab.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ using namespace std;
 extern FILE *code_mc;
 extern FILE *yyin;
 extern FILE *result;
+FILE* symtab;
 FILE *code;
 extern FILE *lexOut;
 extern "C" int yywrap(void);
@@ -48,6 +50,7 @@ protected:
 	// 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
 };
 
 void CAboutDlg::DoDataExchange(CDataExchange *pDX)
@@ -56,6 +59,7 @@ void CAboutDlg::DoDataExchange(CDataExchange *pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	
 END_MESSAGE_MAP()
 
 // CMiniCAnalyserDlg 对话框
@@ -90,6 +94,8 @@ ON_COMMAND(ID_32774, &CMiniCAnalyserDlg::ShowTree)
 ON_COMMAND(ID_32775, &CMiniCAnalyserDlg::Exit)
 ON_EN_CHANGE(IDC_FILE, &CMiniCAnalyserDlg::OnEnChangeFile)
 ON_EN_CHANGE(IDC_CONTENT2, &CMiniCAnalyserDlg::OnEnChangeContent2)
+ON_COMMAND(ID_32776, &CMiniCAnalyserDlg::On32776)
+ON_COMMAND(ID_32777, &CMiniCAnalyserDlg::On32777)
 END_MESSAGE_MAP()
 
 // CMiniCAnalyserDlg 消息处理程序
@@ -235,11 +241,11 @@ void CMiniCAnalyserDlg::CreateTree()
 	fclose(lexOut);
 	fclose(yyin);
 
-
-	//code_mc = fopen("./txt/lex.txt", "w+");
-	code = fopen("code.mc", "w+");
+	symtab = fopen("./txt/symtab.txt", "w+");
+	code = fopen("./txt/code.mc", "w+");
 	// 	生成字符表
 	buildSymtab(programNode->nodeChild[0]->next);
+	printSymTab(symtab);
 
 
 	// 生成中间代码
@@ -301,4 +307,56 @@ void CMiniCAnalyserDlg::OnEnChangeContent2()
 	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 
 	// TODO:  在此添加控件通知处理程序代码
+}
+
+
+/*
+查看符号表
+*/
+void CMiniCAnalyserDlg::On32776()
+{
+	UpdateData(TRUE);
+	string treePath = "./txt/symtab.txt";
+	CString t = L"./txt/symtab.txt";
+
+	CStdioFile fsend;
+	CString s_one;
+	CString fileContent;
+	if (fsend.Open(t, CFile::typeText | CFile::modeRead))
+	{ //只读模式打开txt文件
+		while (fsend.ReadString(s_one))
+		{ //逐行读取文件内容
+			fileContent += s_one;
+			fileContent += "\r\n";
+		}
+		content2.SetWindowTextW(fileContent); //将读取的文本显示在编辑框
+		fsend.Close();
+	}
+	treeFileName.SetWindowTextW(L"符号表");
+}
+
+/*
+查看中间代码
+*/
+void CMiniCAnalyserDlg::On32777()
+{
+	UpdateData(TRUE);
+	string treePath = "./txt/code.mc";
+	CString t = L"./txt/code.mc";
+
+	CStdioFile fsend;
+	CString s_one;
+	CString fileContent;
+	if (fsend.Open(t, CFile::typeText | CFile::modeRead))
+	{ //只读模式打开txt文件
+		while (fsend.ReadString(s_one))
+		{ //逐行读取文件内容
+			fileContent += s_one;
+			fileContent += "\r\n";
+		}
+		content2.SetWindowTextW(fileContent); //将读取的文本显示在编辑框
+		fsend.Close();
+	}
+	treeFileName.SetWindowTextW(L"中间代码");
+	
 }
