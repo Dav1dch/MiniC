@@ -39,7 +39,7 @@ static int Hash(string key)
  * @param {string, int, int, int, int} 
  * @return: void
  */
-void st_insert(string name, int lineno, int loc, int sp, int para)
+void st_insert(string name, int lineno, int loc, int sp, int para, int arr)
 {
   int h = Hash(name);
   BucketList l = Scope[sp].hashTable[h];
@@ -52,6 +52,7 @@ void st_insert(string name, int lineno, int loc, int sp, int para)
     l->name = name;
     l->scope = sp;     /* scope of variable */
     l->isParam = para; /* parameter or not */
+    l->isArray = arr;
     l->lines = (LineList)malloc(sizeof(struct LineListRec));
     l->lines->lineno = lineno;
     l->memloc = loc;

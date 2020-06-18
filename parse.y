@@ -39,16 +39,19 @@
 program : declaration_list {$$ = newStmtNode(ProgramK); $$->nodeChild[0] = $1;programNode = $$; programNode->name = "helloworld";$$->lineno = yylineno;}
     ;
 
-declaration_list : declaration_list declaration {addNode($1, $2);$$ = $1;$$->lineno = yylineno; $1->isGlobal = 1;}
-    |   declaration {$$ = newStmtNode(DeclK); addNode($$, $1);$$->lineno = yylineno; $1->isGlobal = 1;}
+declaration_list : declaration_list declaration {addNode($1, $2);$$ = $1;$$->lineno = yylineno; $1->isGlobal = 1; 
+        if($2->kind.stmt != 6){$$->local_size += $2->local_size;}}
+    |   declaration {$$ = newStmtNode(DeclK); addNode($$, $1);$$->lineno = yylineno; $1->isGlobal = 1;if($1->kind.stmt != 6){$$->local_size = $1->local_size;}}
     ;
 
-declaration : var_declaration SEMICOLON{$$ = $1;$$->lineno = yylineno;}
+declaration : var_declaration SEMICOLON{$$ = $1;$$->lineno = yylineno; $$->local_size = $1->local_size;}
     | fun_declaration {$$ = $1;$$->lineno = yylineno;}
     ;
 
-var_declaration : INT ID {$$ = newStmtNode(VarK); $$->name = $2;$$->lineno = yylineno;}
-    |   INT ID LEFTSQUAREBRACKET NUM RIGHTSQUAREBRACKET {node *t = newExpNode(ConstK); t->val = $4; $$ = newStmtNode(ArrayK);$$->name = $2;$$->nodeChild[0] = t;$$->lineno = yylineno; $$->isArray = 1;}
+var_declaration : INT ID {$$ = newStmtNode(VarK); $$->name = $2;$$->lineno = yylineno;$$->local_size = 1;}
+    |   INT ID LEFTSQUAREBRACKET NUM RIGHTSQUAREBRACKET {node *t = newExpNode(ConstK); t->val = $4;
+                                                         $$ = newStmtNode(ArrayK);$$->name = $2;$$->nodeChild[0] = t;
+                                                         $$->lineno = yylineno; $$->isArray = 1; $$->local_size=$4;}
     ;
 
 fun_declaration : VOID ID LEFTBRACKET params RIGHTBRACKET compound_stmt{$$ = newStmtNode(FunK);$$->lineno = yylineno;
@@ -88,9 +91,9 @@ compound_stmt : LEFTBRACE local_declarations statement_list RIGHTBRACE {$$ = new
     |   LEFTBRACE statement_list RIGHTBRACE {$$ = newStmtNode(CompK); $$->nodeChild[1] = $2;$$->lineno = yylineno;}
     ;
 
-local_declarations : local_declarations var_declaration SEMICOLON {addNode($1, $2); $$ = $1;$$->lineno = yylineno; $$->local_size += 1;}
-    |   var_declaration COMMA {$$ = newStmtNode(LocdeclK); addNode($$, $1);$$->lineno = yylineno; $$->local_size += 1;}
-    |   var_declaration SEMICOLON {$$ = newStmtNode(LocdeclK); addNode($$, $1);$$->lineno = yylineno; $$->local_size += 1;}
+local_declarations : local_declarations var_declaration SEMICOLON {addNode($1, $2); $$ = $1;$$->lineno = yylineno; $$->local_size += $2->local_size;}
+    |   var_declaration COMMA {$$ = newStmtNode(LocdeclK); addNode($$, $1);$$->lineno = yylineno; $$->local_size = $1->local_size;}
+    |   var_declaration SEMICOLON {$$ = newStmtNode(LocdeclK); addNode($$, $1);$$->lineno = yylineno;$$->local_size = $1->local_size;}
     |   {}
     ;
 

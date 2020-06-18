@@ -15,7 +15,7 @@ extern int HighScope;
 
 // 记录是哪个scope
 static int scope_a = 0;
-static int location[MAX_SCOPE] = {0, 0, 0};
+static int location[MAX_SCOPE] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 static int No_change = 0;
 
@@ -71,9 +71,9 @@ static void insertNode(node *t)
     case FunK:
       t->scope = 0;  // scope==0 表示是全局的方法， main() gcd()
       if (st_lookup(t->name, 0) == -1)
-        st_insert(t->name, t->lineno, -1, 0, 0);
+        st_insert(t->name, t->lineno, -1, 0, 0, 0);
       else
-        st_insert(t->name, t->lineno, -1, 0, 0);
+        st_insert(t->name, t->lineno, -1, 0, 0, 0);
       break;
     case CompK:
     {
@@ -99,18 +99,18 @@ static void insertNode(node *t)
     case VarK:
       t->scope = t->isParameter == 1 ? scope_a + 1 : scope_a;
       if (st_lookup(t->name, t->isParameter == 1 ? scope_a + 1 : scope_a) == -1)
-        st_insert(t->name, t->lineno, location[scope_a]++, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
+        st_insert(t->name, t->lineno, location[scope_a]++, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0, 0);
       else
-        st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
+        st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0, 0);
       break;
     case ArrayK:
       if (t->isParameter)
       {
         t->scope = scope_a + 1;
         if (st_lookup(t->name, scope_a + 1) == -1)
-          st_insert(t->name, t->lineno, location[scope_a + 1]++, scope_a + 1, 1);
+          st_insert(t->name, t->lineno, location[scope_a + 1]++, scope_a + 1, 1, 1);
         else
-          st_insert(t->name, t->lineno, 0, scope_a + 1, 1);
+          st_insert(t->name, t->lineno, 0, scope_a + 1, 1, 1);
       }
       else
       {
@@ -126,20 +126,20 @@ static void insertNode(node *t)
 
         if (st_lookup(t->name, scope_a) == -1)
         {
-          st_insert(t->name, t->lineno, location[scope_a]++, scope_a, t->isParameter == 1 ? 1 : 0);
+          st_insert(t->name, t->lineno, location[scope_a]++, scope_a, t->isParameter == 1 ? 1 : 0, 1);
           if (t->isParameter != 1)
             location[scope_a] = location[scope_a] + (t->val - 1);
         }
         else
-          st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
+          st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0, 1);
       }
       break;
     case CallK:
       t->scope = 0;
       if (st_lookup(t->name, 0) == -1)
-        st_insert(t->name, t->lineno, -1, 0, 0);
+        st_insert(t->name, t->lineno, -1, 0, 0, 0);
       else
-        st_insert(t->name, t->lineno, -1, 0, 0);
+        st_insert(t->name, t->lineno, -1, 0, 0, 0);
       break;
 
     default:
@@ -159,9 +159,9 @@ static void insertNode(node *t)
       {
         t->scope = t->isParameter == 1 ? scope_a + 1 : scope_a;
         if (st_lookup(t->name, t->isParameter == 1 ? scope_a + 1 : scope_a) == -1)
-          st_insert(t->name, t->lineno, location[scope_a]++, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
+          st_insert(t->name, t->lineno, location[scope_a]++, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0, 0);
         else
-          st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0);
+          st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0, 0);
       }
       break;
     default:

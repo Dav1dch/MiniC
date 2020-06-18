@@ -39,6 +39,7 @@ typedef struct BucketListRec
    LineList lines;
    int memloc;    
    int scope;     
+   int isArray;
    int isParam;   
    int fun_start; 
    struct BucketListRec *next;
@@ -61,7 +62,7 @@ static struct ScopeList
  * @param {string, int, int, int, int} 
  * @return: void
  */
-void st_insert(string name, int lineno, int loc, int scope, int isparam);
+void st_insert(string name, int lineno, int loc, int scope, int isparam, int arr);
 
 
 /**
