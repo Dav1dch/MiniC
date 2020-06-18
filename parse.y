@@ -84,13 +84,15 @@ param : INT ID {$$ = newExpNode(IdK); $$->name = $2;$$->lineno = yylineno;$$->is
     ;
 
 compound_stmt : LEFTBRACE local_declarations statement_list RIGHTBRACE {$$ = newStmtNode(CompK);$$->lineno = yylineno;
-                                                                        $$->local_size = $2->local_size;
+                                                                        $$->local_size = $2->local_size + $3->local_size;
                                                                         $$->nodeChild[0] = $2;
                                                                         $$->nodeChild[1] = $3;}
     |   LEFTBRACE local_declarations RIGHTBRACE {$$ = newStmtNode(CompK); $$->nodeChild[0] = $2;
                                                                         $$->local_size = $2->local_size;
                                                                         $$->lineno = yylineno;}
-    |   LEFTBRACE statement_list RIGHTBRACE {$$ = newStmtNode(CompK); $$->nodeChild[1] = $2;$$->lineno = yylineno;}
+    |   LEFTBRACE statement_list RIGHTBRACE {$$ = newStmtNode(CompK); $$->nodeChild[1] = $2;
+                                            $$->local_size = $2->local_size;
+                                            $$->lineno = yylineno;}
     ;
 
 local_declarations : local_declarations var_declaration SEMICOLON {addNode($1, $2); $$ = $1;$$->lineno = yylineno; $$->local_size += $2->local_size;}
@@ -99,8 +101,8 @@ local_declarations : local_declarations var_declaration SEMICOLON {addNode($1, $
     |   {}
     ;
 
-statement_list : statement_list statement {addNode($1, $2); $$ = $1;$$->lineno = yylineno;}
-    |   statement {$$ = newStmtNode(StmtlK); addNode($$, $1);$$->lineno = yylineno;}
+statement_list : statement_list statement {addNode($1, $2); $$ = $1;$$->lineno = yylineno;$$->local_size += $2->local_size;}
+    |   statement {$$ = newStmtNode(StmtlK); addNode($$, $1);$$->lineno = yylineno;$$->local_size = $1->local_size;}
     ;
 
 statement : expression_stmt {$$ = $1;$$->lineno = yylineno;}
@@ -114,11 +116,17 @@ expression_stmt: expression SEMICOLON {$$ = $1;$$->lineno = yylineno;}
     |   SEMICOLON {}
     ;
 
-selection_stmt : IF LEFTBRACKET expression RIGHTBRACKET statement {$$ = newStmtNode(SelectK); $$->nodeChild[0] = $3; $$->nodeChild[1] = $5;$$->lineno = yylineno;}
-    |   IF LEFTBRACKET expression RIGHTBRACKET statement ELSE statement {$$ = newStmtNode(SelectK); $$->nodeChild[0] = $3; $$->nodeChild[1] = $5; $$->nodeChild[2] = $7;$$->lineno = yylineno;}
+selection_stmt : IF LEFTBRACKET expression RIGHTBRACKET statement {$$ = newStmtNode(SelectK); 
+                                                                   $$->nodeChild[0] = $3; $$->nodeChild[1] = $5;
+                                                                   $$->lineno = yylineno;$$->local_size = $5->local_size;}
+    |   IF LEFTBRACKET expression RIGHTBRACKET statement ELSE statement {$$ = newStmtNode(SelectK); $$->nodeChild[0] = $3; 
+                                                                         $$->nodeChild[1] = $5; $$->nodeChild[2] = $7;$$->lineno = yylineno;
+                                                                         $$->local_size = $5->local_size + $7->local_size;}
     ;
 
-iteration_stmt : WHILE LEFTBRACKET expression RIGHTBRACKET statement {$$ = newStmtNode(IteraK); $$->nodeChild[0] = $3; $$->nodeChild[1] = $5;$$->lineno = yylineno;}
+iteration_stmt : WHILE LEFTBRACKET expression RIGHTBRACKET statement {$$ = newStmtNode(IteraK); $$->nodeChild[0] = $3;
+                                                                      $$->nodeChild[1] = $5;$$->lineno = yylineno;
+                                                                      $$->local_size = $5->local_size;}
     ;
 
 return_stmt : RETURN SEMICOLON {$$ = newStmtNode(ReturnK);$$->lineno = yylineno;}

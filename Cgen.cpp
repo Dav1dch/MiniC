@@ -162,7 +162,7 @@ static void genStmt(node *tree)
         break;
     case FunK:
         if (tree->name == "main")
-            main_locals = tree->nodeChild[1]->local_size;
+            main_locals = tree->nodeChild[1]->param_size;
         if (TraceCode)
             emitComment("-> function:");
 
@@ -175,7 +175,7 @@ static void genStmt(node *tree)
         emitRM("LDA", sp, -1, sp, "push prepare");
         emitRM("ST", bp, 0, sp, "push old bp");
         emitRM("LDA", bp, 0, sp, "let bp == sp");
-        emitRM("LDA", sp, p2->nodeChild[0] != NULL ? -((p2->nodeChild[0])->local_size) : 0, sp, "allocate for local variables");
+        emitRM("LDA", sp, -tree->local_size, sp, "allocate for local variables");
 
         cGen(p2);
 
@@ -217,8 +217,9 @@ static void genStmt(node *tree)
 
             if (TraceCode)
                 emitComment("<- array element");
+
         }
-        break;
+            break;
     case SelectK:
         if (TraceCode)
             emitComment("-> if");
@@ -235,13 +236,13 @@ static void genStmt(node *tree)
         emitComment("if: jump to end belongs here");
         currentLoc = emitSkip(0);
         emitBackup(savedLoc1);
-        emitRM("JEQ", ax, currentLoc, zero, "if: jmp to else");
+        emitRM("JEQ", ax, currentLoc, zero,"if: jmp to else");
         emitRestore();
         // else
         cGen(p3);
         currentLoc = emitSkip(0);
         emitBackup(savedLoc2);
-        emitRM("LDA", pc, currentLoc, zero, "jmp to end");
+        emitRM("LDA", pc, currentLoc, zero,"jmp to end");
         emitRestore();
         if (TraceCode)
             emitComment("<- if");
@@ -348,7 +349,7 @@ static void genExp(node *tree)
 
     case IdK:
     {
-        if (TraceCode)
+ if (TraceCode)
             emitComment("-> Id");
 
         emitGetAddr(tree);
@@ -363,8 +364,10 @@ static void genExp(node *tree)
         }
         if (TraceCode)
             emitComment("<- Id");
+
+
     }
-    break;
+               break;
 
     case OpK:
         if (TraceCode)

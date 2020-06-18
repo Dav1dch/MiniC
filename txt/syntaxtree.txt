@@ -1,52 +1,233 @@
 fun-declaration: 
 	type: int
-	name: main
-	params: void
+	name: minloc
+	params: 
+		varArray: 
+			name: a
+			
+		var: 
+			name: low
+		var: 
+			name: high
 	compound: 
 		local-declarations: 
 		statement-list: 
 			assignment: 
-				varName: x
+				varName: k
 				expression: 
-				const: 
-					val: 10
+				var: 
+					name: low
 			assignment: 
-				varName: y
+				varName: j
 				expression: 
-				const: 
-					val: 3
+				varArray: 
+					name: a
+					
+			assignment: 
+				varName: i
+				expression: 
+				simple-expression: 
+					first:
+						var: 
+							name: low
+					op: +
+					second:
+						const: 
+							val: 1
 			iteration-stmt: 
 				expression: 
 					simple-expression: 
 						first:
 							var: 
-								name: y
-						op: >
+								name: i
+						op: <
 						second:
-							const: 
-								val: 0
+							var: 
+								name: high
+				statement: 
+	compound: 
+		local-declarations: null
+		statement-list: 
+			selection-stmt:
+				expression: 
+					simple-expression: 
+						first:
+							varArray: 
+								name: a
+								
+						op: <
+						second:
+							var: 
+								name: j
 				statement: 
 	compound: 
 		local-declarations: null
 		statement-list: 
 			assignment: 
-				varName: y
+				varName: j
+				expression: 
+				varArray: 
+					name: a
+					
+			assignment: 
+				varName: k
+				expression: 
+				var: 
+					name: i
+			assignment: 
+				varName: i
 				expression: 
 				simple-expression: 
 					first:
 						var: 
-							name: y
-					op: -
+							name: i
+					op: +
+					second:
+						const: 
+							val: 1
+			return-stmt: 
+				expression: 
+					var: 
+						name: k
+fun-declaration: 
+	type: int
+	name: sort
+	params: 
+		varArray: 
+			name: a
+			
+		var: 
+			name: low
+		var: 
+			name: high
+	compound: 
+		local-declarations: 
+		statement-list: 
+			assignment: 
+				varName: i
+				expression: 
+				var: 
+					name: low
+			iteration-stmt: 
+				expression: 
+					simple-expression: 
+						first:
+							var: 
+								name: i
+						op: <
+						second:
+							simple-expression: 
+								first:
+									var: 
+										name: high
+								op: -
+								second:
+									const: 
+										val: 1
+				statement: 
+	compound: 
+		local-declarations: 
+		statement-list: 
+			assignment: 
+				varName: k
+				expression: 
+			assignment: 
+				varName: t
+				expression: 
+				varArray: 
+					name: a
+					
+			assignment: 
+				varName: a
+				expression: 
+				varArray: 
+					name: a
+					
+			assignment: 
+				varName: a
+				expression: 
+				var: 
+					name: t
+			assignment: 
+				varName: i
+				expression: 
+				simple-expression: 
+					first:
+						var: 
+							name: i
+					op: +
+					second:
+						const: 
+							val: 1
+fun-declaration: 
+	type: int
+	name: main
+	params: void
+	compound: 
+		local-declarations: 
+			varArray: 
+				name: x
+				
+		statement-list: 
+			assignment: 
+				varName: i
+				expression: 
+				const: 
+					val: 0
+			iteration-stmt: 
+				expression: 
+					simple-expression: 
+						first:
+							var: 
+								name: i
+						op: <
+						second:
+							const: 
+								val: 10
+				statement: 
+	compound: 
+		local-declarations: null
+		statement-list: 
+			assignment: 
+				varName: x
+				expression: 
+			assignment: 
+				varName: i
+				expression: 
+				simple-expression: 
+					first:
+						var: 
+							name: i
+					op: +
 					second:
 						const: 
 							val: 1
 			assignment: 
-				varName: x
+				varName: i
+				expression: 
+				const: 
+					val: 0
+			iteration-stmt: 
+				expression: 
+					simple-expression: 
+						first:
+							var: 
+								name: i
+						op: <
+						second:
+							const: 
+								val: 10
+				statement: 
+	compound: 
+		local-declarations: null
+		statement-list: 
+			assignment: 
+				varName: i
 				expression: 
 				simple-expression: 
 					first:
 						var: 
-							name: x
+							name: i
 					op: +
 					second:
 						const: 
