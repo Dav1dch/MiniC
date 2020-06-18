@@ -127,8 +127,7 @@ static void insertNode(node *t)
         if (st_lookup(t->name, scope_a) == -1)
         {
           st_insert(t->name, t->lineno, location[scope_a]++, scope_a, t->isParameter == 1 ? 1 : 0, 1);
-          if (t->isParameter != 1)
-            location[scope_a] = location[scope_a] + (t->val - 1);
+          location[scope_a] += t->val - 1;
         }
         else
           st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0, 1);

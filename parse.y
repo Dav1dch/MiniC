@@ -51,7 +51,8 @@ declaration : var_declaration SEMICOLON{$$ = $1;$$->lineno = yylineno; $$->local
 var_declaration : INT ID {$$ = newStmtNode(VarK); $$->name = $2;$$->lineno = yylineno;$$->local_size = 1;}
     |   INT ID LEFTSQUAREBRACKET NUM RIGHTSQUAREBRACKET {node *t = newExpNode(ConstK); t->val = $4;
                                                          $$ = newStmtNode(ArrayK);$$->name = $2;$$->nodeChild[0] = t;
-                                                         $$->lineno = yylineno; $$->isArray = 1; $$->local_size=$4;}
+                                                         $$->lineno = yylineno; $$->isArray = 1; $$->local_size=$4;
+                                                         $$->val = $4;}
     ;
 
 fun_declaration : VOID ID LEFTBRACKET params RIGHTBRACKET compound_stmt{$$ = newStmtNode(FunK);$$->lineno = yylineno;
@@ -77,8 +78,9 @@ param_list : param_list COMMA param {addNode($1, $3); $$ = $1; $$->param_size +=
     |   param {$$ = newStmtNode(ParamlK); $$->param_size += 1;addNode($$, $1);$$->lineno = yylineno;}
     ;
 
-param : INT ID {$$ = newStmtNode(VarK); $$->name = $2;$$->lineno = yylineno;$$->isParameter = 1;}
-    |   INT ID LEFTSQUAREBRACKET RIGHTSQUAREBRACKET {$$ = newStmtNode(ArrayK); $$->name = $2;$$->lineno = yylineno;$$->isParameter = 1; $$->isArray = 1;}
+param : INT ID {$$ = newExpNode(IdK); $$->name = $2;$$->lineno = yylineno;$$->isParameter = 1;}
+    |   INT ID LEFTSQUAREBRACKET RIGHTSQUAREBRACKET {$$ = newStmtNode(ArrayK); $$->name = $2;
+        $$->lineno = yylineno;$$->isParameter = 1; $$->isArray = 1;}
     ;
 
 compound_stmt : LEFTBRACE local_declarations statement_list RIGHTBRACE {$$ = newStmtNode(CompK);$$->lineno = yylineno;
@@ -162,8 +164,8 @@ call : ID LEFTBRACKET args RIGHTBRACKET {$$ = newStmtNode(CallK); $$->nodeChild[
     |   ID LEFTBRACKET RIGHTBRACKET {$$ = newStmtNode(CallK); $$->name = $1;$$->lineno = yylineno;}
     ;
 
-args : args COMMA expression {addNode($1, $3); $$ = $1;$$->lineno = yylineno; $$->param_size += 1; $3->isParameter = 1;}
-    |   expression {$$ = newStmtNode(ArgsK); addNode($$, $1);$$->lineno = yylineno; $$->param_size += 1;$1->isParameter = 1;}
+args : args COMMA expression {addNode($1, $3); $$ = $1;$$->lineno = yylineno; $$->param_size += 1;}
+    |   expression {$$ = newStmtNode(ArgsK); addNode($$, $1);$$->lineno = yylineno; $$->param_size += 1;}
     ;
 %%
 
