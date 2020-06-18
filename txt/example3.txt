@@ -1,0 +1,35 @@
+int main(void){
+    int a[10];
+    int i;
+    int j;
+    int k;
+    int t;
+
+    i = 0;
+    while(i < 10){
+        a[i] = input();
+        i = i+1;
+    }
+    i=0;
+    while(i < 10){
+        j = i;
+        t = a[i];
+        k = i;
+        while(j < 10){
+            if(t > a[j]){
+                t = a[j];
+                k = j;
+            }
+            j = j+1;
+        }
+        a[k] = a[i];
+        a[i] = t;
+        i = i + 1;
+    }
+    i = 0;
+    while(i < 10){
+        output(a[i]);
+        i = i+1;
+    }
+
+}
