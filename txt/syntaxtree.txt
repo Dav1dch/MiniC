@@ -1,34 +1,5 @@
 fun-declaration: 
 	type: int
-	name: gcd
-	params: 
-		var: 
-			name: u
-		var: 
-			name: v
-	compound: 
-		local-declarations: null
-		statement-list: 
-			selection-stmt:
-				expression: 
-					simple-expression: 
-						first:
-							var: 
-								name: v
-						op: ==
-						second:
-							const: 
-								val: 0
-				statement: 
-					return-stmt: 
-						expression: 
-							var: 
-								name: u
-				else-statement: 
-					return-stmt: 
-						expression: 
-fun-declaration: 
-	type: int
 	name: main
 	params: void
 	compound: 
@@ -37,6 +8,46 @@ fun-declaration:
 			assignment: 
 				varName: x
 				expression: 
+				const: 
+					val: 10
 			assignment: 
 				varName: y
 				expression: 
+				const: 
+					val: 3
+			iteration-stmt: 
+				expression: 
+					simple-expression: 
+						first:
+							var: 
+								name: y
+						op: >
+						second:
+							const: 
+								val: 0
+				statement: 
+	compound: 
+		local-declarations: null
+		statement-list: 
+			assignment: 
+				varName: y
+				expression: 
+				simple-expression: 
+					first:
+						var: 
+							name: y
+					op: -
+					second:
+						const: 
+							val: 1
+			assignment: 
+				varName: x
+				expression: 
+				simple-expression: 
+					first:
+						var: 
+							name: x
+					op: +
+					second:
+						const: 
+							val: 1
