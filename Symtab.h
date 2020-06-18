@@ -23,8 +23,8 @@ using namespace std;
  */
 typedef struct LineListRec
 {
-   int lineno;
-   struct LineListRec *next;
+   int lineno; // 行号
+   struct LineListRec *next; // next指针
 } * LineList;
 
 
@@ -35,13 +35,13 @@ typedef struct LineListRec
  */
 typedef struct BucketListRec
 {
-   string name;
-   LineList lines;
-   int memloc;    
-   int scope;     
-   int isArray;
-   int isParam;   
-   int fun_start; 
+   string name; // 变量或者函数名字
+   LineList lines; // 行结构体
+   int memloc;    // 内存位置
+   int scope;     // 归属范围
+   int isArray;   // 是否是数组
+   int isParam;   // 是否是参数
+   int fun_start;  
    struct BucketListRec *next;
 } * BucketList;
 
@@ -53,7 +53,7 @@ typedef struct BucketListRec
  */
 static struct ScopeList
 {
-   BucketList hashTable[SIZE];
+   BucketList hashTable[SIZE]; // 定义多个哈希表
 } Scope[MAX_SCOPE];
 
 

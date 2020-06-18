@@ -46,9 +46,19 @@ fun-declaration:
 								name: high
 				statement: 
 	compound: 
-		local-declarations: null
+		local-declarations: 
 		statement-list: 
-			selection-stmt:
+			assignment: 
+				varName: x
+				expression: 
+				const: 
+					val: 10
+			assignment: 
+				varName: y
+				expression: 
+				const: 
+					val: 3
+			iteration-stmt: 
 				expression: 
 					simple-expression: 
 						first:
@@ -189,8 +199,16 @@ fun-declaration:
 		local-declarations: null
 		statement-list: 
 			assignment: 
-				varName: x
+				varName: y
 				expression: 
+				simple-expression: 
+					first:
+						var: 
+							name: y
+					op: -
+					second:
+						const: 
+							val: 1
 			assignment: 
 				varName: i
 				expression: 
