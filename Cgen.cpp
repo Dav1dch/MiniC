@@ -217,9 +217,8 @@ static void genStmt(node *tree)
 
             if (TraceCode)
                 emitComment("<- array element");
-
         }
-            break;
+        break;
     case SelectK:
         if (TraceCode)
             emitComment("-> if");
@@ -236,13 +235,13 @@ static void genStmt(node *tree)
         emitComment("if: jump to end belongs here");
         currentLoc = emitSkip(0);
         emitBackup(savedLoc1);
-        emitRM("JEQ", ax, currentLoc, zero,"if: jmp to else");
+        emitRM("JEQ", ax, currentLoc, zero, "if: jmp to else");
         emitRestore();
         // else
         cGen(p3);
         currentLoc = emitSkip(0);
         emitBackup(savedLoc2);
-        emitRM("LDA", pc, currentLoc, zero,"jmp to end");
+        emitRM("LDA", pc, currentLoc, zero, "jmp to end");
         emitRestore();
         if (TraceCode)
             emitComment("<- if");
@@ -349,7 +348,7 @@ static void genExp(node *tree)
 
     case IdK:
     {
- if (TraceCode)
+        if (TraceCode)
             emitComment("-> Id");
 
         emitGetAddr(tree);
@@ -364,10 +363,8 @@ static void genExp(node *tree)
         }
         if (TraceCode)
             emitComment("<- Id");
-
-
     }
-               break;
+    break;
 
     case OpK:
         if (TraceCode)
