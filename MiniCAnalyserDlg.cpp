@@ -20,11 +20,10 @@ using namespace std;
 #endif
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-extern FILE* code_mc;
+extern FILE* code;
 extern FILE* yyin;
 extern FILE* result;
-FILE* symtab;
-FILE* code;
+extern FILE* symtab;
 extern FILE* lexOut;
 extern "C" int yywrap(void);
 extern int yyparse(void);
