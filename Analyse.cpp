@@ -69,6 +69,7 @@ static void insertNode(node *t)
     switch (t->kind.stmt)
     {
     case FunK:
+      location[scope_a] = 0;
       t->scope = 0;  // scope==0 表示是全局的方法， main() gcd()
       if (st_lookup(t->name, 0) == -1)
         st_insert(t->name, t->lineno, -1, 0, 0, 0);
@@ -108,7 +109,7 @@ static void insertNode(node *t)
       {
         t->scope = scope_a + 1;
         if (st_lookup(t->name, scope_a + 1) == -1)
-          st_insert(t->name, t->lineno, location[scope_a + 1]++, scope_a + 1, 1, 1);
+          st_insert(t->name, t->lineno, location[scope_a]++, scope_a + 1, 1, 1);
         else
           st_insert(t->name, t->lineno, 0, scope_a + 1, 1, 1);
       }
@@ -156,11 +157,11 @@ static void insertNode(node *t)
         // 函数的参数
       if (t->isParameter == 1)
       {
-        t->scope = t->isParameter == 1 ? scope_a + 1 : scope_a;
-        if (st_lookup(t->name, t->isParameter == 1 ? scope_a + 1 : scope_a) == -1)
-          st_insert(t->name, t->lineno, location[scope_a]++, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0, 0);
+        t->scope = scope_a + 1;
+        if (st_lookup(t->name,scope_a + 1) == -1)
+          st_insert(t->name, t->lineno, location[scope_a]++, scope_a + 1,1, 0);
         else
-          st_insert(t->name, t->lineno, 0, t->isParameter == 1 ? scope_a + 1 : scope_a, t->isParameter == 1 ? 1 : 0, 0);
+          st_insert(t->name, t->lineno, 0,scope_a + 1,  1, 0);
       }
       break;
     default:
