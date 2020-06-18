@@ -4,6 +4,7 @@
 
 - 双击打开MiniCAnalyser.vcxproj
 - 将项目目录下的 winflex 文件夹的目录（项目目录/winflex）添加进系统环境
+
   - 
 - 右键点击MiniCAnalyser![image-20200501171802653](C:\Users\11500\AppData\Roaming\Typora\typora-user-images\image-20200501171802653.png)
 - 
@@ -47,9 +48,9 @@ scan.flex.cpp // 由 lex 生成的 cpp 文件
 parse.tab.cpp // 由 yacc 生成的 cpp 文件
 parse.y // yacc定义文件
 scan.l // lex 定义文件
-Symtab.cpp
-Analyse.cpp
-Code.cpp
-Cgen.cpp
+Symtab.cpp // 查询插入符号表的cpp文件
+Analyse.cpp // 构建符号表的cpp文件
+Code.cpp // 记录指令的cpp文件
+Cgen.cpp // 中间代码生成的cpp文件
 ```
 
