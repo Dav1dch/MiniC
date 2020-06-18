@@ -162,8 +162,8 @@ call : ID LEFTBRACKET args RIGHTBRACKET {$$ = newStmtNode(CallK); $$->nodeChild[
     |   ID LEFTBRACKET RIGHTBRACKET {$$ = newStmtNode(CallK); $$->name = $1;$$->lineno = yylineno;}
     ;
 
-args : args COMMA expression {addNode($1, $3); $$ = $1;$$->lineno = yylineno; $$->param_size += 1; }
-    |   expression {$$ = newStmtNode(ArgsK); addNode($$, $1);$$->lineno = yylineno; $$->param_size += 1;}
+args : args COMMA expression {addNode($1, $3); $$ = $1;$$->lineno = yylineno; $$->param_size += 1; $3->isParameter = 1;}
+    |   expression {$$ = newStmtNode(ArgsK); addNode($$, $1);$$->lineno = yylineno; $$->param_size += 1;$1->isParameter = 1;}
     ;
 %%
 

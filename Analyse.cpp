@@ -204,3 +204,4 @@ void typeCheck(node *syntaxTree)
 {
   traverse(syntaxTree, nullProc, checkNode);
 }
+

@@ -1,31 +1,33 @@
 Scope Variable Name  Location   Line Numbers
 ----- -------------  --------   ------------
-0      PñD~         -1          60 
-0      åD~         -1          39   52 
-0      ÄÑD~         -1          48 
-0      pÖD~         -1          22   32 
-0      –ÑD~         -1          56 
+0      main           -1          60 
+0      sort           -1          39   52 
+0      input          -1          48 
+0      minloc         -1          22   32 
+0      output         -1          56 
 
 Scope Variable Name  Location   Line Numbers
 ----- -------------  --------   ------------
-1      †ëD~         0            4 
-1      ‡ÉD~         0            4   11   15   16 
-1      áD~         1            6 
-1      ÜD~         2            7 
-1      `ãD~         3            8 
-1       äD~         1            4 
+1      low            0            4 
+1      a              0            4   11   15   16 
+1      i              1            6 
+1      j              2            7 
+1      k              3            8 
+1      high           1            4 
 
 Scope Variable Name  Location   Line Numbers
 ----- -------------  --------   ------------
-2                     4           24 
-2      `ÜD~         0           24   33   34   34   35 
-2      PåD~         1           26 
-2      êçD~         2           27 
-2      ÄéD~         3           31 
-2      †áD~         5           24 
+2      low            4           24 
+2      a              0           24   33   34   34   35 
+2      i              1           26 
+2      k              2           27 
+2      t              3           31 
+2      high           5           24 
 
 Scope Variable Name  Location   Line Numbers
 ----- -------------  --------   ------------
-3      0éD~         0           44 
-3      @çD~         0           43   48   56 
+3      a              4           32 
+3      i              5           32   44 
+3      x              0           43   48 
+3      high           6           32 
 

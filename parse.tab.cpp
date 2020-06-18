@@ -1563,7 +1563,7 @@ yyreduce:
   case 15:
 /* Line 1792 of yacc.c  */
 #line 80 "parse.y"
-    {(yyval.m_node) = newStmtNode(VarK); (yyval.m_node)->name = (yyvsp[(2) - (2)].m_id);(yyval.m_node)->lineno = yylineno;(yyval.m_node)->isParameter = 1;}
+    {(yyval.m_node) = newExpNode(IdK); (yyval.m_node)->name = (yyvsp[(2) - (2)].m_id);(yyval.m_node)->lineno = yylineno;(yyval.m_node)->isParameter = 1;}
     break;
 
   case 16:
@@ -1844,13 +1844,13 @@ yyreduce:
   case 61:
 /* Line 1792 of yacc.c  */
 #line 165 "parse.y"
-    {addNode((yyvsp[(1) - (3)].m_node), (yyvsp[(3) - (3)].m_node)); (yyval.m_node) = (yyvsp[(1) - (3)].m_node);(yyval.m_node)->lineno = yylineno; (yyval.m_node)->param_size += 1; }
+    {addNode((yyvsp[(1) - (3)].m_node), (yyvsp[(3) - (3)].m_node)); (yyval.m_node) = (yyvsp[(1) - (3)].m_node);(yyval.m_node)->lineno = yylineno; (yyval.m_node)->param_size += 1; (yyvsp[(3) - (3)].m_node)->isParameter = 1;}
     break;
 
   case 62:
 /* Line 1792 of yacc.c  */
 #line 166 "parse.y"
-    {(yyval.m_node) = newStmtNode(ArgsK); addNode((yyval.m_node), (yyvsp[(1) - (1)].m_node));(yyval.m_node)->lineno = yylineno; (yyval.m_node)->param_size += 1;}
+    {(yyval.m_node) = newStmtNode(ArgsK); addNode((yyval.m_node), (yyvsp[(1) - (1)].m_node));(yyval.m_node)->lineno = yylineno; (yyval.m_node)->param_size += 1;(yyvsp[(1) - (1)].m_node)->isParameter = 1;}
     break;
 
 

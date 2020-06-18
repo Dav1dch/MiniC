@@ -1,5 +1,4 @@
-﻿
-// MiniCAnalyserDlg.cpp: 实现文件
+﻿// MiniCAnalyserDlg.cpp: 实现文件
 //
 #include <iostream>
 #include <string>
@@ -21,22 +20,22 @@ using namespace std;
 #endif
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-extern FILE *code_mc;
-extern FILE *yyin;
-extern FILE *result;
+extern FILE* code_mc;
+extern FILE* yyin;
+extern FILE* result;
 FILE* symtab;
-FILE *code;
-extern FILE *lexOut;
+FILE* code;
+extern FILE* lexOut;
 extern "C" int yywrap(void);
 extern int yyparse(void);
-extern node *programNode;
+extern node* programNode;
 string temp;
 int traceCode = 1;
 
 class CAboutDlg : public CDialogEx
 {
 public:
-// 对话框数据
+	// 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum
 	{
@@ -45,7 +44,7 @@ public:
 #endif
 
 protected:
-	virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV 支持
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV 支持
 
 	// 实现
 protected:
@@ -53,24 +52,24 @@ protected:
 public:
 };
 
-void CAboutDlg::DoDataExchange(CDataExchange *pDX)
+void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
-	
+
 END_MESSAGE_MAP()
 
 // CMiniCAnalyserDlg 对话框
 
-CMiniCAnalyserDlg::CMiniCAnalyserDlg(CWnd *pParent /*=nullptr*/)
+CMiniCAnalyserDlg::CMiniCAnalyserDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MiniCANALYSER_DIALOG, pParent), fileContent(_T("")), fileName(_T("")), fileName2(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CMiniCAnalyserDlg::DoDataExchange(CDataExchange *pDX)
+void CMiniCAnalyserDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 
@@ -85,17 +84,16 @@ void CMiniCAnalyserDlg::DoDataExchange(CDataExchange *pDX)
 }
 
 BEGIN_MESSAGE_MAP(CMiniCAnalyserDlg, CDialogEx)
-ON_WM_SYSCOMMAND()
-ON_WM_PAINT()
-ON_WM_QUERYDRAGICON()
-ON_COMMAND(ID_32771, &CMiniCAnalyserDlg::Open)
-ON_COMMAND(ID_32773, &CMiniCAnalyserDlg::CreateTree)
-ON_COMMAND(ID_32774, &CMiniCAnalyserDlg::ShowTree)
-ON_COMMAND(ID_32775, &CMiniCAnalyserDlg::Exit)
-ON_EN_CHANGE(IDC_FILE, &CMiniCAnalyserDlg::OnEnChangeFile)
-ON_EN_CHANGE(IDC_CONTENT2, &CMiniCAnalyserDlg::OnEnChangeContent2)
-ON_COMMAND(ID_32776, &CMiniCAnalyserDlg::On32776)
-ON_COMMAND(ID_32777, &CMiniCAnalyserDlg::On32777)
+	ON_WM_SYSCOMMAND()
+	ON_WM_PAINT()
+	ON_WM_QUERYDRAGICON()
+	ON_COMMAND(ID_32771, &CMiniCAnalyserDlg::Open)
+	ON_COMMAND(ID_32773, &CMiniCAnalyserDlg::CreateTree)
+	ON_COMMAND(ID_32774, &CMiniCAnalyserDlg::ShowTree)
+	ON_COMMAND(ID_32775, &CMiniCAnalyserDlg::Exit)
+	ON_COMMAND(ID_32776, &CMiniCAnalyserDlg::On32776)
+	ON_COMMAND(ID_32778, &CMiniCAnalyserDlg::On32778)
+	ON_COMMAND(ID_32780, &CMiniCAnalyserDlg::On32780)
 END_MESSAGE_MAP()
 
 // CMiniCAnalyserDlg 消息处理程序
@@ -110,7 +108,7 @@ BOOL CMiniCAnalyserDlg::OnInitDialog()
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
 
-	CMenu *pSysMenu = GetSystemMenu(FALSE);
+	CMenu* pSysMenu = GetSystemMenu(FALSE);
 	if (pSysMenu != nullptr)
 	{
 		BOOL bNameValid;
@@ -194,8 +192,8 @@ void CMiniCAnalyserDlg::Open()
 		fclose(yyin);
 	}
 	CFileDialog opendlg(true, NULL, NULL,
-						OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-						(LPCTSTR)_TEXT("TXT Files (*.txt)|*.txt|All Files (*.*)|*.*||"), NULL);
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		(LPCTSTR)_TEXT("TXT Files (*.txt)|*.txt|All Files (*.*)|*.*||"), NULL);
 	if (opendlg.DoModal() == IDOK)
 	{ //显示对话框并允许用户进行选择。
 
@@ -222,7 +220,7 @@ void CMiniCAnalyserDlg::Open()
 
 /*
 	生成语法树函数
-	生成的语法树以字符串的形式先加到fileContent2，注意换行符号 
+	生成的语法树以字符串的形式先加到fileContent2，注意换行符号
 	再将fileContent2写进文件里
 */
 void CMiniCAnalyserDlg::CreateTree()
@@ -241,16 +239,6 @@ void CMiniCAnalyserDlg::CreateTree()
 	fclose(lexOut);
 	fclose(yyin);
 
-	symtab = fopen("./txt/symtab.txt", "w+");
-	code = fopen("./txt/code.mc", "w+");
-	// 	生成字符表
-	buildSymtab(programNode->nodeChild[0]->next);
-	printSymTab(symtab);
-
-
-	// 生成中间代码
-	codeGen(programNode->nodeChild[0]->next);
-	fclose(code);
 
 	MessageBox(L"生成成功，点击查看即可查看语法树");
 }
@@ -278,6 +266,7 @@ void CMiniCAnalyserDlg::ShowTree()
 		content2.SetWindowTextW(fileContent); //将读取的文本显示在编辑框
 		fsend.Close();
 	}
+	treeFileName.SetWindowTextW(L"语法树");
 
 }
 
@@ -289,25 +278,7 @@ void CMiniCAnalyserDlg::Exit()
 	OnCancel();
 }
 
-void CMiniCAnalyserDlg::OnEnChangeFile()
-{
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 
-	// TODO:  在此添加控件通知处理程序代码
-}
-
-void CMiniCAnalyserDlg::OnEnChangeContent2()
-{
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
-
-	// TODO:  在此添加控件通知处理程序代码
-}
 
 
 /*
@@ -335,14 +306,34 @@ void CMiniCAnalyserDlg::On32776()
 	treeFileName.SetWindowTextW(L"符号表");
 }
 
-/*
-查看中间代码
-*/
-void CMiniCAnalyserDlg::On32777()
+
+
+
+
+// 生成符号表和中间代码
+void CMiniCAnalyserDlg::On32778()
+{
+	symtab = fopen("./txt/symtab.txt", "w+");
+
+	// 	生成符号表
+	buildSymtab(programNode->nodeChild[0]->next);
+	printSymTab(symtab);
+	fclose(symtab);
+
+	// 生成中间代码
+	code = fopen("./txt/code.txt", "w+");
+	codeGen(programNode->nodeChild[0]->next);
+	fclose(code);
+
+	MessageBox(L"生成成功，点击查看即可查看符号表和中间代码");
+}
+
+// 查看中间代码
+void CMiniCAnalyserDlg::On32780()
 {
 	UpdateData(TRUE);
-	string treePath = "./txt/code.mc";
-	CString t = L"./txt/code.mc";
+	string treePath = "./txt/code.txt";
+	CString t = L"./txt/code.txt";
 
 	CStdioFile fsend;
 	CString s_one;
@@ -358,5 +349,4 @@ void CMiniCAnalyserDlg::On32777()
 		fsend.Close();
 	}
 	treeFileName.SetWindowTextW(L"中间代码");
-	
 }

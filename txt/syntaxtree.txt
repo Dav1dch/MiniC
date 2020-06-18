@@ -5,6 +5,10 @@ fun-declaration:
 		varArray: 
 			name: a
 			
+		var: 
+			name: low
+		var: 
+			name: high
 	compound: 
 		local-declarations: 
 		statement-list: 
@@ -92,6 +96,10 @@ fun-declaration:
 		varArray: 
 			name: a
 			
+		var: 
+			name: low
+		var: 
+			name: high
 	compound: 
 		local-declarations: 
 		statement-list: 

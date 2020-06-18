@@ -54,4 +54,6 @@ public:
 	CString fileName2;
 	afx_msg void On32776();
 	afx_msg void On32777();
+	afx_msg void On32778();
+	afx_msg void On32780();
 };
