@@ -1,6 +1,6 @@
 /*
  * @Copyright: minic
- * @Author: linmaosen
+ * @Author: David.Huangjunlang 
  * @Description: 中间代码生成：实现中间代码的生成函数
  * @LastEditors: linmaosen
  * @LastEditTime: 2020-06-14
