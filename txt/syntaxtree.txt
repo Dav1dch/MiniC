@@ -1,50 +1,11 @@
 fun-declaration: 
 	type: int
-	name: minloc
+	name: gcd
 	params: 
-		varArray: 
-			name: a
-			
 		var: 
-			name: low
+			name: u
 		var: 
-			name: high
-	compound: 
-		local-declarations: 
-		statement-list: 
-			assignment: 
-				varName: k
-				expression: 
-				var: 
-					name: low
-			assignment: 
-				varName: j
-				expression: 
-				varArray: 
-					name: a
-					
-			assignment: 
-				varName: i
-				expression: 
-				simple-expression: 
-					first:
-						var: 
-							name: low
-					op: +
-					second:
-						const: 
-							val: 1
-			iteration-stmt: 
-				expression: 
-					simple-expression: 
-						first:
-							var: 
-								name: i
-						op: <
-						second:
-							var: 
-								name: high
-				statement: 
+			name: v
 	compound: 
 		local-declarations: null
 		statement-list: 
@@ -52,183 +13,75 @@ fun-declaration:
 				expression: 
 					simple-expression: 
 						first:
-							varArray: 
-								name: a
-								
-						op: <
-						second:
 							var: 
-								name: j
+								name: v
+						op: ==
+						second:
+							const: 
+								val: 0
 				statement: 
-	compound: 
-		local-declarations: null
-		statement-list: 
-			assignment: 
-				varName: j
-				expression: 
-				varArray: 
-					name: a
-					
-			assignment: 
-				varName: k
-				expression: 
-				var: 
-					name: i
-			assignment: 
-				varName: i
-				expression: 
-				simple-expression: 
-					first:
-						var: 
-							name: i
-					op: +
-					second:
-						const: 
-							val: 1
-			return-stmt: 
-				expression: 
-					var: 
-						name: k
-fun-declaration: 
-	type: int
-	name: sort
-	params: 
-		varArray: 
-			name: a
-			
-		var: 
-			name: low
-		var: 
-			name: high
-	compound: 
-		local-declarations: 
-		statement-list: 
-			assignment: 
-				varName: i
-				expression: 
-				var: 
-					name: low
-			iteration-stmt: 
-				expression: 
-					simple-expression: 
-						first:
+					return-stmt: 
+						expression: 
 							var: 
-								name: i
-						op: <
-						second:
-							simple-expression: 
-								first:
+								name: u
+				else-statement: 
+					return-stmt: 
+						expression: 
+							functionCall: 
+								name: gcd
+								args: 
 									var: 
-										name: high
-								op: -
-								second:
-									const: 
-										val: 1
-				statement: 
-	compound: 
-		local-declarations: 
-		statement-list: 
-			assignment: 
-				varName: k
-				expression: 
-			assignment: 
-				varName: t
-				expression: 
-				varArray: 
-					name: a
-					
-			assignment: 
-				varName: a
-				expression: 
-				varArray: 
-					name: a
-					
-			assignment: 
-				varName: a
-				expression: 
-				var: 
-					name: t
-			assignment: 
-				varName: i
-				expression: 
-				simple-expression: 
-					first:
-						var: 
-							name: i
-					op: +
-					second:
-						const: 
-							val: 1
+										name: v
+									additive-expression: 
+										first:
+											var: 
+												name: u
+										op: -
+										second:
+											term: 
+												first:
+													term: 
+														first:
+															var: 
+																name: u
+														op: /
+														second:
+															var: 
+																name: v
+												op: *
+												second:
+													var: 
+														name: v
 fun-declaration: 
-	type: int
+	type: void
 	name: main
 	params: void
 	compound: 
 		local-declarations: 
-			varArray: 
+			var: 
 				name: x
-				
-		statement-list: 
-			assignment: 
-				varName: i
-				expression: 
-				const: 
-					val: 0
-			iteration-stmt: 
-				expression: 
-					simple-expression: 
-						first:
-							var: 
-								name: i
-						op: <
-						second:
-							const: 
-								val: 10
-				statement: 
-	compound: 
-		local-declarations: null
+			var: 
+				name: y
 		statement-list: 
 			assignment: 
 				varName: x
 				expression: 
+				functionCall: 
+					name: input
+					args: void
 			assignment: 
-				varName: i
+				varName: y
 				expression: 
-				simple-expression: 
-					first:
-						var: 
-							name: i
-					op: +
-					second:
-						const: 
-							val: 1
-			assignment: 
-				varName: i
-				expression: 
-				const: 
-					val: 0
-			iteration-stmt: 
-				expression: 
-					simple-expression: 
-						first:
+				functionCall: 
+					name: input
+					args: void
+			functionCall: 
+				name: output
+				args: 
+					functionCall: 
+						name: gcd
+						args: 
 							var: 
-								name: i
-						op: <
-						second:
-							const: 
-								val: 10
-				statement: 
-	compound: 
-		local-declarations: null
-		statement-list: 
-			assignment: 
-				varName: i
-				expression: 
-				simple-expression: 
-					first:
-						var: 
-							name: i
-					op: +
-					second:
-						const: 
-							val: 1
+								name: x
+							var: 
+								name: y
