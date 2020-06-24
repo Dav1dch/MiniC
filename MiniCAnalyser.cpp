@@ -19,7 +19,10 @@ using namespace std;
 int lineno = 0;
 int HighScope = 0;
 // CMiniCAnalyserApp
-FILE *code_mc;
+// 打印中间代码目标文件
+FILE* code;
+// 打印符号表目标文件
+FILE* symtab;
 // 打印语法树目标文件
 FILE* result;
 // 打印词法树目标文件
